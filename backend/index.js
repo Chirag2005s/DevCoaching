@@ -8,9 +8,10 @@ const ConnectDB = require('./db/connect.js');
 const testing = require('./APIs/test.json');
 
 
-// Router Import
+// Course Router Import
 const courseRoutes = require('./router/course.router.js');
 const Course = require('./router/course.router.js');
+const deleteCourse = require('./router/course.router.js');
 // CORS error
 app.use(cors());
 
@@ -47,6 +48,7 @@ app.get('/api/coaching', (req, res) => {
 
 app.use("/api", courseRoutes);
 app.use("/api", Course);
+app.use("/api", deleteCourse);
 
 
 

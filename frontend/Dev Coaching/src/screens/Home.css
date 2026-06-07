@@ -173,6 +173,28 @@
       border: 1px solid #262c39;
       border-radius: 10px;
       background-color: #131824;
+      transition: all 0.3s ease;
+      cursor: pointer;
+  }
+
+  .Information_live:hover {
+      box-shadow: 2px 2px 2px 2px #10131a;
+      padding-top: 10px;
+      transform: scale(1.05);
+  }
+
+  .enroll_btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 10px;
+      color: rgb(18, 18, 18);
+      font-weight: 600;
+      background-color: #6c9eff;
+      transition: all 0.3s ease;
+  }
+
+  .enroll_btn:hover {
+      background-color: #5a91ff;
   }
 
   .Course_section {
@@ -191,6 +213,19 @@
       background-color: #131824;
       border-radius: 50px;
       border: 1px solid #282e3b;
+  }
+
+  .course_limit_input {
+      display: block;
+      width: 90px;
+      margin-top: 15px;
+      margin-left: 40px;
+      padding: 8px 12px;
+      color: white;
+      border: 1px solid #282e3b;
+      border-radius: 8px;
+      background-color: #131824;
+      outline: none;
   }
 
   .view_btn {

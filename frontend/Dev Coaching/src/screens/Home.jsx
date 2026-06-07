@@ -279,6 +279,7 @@ function Home() {
                                                     <LiaRupeeSignSolid />
                                                     {cor.Price}
                                                 </h6>
+                                                <button className="enroll_btn">Buy Now</button>
                                             </div>
                                         </div>
                                     ))}
