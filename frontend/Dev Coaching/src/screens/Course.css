@@ -1,0 +1,31 @@
+.Body_Section {
+    background-color: #090d16;
+}
+
+.search_course {
+    margin-left: 50px;
+    /* margin-top: 0px; */
+    /* padding: 12px 24px; */
+    width: 30%;
+    outline: none;
+    border: 2px solid #22262e;
+    border-radius: 10px;
+    background-color: #171717;
+    display: flex;
+    align-items: center;
+}
+
+.course {
+    padding: 12px 24px;
+    width: 90%;
+    background-color: #171717;
+    border: none;
+    outline: none;
+    color: white;
+}
+
+.search_icon {
+    color: white;
+    margin-left: 20px;
+    font-size: 25px;
+}

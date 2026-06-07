@@ -1,0 +1,34 @@
+.Footer {
+    background-color: #10131a;
+    padding-top: 40px;
+    padding-bottom: 30px;
+}
+
+.Footer_icons {
+    padding: 10px 12px;
+    background-color: #262626;
+    color: white;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: all 0.3s ease-in-out;
+}
+
+.Footer_icons:hover {
+    box-shadow: 0 0 10px 1px #6c9eff;
+}
+
+.Footer_icons_style {
+    font-size: 25px;
+    color: white;
+}
+
+.links {
+    text-decoration: none;
+    color: white;
+    /* font-size: 15px; */
+    transition: all 0.3s ease-in-out;
+}
+
+.links:hover {
+    color: #6c9eff;
+}

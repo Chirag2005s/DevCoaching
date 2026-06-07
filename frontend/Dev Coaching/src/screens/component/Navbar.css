@@ -1,0 +1,46 @@
+.Nav_Section {
+    padding-top: 10px;
+    padding-bottom: 20px;
+    background-color: #10131a;
+    background: transparent;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+    backdrop-filter: blur(100px);
+
+}
+
+.Nav_btn {
+    padding-top: 17px !important;
+    color: white !important;
+    font-size: 15px !important;
+}
+
+.Nav_Login {
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 30px;
+    margin-left: 150px;
+    font-weight: bold;
+    background-color: #10131a;
+    transition: all 0.3s ease-in-out;
+}
+
+.Nav_Login:hover {
+    color: #6c9eff;
+}
+
+.Sgin_up {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    background-color: #6c9eff;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.Sgin_up:hover {
+    background-color: #548dff;
+}

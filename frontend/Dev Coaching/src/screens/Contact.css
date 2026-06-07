@@ -1,0 +1,54 @@
+.Contact_Title {
+    text-align: center;
+    padding: 12px 24px;
+    background-color: #152237;
+    border-radius: 10px;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    cursor: pointer;
+}
+
+.Information_section {
+    margin-top: 100px;
+    border: 1px solid #86858554;
+    background-color: #171717;
+    padding: 12px 24px;
+    border-radius: 10px;
+    width: 100%;
+}
+
+.first_info {
+    padding: 5px 5px;
+    margin-top: 10px;
+    border-radius: 10px;
+    border: 1px solid #86858554;
+    background-color: #121212;
+    display: flex;
+    cursor: pointer;
+    padding-top: 20px;
+}
+
+.info_logo {
+    color: white;
+    background-color: #152237;
+    width: 10%;
+    height: 14%;
+    padding: 10px !important;
+    display: flex;
+    margin-top: 10px;
+    justify-content: center;
+    border-radius: 10px;
+    font-size: 20px;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.Send_information {
+    padding: 12px 24px;
+    background-color: #171717;
+    border-radius: 10px;
+    margin-top: 100px;
+    border: 1px solid #86858554;
+    width: 100%;
+    cursor: pointer;
+}
