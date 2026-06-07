@@ -1,7 +1,5 @@
-import { useEffect, useState } from 'react';
 import './Course.css'
 import { CiSearch } from "react-icons/ci";
-import axios from "axios";
 
 function Course() {
 
