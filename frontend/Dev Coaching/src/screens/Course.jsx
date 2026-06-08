@@ -23,7 +23,7 @@ function Course() {
 
 
 
-                {/* <section className='container'>
+                <section className='container'>
                     <h1 style={{ color: 'white' }}>All Courses</h1>
                     <p style={{ fontSize: 20, color: '#727272ff' }}>Choose from our expert-led developer courses</p>
 
@@ -31,8 +31,9 @@ function Course() {
                         <button className='btn btn-dark btn-md'>ALL</button>
                         <button className='btn btn-dark btn-md'>PYTHON</button>
                         <button className='btn btn-dark btn-md'>BACKEND</button>
+                        <button className='btn btn-dark btn-md'>MERN STACK</button>
                     </div>
-                </section> */}
+                </section>
 
             </div>
 
