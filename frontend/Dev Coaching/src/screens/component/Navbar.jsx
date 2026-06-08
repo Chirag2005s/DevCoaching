@@ -22,7 +22,7 @@ function Navbar() {
                         <div className="col-md-5">
                             <div style={{ justifyContent: 'center', display: 'flex', gap: 10 }}>
                                 <Button onClick={() => navigate('/')} className='Nav_btn'>Home</Button>
-                                <Button onClick={() => navigate('/course')} className='Nav_btn'>Course</Button>
+                                <Button onClick={() => navigate('/add-course')} className='Nav_btn'>Course</Button>
                                 <Button className='Nav_btn'>Notes & Exam</Button>
                                 <Button className='Nav_btn'>Instructors</Button>
                                 <Button onClick={() => navigate('/about')} className='Nav_btn'>About</Button>
