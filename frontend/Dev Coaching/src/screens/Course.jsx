@@ -1,6 +1,6 @@
 import './Course.css'
 import { CiSearch } from "react-icons/ci";
-import Location from "react-router-dom";
+// import Location from "react-router-dom";
 
 function Course() {
 
@@ -41,4 +41,4 @@ function Course() {
     );
 }
 
-export default Course
+export default Course;
