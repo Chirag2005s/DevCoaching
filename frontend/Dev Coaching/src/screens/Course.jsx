@@ -2,6 +2,7 @@ import './Course.css';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { LiaRupeeSignSolid } from "react-icons/lia";
+import { IoSearchOutline } from "react-icons/io5";
 
 
 function Course() {
@@ -70,11 +71,12 @@ function Course() {
                         </button>
                     </div>
 
-                    <div className='search_course'>
+                    <div className='course-search'>
+                        <IoSearchOutline className='course-search__icon' />
                         <input
                             type="text"
-                            className='course'
-                            placeholder='Search'
+                            className='course-search__input'
+                            placeholder='Search courses by name or category...'
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                         />
@@ -86,33 +88,26 @@ function Course() {
                         <div className='row'>
                             {filteredCourses.length > 0 ? (
                                 filteredCourses.map((sub) => (
-                                    <div className="col-md-4" key={sub._id}>
-                                        <div className="Course_section">
-                                            <div>
-                                                <p className="course_tag">{sub.title}</p>
+                                    <div className="col-md-4 course-card-col" key={sub._id}>
+                                        <div className="course-card">
+                                            <div className="course-card__header">
+                                                <span className="course-card__tag">{sub.title}</span>
+                                                <span className={`course-card__status${sub.CourseStatus?.toLowerCase() !== 'active' ? ' course-card__status--inactive' : ''}`}>
+                                                    {sub.CourseStatus}
+                                                </span>
                                             </div>
 
-                                            <h4 className="CourseName">{sub.courseName}</h4>
+                                            <h4 className="course-card__title">{sub.courseName}</h4>
+                                            <p className="course-card__desc">{sub.Disp}</p>
 
-                                            <p style={{ color: "#919191ff" }}>{sub.Disp}</p>
-
-                                            <div style={{ display: 'flex' }}>
-                                                <h6 style={{ color: "white", fontSize: 20 }}>
+                                            <div className="course-card__footer">
+                                                <h6 className="course-card__price">
                                                     <LiaRupeeSignSolid />
                                                     {sub.Price}
                                                 </h6>
-
-                                                <p style={{
-                                                    marginLeft: 250,
-                                                    fontSize: 20,
-                                                    fontWeight: 'bold',
-                                                    color: 'white'
-                                                }}>
-                                                    {sub.CourseStatus}
-                                                </p>
                                             </div>
 
-                                            <button className="enroll_btn">Buy Now</button>
+                                            <button className="course-card__enroll">Buy Now</button>
                                         </div>
                                     </div>
                                 ))
