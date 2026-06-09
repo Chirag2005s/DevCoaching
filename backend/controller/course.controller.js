@@ -14,11 +14,11 @@ const getCourse = async (req, res) => {
 const createCourse = async (req, res) => {
     try {
 
-        const { title, Disp, Price, courseName } = req.body;
+        const { title, Disp, Price, courseName, CourseStatus } = req.body;
         const course = await Course.findOne({ courseName });
 
 
-        if (!courseName || !title || !Disp || !Price) {
+        if (!courseName || !title || !Disp || !Price || !CourseStatus) {
             res.json({ message: `All fields is Required` });
         }
 
@@ -34,6 +34,7 @@ const createCourse = async (req, res) => {
             title: req.body.title,
             Disp: req.body.Disp,
             Price: req.body.Price,
+            CourseStatus: req.body.CourseStatus,
         });
 
 

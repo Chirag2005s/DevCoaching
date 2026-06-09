@@ -20,6 +20,10 @@ const courseSchema = new mongoose.Schema({
         type: Number,
         required: true,
         unique: true
+    },
+    CourseStatus: {
+        type: String,
+        eum: ['Free', 'Paid']
     }
 }, { timestamps: true });
 

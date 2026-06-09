@@ -1,10 +1,9 @@
 import './Footer.css'
-import { Link } from 'react-router-dom';
 import { FaLaptopCode } from "react-icons/fa6";
 import { FaInstagram } from "react-icons/fa";
 import { FiTwitter } from "react-icons/fi";
 import { FiFacebook } from "react-icons/fi";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 
 function Footer() {
@@ -39,7 +38,7 @@ function Footer() {
                                 <h4 style={{ color: 'white', textAlign: 'center' }}>Quick Links</h4>
                                 <div style={{ justifyContent: 'center', display: 'flex', flexDirection: 'column', gap: 10 }}>
                                     <Link to={navigate('/')} className='links'>Home</Link>
-                                    <Link to={navigate('/course')} className='links'>Course</Link>
+                                    <Link to={navigate('/add-course')} className='links'>Course</Link>
                                     <Link to="" className='links'>Live Classes</Link>
                                 </div>
                             </div>

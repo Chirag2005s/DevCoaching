@@ -273,12 +273,15 @@ function Home() {
                                                 <div>
                                                     <p className="course_tag">{cor.title}</p>
                                                 </div>
-                                                <h4 style={{ color: "white" }}>{cor.courseName}</h4>
+                                                <h4 className="CourseName" style={{ color: "white" }}>{cor.courseName}</h4>
                                                 <p style={{ color: "#919191ff" }}>{cor.Disp}</p>
-                                                <h6 style={{ color: "white", fontSize: 20 }}>
-                                                    <LiaRupeeSignSolid />
-                                                    {cor.Price}
-                                                </h6>
+                                                <div style={{ display: 'flex' }}>
+                                                    <h6 style={{ color: "white", fontSize: 20 }}>
+                                                        <LiaRupeeSignSolid />
+                                                        {cor.Price}
+                                                    </h6>
+                                                    <p style={{ marginLeft: 250, fontSize: 20, fontWeight: 'bold', color: 'white' }}>{cor.CourseStatus}</p>
+                                                </div>
                                                 <button className="enroll_btn">Buy Now</button>
                                             </div>
                                         </div>
