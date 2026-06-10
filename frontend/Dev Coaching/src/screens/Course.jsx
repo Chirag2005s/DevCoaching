@@ -4,6 +4,12 @@ import axios from 'axios';
 import { LiaRupeeSignSolid } from "react-icons/lia";
 import { IoSearchOutline } from "react-icons/io5";
 
+function isFreeCourse(course) {
+    const status = course.CourseStatus?.toLowerCase?.();
+    if (status === 'free') return true;
+    if (status === 'paid') return false;
+    return Number(course.Price) === 0;
+}
 
 function Course() {
     const [Subject, setSubject] = useState([]);
@@ -87,13 +93,15 @@ function Course() {
                     <div className='container'>
                         <div className='row'>
                             {filteredCourses.length > 0 ? (
-                                filteredCourses.map((sub) => (
+                                filteredCourses.map((sub) => {
+                                    const free = isFreeCourse(sub);
+                                    return (
                                     <div className="col-md-4 course-card-col" key={sub._id}>
                                         <div className="course-card">
                                             <div className="course-card__header">
                                                 <span className="course-card__tag">{sub.title}</span>
-                                                <span className={`course-card__status${sub.CourseStatus?.toLowerCase() !== 'active' ? ' course-card__status--inactive' : ''}`}>
-                                                    {sub.CourseStatus}
+                                                <span className={`course-card__status${free ? ' course-card__status--free' : ' course-card__status--paid'}`}>
+                                                    {free ? 'Free' : 'Paid'}
                                                 </span>
                                             </div>
 
@@ -101,16 +109,23 @@ function Course() {
                                             <p className="course-card__desc">{sub.Disp}</p>
 
                                             <div className="course-card__footer">
-                                                <h6 className="course-card__price">
-                                                    <LiaRupeeSignSolid />
-                                                    {sub.Price}
-                                                </h6>
+                                                {free ? (
+                                                    <h6 className="course-card__price course-card__price--free">Free</h6>
+                                                ) : (
+                                                    <h6 className="course-card__price">
+                                                        <LiaRupeeSignSolid />
+                                                        {sub.Price}
+                                                    </h6>
+                                                )}
                                             </div>
 
-                                            <button className="course-card__enroll">Buy Now</button>
+                                            <button className={`course-card__enroll${free ? ' course-card__enroll--trial' : ' course-card__enroll--buy'}`}>
+                                                {free ? 'Free Trial' : 'Buy Now'}
+                                            </button>
                                         </div>
                                     </div>
-                                ))
+                                    );
+                                })
                             ) : (
                                 <div className='Course_Noties'>
                                     <h2 style={{ color: '#afafafff', fontSize: 40, textAlign: 'center' }}>Course Not Found ... !</h2>

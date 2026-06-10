@@ -2,44 +2,118 @@ import Button from '@mui/material/Button';
 import './Navbar.css';
 import { FaLaptopCode } from "react-icons/fa6";
 import { FiLogIn } from "react-icons/fi";
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
+const NAV_LINKS = [
+    { to: '/', label: 'Home', end: true },
+    { to: '/course', label: 'Course' },
+    { to: '/about', label: 'About' },
+];
 
 function Navbar() {
     const navigate = useNavigate();
+    const location = useLocation();
+    const navListRef = useRef(null);
+    const linkRefs = useRef({});
+    const [indicator, setIndicator] = useState({ left: 0, width: 0, opacity: 0 });
+    const [isSwitching, setIsSwitching] = useState(false);
+
+    const updateIndicator = () => {
+        const activePath = NAV_LINKS.find(
+            (link) =>
+                link.end
+                    ? location.pathname === link.to
+                    : location.pathname.startsWith(link.to)
+        )?.to;
+
+        const activeEl = activePath ? linkRefs.current[activePath] : null;
+        const listEl = navListRef.current;
+
+        if (activeEl && listEl) {
+            const listRect = listEl.getBoundingClientRect();
+            const elRect = activeEl.getBoundingClientRect();
+            setIndicator({
+                left: elRect.left - listRect.left,
+                width: elRect.width,
+                opacity: 1,
+            });
+        }
+    };
+
+    useEffect(() => {
+        setIsSwitching(true);
+        const timer = setTimeout(() => setIsSwitching(false), 450);
+        return () => clearTimeout(timer);
+    }, [location.pathname]);
+
+    useLayoutEffect(() => {
+        updateIndicator();
+        window.addEventListener('resize', updateIndicator);
+        return () => window.removeEventListener('resize', updateIndicator);
+    }, [location.pathname]);
+
     return (
-        <>
+        <section className={`Nav_Section ${isSwitching ? 'Nav_Section--switching' : ''}`}>
+            <div className="nav-progress-bar" aria-hidden="true" />
 
-            <section className='Nav_Section'>
-                <div className="container">
-                    <div className="row">
-                        <div className="col-md-3">
-                            <div style={{ paddingTop: 10 }}>
-                                <h3 style={{ color: 'white' }}><FaLaptopCode style={{ fontSize: 40, marginRight: 10, color: '#6c9eff' }} />Dev <span style={{ color: '#6c9eff' }}>Coaching</span></h3>
-                            </div>
-                        </div>
+            <div className="container">
+                <div className="row align-items-center">
+                    <div className="col-md-3">
+                        <button
+                            type="button"
+                            className="nav-brand"
+                            onClick={() => navigate('/')}
+                        >
+                            <FaLaptopCode className="nav-brand__icon" />
+                            <span>
+                                Dev <span className="nav-brand__accent">Coaching</span>
+                            </span>
+                        </button>
+                    </div>
 
-                        <div className="col-md-5">
-                            <div style={{ justifyContent: 'center', display: 'flex', gap: 10 }}>
-                                <Button onClick={() => navigate('/')} className='Nav_btn'>Home</Button>
-                                <Button onClick={() => navigate('/course')} className='Nav_btn'>Course</Button>
-                                <Button className='Nav_btn'>Notes & Exam</Button>
-                                <Button className='Nav_btn'>Instructors</Button>
-                                <Button onClick={() => navigate('/about')} className='Nav_btn'>About</Button>
-                            </div>
-                        </div>
-
-                        <div className="col-md-4">
-                            <div style={{ justifyContent: "end-start", display: 'flex', gap: 15, marginTop: 10 }}>
-                                <button className='Nav_Login'><FiLogIn style={{ marginRight: 10 }} />Login</button>
-                                <button className='Sgin_up'>Sign up</button>
+                    <div className="col-md-5">
+                        <div className="nav-links-wrap" ref={navListRef}>
+                            <span
+                                className="nav-indicator"
+                                style={{
+                                    transform: `translateX(${indicator.left}px)`,
+                                    width: indicator.width,
+                                    opacity: indicator.opacity,
+                                }}
+                            />
+                            <div className="nav-links">
+                                {NAV_LINKS.map((link) => (
+                                    <NavLink
+                                        key={link.to}
+                                        to={link.to}
+                                        end={link.end}
+                                        ref={(el) => { linkRefs.current[link.to] = el; }}
+                                        className={({ isActive }) =>
+                                            `Nav_btn nav-link${isActive ? ' nav-link--active' : ''}`
+                                        }
+                                    >
+                                        {link.label}
+                                    </NavLink>
+                                ))}
+                                <Button className="Nav_btn nav-link nav-link--static">Notes & Exam</Button>
+                                <Button className="Nav_btn nav-link nav-link--static">Instructors</Button>
                             </div>
                         </div>
                     </div>
+
+                    <div className="col-md-4">
+                        <div className="nav-auth">
+                            <button type="button" className="Nav_Login">
+                                <FiLogIn /> Login
+                            </button>
+                            <button type="button" className="Sgin_up">Sign up</button>
+                        </div>
+                    </div>
                 </div>
-            </section>
-        </>
-    )
+            </div>
+        </section>
+    );
 }
 
 export default Navbar;

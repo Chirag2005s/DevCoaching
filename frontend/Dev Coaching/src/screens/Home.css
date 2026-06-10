@@ -1,3 +1,10 @@
+/* ── Page wrapper ── */
+
+.home-page {
+  background-color: #090d16;
+  min-height: 100vh;
+}
+
 /* ── Base & animations ── */
 
 @keyframes fadeUp {
@@ -282,6 +289,124 @@
   }
 }
 
+/* ── Video showcase section ── */
+
+.video-showcase-section {
+  padding: 80px 0;
+  background-color: #0c1018;
+}
+
+.section-label--video {
+  color: #14daff;
+  background: rgba(20, 218, 255, 0.1);
+  border: 1px solid rgba(20, 218, 255, 0.25);
+}
+
+.video-showcase__title {
+  color: white;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 800;
+  margin: 16px 0 14px;
+  line-height: 1.2;
+}
+
+.video-showcase__title span {
+  color: #14daff;
+}
+
+.video-showcase__desc {
+  color: #8b95a8;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.video-showcase__list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 8px;
+}
+
+.video-showcase__list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #c9d1de;
+  padding: 7px 0;
+  font-size: 0.95rem;
+}
+
+.video-showcase__list li::before {
+  content: '▸';
+  color: #14daff;
+  font-weight: bold;
+}
+
+.video-showcase__frame {
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #111827;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+  animation: videoFramePulse 4s ease-in-out infinite;
+}
+
+@keyframes videoFramePulse {
+  0%, 100% {
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45), 0 0 0 0 rgba(20, 218, 255, 0);
+  }
+  50% {
+    box-shadow: 0 24px 56px rgba(0, 0, 0, 0.5), 0 0 30px rgba(20, 218, 255, 0.08);
+  }
+}
+
+.video-showcase__glow {
+  position: absolute;
+  inset: -40%;
+  background: radial-gradient(circle, rgba(20, 218, 255, 0.12) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.video-showcase__player {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 18px;
+}
+
+.video-showcase__badge {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: white;
+  background: rgba(9, 13, 22, 0.85);
+  border: 1px solid rgba(74, 222, 128, 0.3);
+  backdrop-filter: blur(8px);
+}
+
+@media (max-width: 991px) {
+  .video-showcase-section {
+    padding: 50px 0;
+  }
+
+  .video-showcase__frame {
+    margin-top: 12px;
+  }
+}
+
 /* ── Tech info sections (Python & React) ── */
 
 .tech-info-section {
@@ -457,17 +582,50 @@
 
 .enroll_btn {
   padding: 12px 24px;
-  border: none;
+  border: 1px solid transparent;
   border-radius: 10px;
-  color: rgb(18, 18, 18);
   font-weight: 600;
-  background-color: #6c9eff;
   transition: all 0.3s ease;
   width: 100%;
+  cursor: pointer;
 }
 
-.enroll_btn:hover {
-  background-color: #5a91ff;
+.enroll_btn--trial {
+  color: #4ade80;
+  background: rgba(74, 222, 128, 0.1);
+  border-color: rgba(74, 222, 128, 0.35);
+}
+
+.enroll_btn--trial:hover {
+  background: rgba(74, 222, 128, 0.2);
+  border-color: rgba(74, 222, 128, 0.5);
+  box-shadow: 0 4px 20px rgba(74, 222, 128, 0.2);
+}
+
+.enroll_btn--buy {
+  color: #f1f5f9;
+  background: rgba(20, 218, 255, 0.12);
+  border-color: rgba(20, 218, 255, 0.35);
+}
+
+.enroll_btn--buy:hover {
+  background: rgba(20, 218, 255, 0.22);
+  border-color: rgba(20, 218, 255, 0.5);
+  box-shadow: 0 4px 20px rgba(20, 218, 255, 0.2);
+}
+
+.course-price-free {
+  color: #4ade80;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.course-badge-free {
+  color: #4ade80;
+}
+
+.course-badge-paid {
+  color: #6c9eff;
 }
 
 .Course_section {

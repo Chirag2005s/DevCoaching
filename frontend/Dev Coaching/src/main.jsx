@@ -8,14 +8,16 @@ import Navbar from './screens/component/Navbar.jsx'
 import Footer from './screens/component/Footer.jsx'
 import About from './screens/About.jsx'
 import Contact from './screens/Contact.jsx'
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './page-transition.css';
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <BrowserRouter>
-      <Navbar />
-      <Routes>
+function AnimatedRoutes() {
+  const location = useLocation();
+
+  return (
+    <div key={location.pathname} className="page-transition">
+      <Routes location={location}>
         <Route path='/' element={<Home />} />
         <Route path='/course' element={<Course />} />
         <Route path='/add-course' element={<Navigate to='/course' replace />} />
@@ -23,6 +25,15 @@ createRoot(document.getElementById('root')).render(
         <Route path='/contact' element={<Contact />} />
         <Route path='*' element={<Navigate to='/' replace />} />
       </Routes>
+    </div>
+  );
+}
+
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <BrowserRouter>
+      <Navbar />
+      <AnimatedRoutes />
       <Footer />
     </BrowserRouter>
   </StrictMode>

@@ -1,6 +1,6 @@
 import "./Home.css";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { HiSignal } from "react-icons/hi2";
@@ -92,9 +92,20 @@ const REACT_TOOLS = [
     { icon: SiPostman, label: "Postman" },
 ];
 
+const DEMO_VIDEO_SRC =
+    "https://assets.mixkit.co/videos/preview/mixkit-person-writing-code-on-laptop-4908-large.mp4";
+
+function isFreeCourse(course) {
+    const status = course.CourseStatus?.toLowerCase?.();
+    if (status === "free") return true;
+    if (status === "paid") return false;
+    return Number(course.Price) === 0;
+}
+
 function Home() {
     const [course, setCourse] = useState([]);
     const navigate = useNavigate();
+    const videoRef = useRef(null);
 
     useEffect(() => {
         axios
@@ -118,8 +129,27 @@ function Home() {
         return () => observer.disconnect();
     }, [course]);
 
+    useEffect(() => {
+        const video = videoRef.current;
+        if (!video) return;
+
+        const videoObserver = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    video.play().catch(() => {});
+                } else {
+                    video.pause();
+                }
+            },
+            { threshold: 0.35 }
+        );
+
+        videoObserver.observe(video);
+        return () => videoObserver.disconnect();
+    }, []);
+
     return (
-        <>
+        <div className="home-page">
             {/* Hero */}
             <section className="header_section">
                 <div className="container text-center">
@@ -217,8 +247,56 @@ function Home() {
                 </div>
             </section>
 
+            {/* Live Class Video Section */}
+            <section className="video-showcase-section">
+                <div className="container">
+                    <div className="row align-items-center g-5">
+                        <div className="col-lg-5 reveal">
+                            <span className="section-label section-label--video">Live Experience</span>
+                            <h2 className="video-showcase__title">
+                                Watch How <span>Live Dev Classes</span> Work
+                            </h2>
+                            <p className="video-showcase__desc">
+                                Join real-time coding sessions on Google Meet. Follow along as mentors
+                                build projects, debug code, and explain concepts step by step —
+                                just like sitting next to a senior developer.
+                            </p>
+                            <ul className="video-showcase__list">
+                                <li>Screen-shared live coding demos</li>
+                                <li>Recorded sessions to rewatch anytime</li>
+                                <li>Ask doubts directly during class</li>
+                            </ul>
+                            <button className="header_btn mt-3" onClick={() => navigate("/course")}>
+                                Join a Live Class
+                                <FaArrowRightLong />
+                            </button>
+                        </div>
+
+                        <div className="col-lg-7 reveal reveal-delay-2">
+                            <div className="video-showcase__frame">
+                                <div className="video-showcase__glow" />
+                                <video
+                                    ref={videoRef}
+                                    className="video-showcase__player"
+                                    muted
+                                    loop
+                                    playsInline
+                                    preload="metadata"
+                                >
+                                    <source src={DEMO_VIDEO_SRC} type="video/mp4" />
+                                </video>
+                                <div className="video-showcase__badge">
+                                    <HiSignal style={{ color: "#4ade80", fontSize: 14 }} />
+                                    Live Coding Session
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             {/* Python Information Section */}
-            <section className="tech-info-section" style={{paddingBottom: 160 }}>
+            <section className="tech-info-section" style={{ paddingBottom: 160 }}>
                 <div className="container">
                     <div className="row align-items-center g-5">
                         <div className="col-lg-6 reveal">
@@ -263,52 +341,8 @@ function Home() {
                 </div>
             </section>
 
-                    <section>
-                        <div className="container Technology_section">
-                            <marquee direction="right">
-                                <div
-                                    style={{
-                                        display: "flex",
-                                        gap: 50,
-                                        justifyContent: "space-between",
-                                        alignItems: "center",
-                                    }}
-                                >
-                                    <div className="Techno">
-                                        <FaGithub style={{ fontSize: 100, color: "white" }} />
-                                    </div>
-
-                                    <div className="Techno">
-                                        <FaGitAlt style={{ fontSize: 100, color: "white" }} />
-                                    </div>
-
-                                    <div className="Techno">
-                                        <FaNodeJs style={{ fontSize: 100, color: "white" }} />
-                                    </div>
-
-                                    <div className="Techno">
-                                        <DiMongodb style={{ fontSize: 100, color: "white" }} />
-                                    </div>
-
-                                    <div className="Techno">
-                                        <SiExpress style={{ fontSize: 100, color: "white" }} />
-                                    </div>
-
-                                    <div className="Techno">
-                                        <SiPostman style={{ fontSize: 100, color: "white" }} />
-                                    </div>
-
-                                    <div className="Techno">
-                                        <FaReact style={{ fontSize: 100, color: "white" }} />
-                                    </div>
-                                    <h2 style={{ color: "white" }}>MERN STACK</h2>
-                                </div>
-                            </marquee>
-                        </div>
-                    </section>
-
             {/* Featured Courses */}
-            <section className="tech-info-section" style={{ paddingTop: 60,paddingBottom: 160 }}>
+            <section className="tech-info-section" style={{ paddingTop: 60, paddingBottom: 160 }}>
                 <div className="container">
                     <div className="featured-header reveal">
                         <div>
@@ -322,23 +356,34 @@ function Home() {
 
                     <div className="row g-4">
                         {course?.length > 0 &&
-                            course.slice(0, 3).map((cor, i) => (
+                            course.slice(0, 3).map((cor, i) => {
+                                const free = isFreeCourse(cor);
+                                return (
                                 <div className={`col-md-6 col-lg-4 reveal reveal-delay-${i + 1}`} key={cor._id}>
                                     <div className="Course_section">
                                         <p className="course_tag">{cor.title}</p>
                                         <h4 className="CourseName mt-3">{cor.courseName}</h4>
                                         <p className="text-secondary mt-2 flex-grow-1">{cor.Disp}</p>
                                         <div className="course-price-row">
-                                            <h6 className="text-white mb-0 d-flex align-items-center gap-1">
-                                                <LiaRupeeSignSolid />
-                                                {cor.Price}
-                                            </h6>
-                                            <p className="text-white mb-0 fw-bold">{cor.CourseStatus}</p>
+                                            {free ? (
+                                                <h6 className="course-price-free mb-0">Free</h6>
+                                            ) : (
+                                                <h6 className="text-white mb-0 d-flex align-items-center gap-1">
+                                                    <LiaRupeeSignSolid />
+                                                    {cor.Price}
+                                                </h6>
+                                            )}
+                                            <p className={`mb-0 fw-bold ${free ? "course-badge-free" : "course-badge-paid"}`}>
+                                                {free ? "Free" : "Paid"}
+                                            </p>
                                         </div>
-                                        <button className="enroll_btn mt-3">Buy Now</button>
+                                        <button className={`enroll_btn mt-3${free ? " enroll_btn--trial" : " enroll_btn--buy"}`}>
+                                            {free ? "Free Trial" : "Buy Now"}
+                                        </button>
                                     </div>
                                 </div>
-                            ))}
+                                );
+                            })}
                     </div>
                 </div>
             </section>
@@ -463,7 +508,7 @@ function Home() {
                 </p>
                 <button className="started_btn">Get Started — it's free to join</button>
             </section>
-        </>
+        </div>
     );
 }
 
