@@ -136,7 +136,7 @@ function Home() {
         const videoObserver = new IntersectionObserver(
             ([entry]) => {
                 if (entry.isIntersecting) {
-                    video.play().catch(() => {});
+                    video.play().catch(() => { });
                 } else {
                     video.pause();
                 }
@@ -359,29 +359,29 @@ function Home() {
                             course.slice(0, 3).map((cor, i) => {
                                 const free = isFreeCourse(cor);
                                 return (
-                                <div className={`col-md-6 col-lg-4 reveal reveal-delay-${i + 1}`} key={cor._id}>
-                                    <div className="Course_section">
-                                        <p className="course_tag">{cor.title}</p>
-                                        <h4 className="CourseName mt-3">{cor.courseName}</h4>
-                                        <p className="text-secondary mt-2 flex-grow-1">{cor.Disp}</p>
-                                        <div className="course-price-row">
-                                            {free ? (
-                                                <h6 className="course-price-free mb-0">Free</h6>
-                                            ) : (
-                                                <h6 className="text-white mb-0 d-flex align-items-center gap-1">
-                                                    <LiaRupeeSignSolid />
-                                                    {cor.Price}
-                                                </h6>
-                                            )}
-                                            <p className={`mb-0 fw-bold ${free ? "course-badge-free" : "course-badge-paid"}`}>
-                                                {free ? "Free" : "Paid"}
-                                            </p>
+                                    <div className={`col-md-6 col-lg-4 reveal reveal-delay-${i + 1}`} key={cor._id}>
+                                        <div className="Course_section">
+                                            <p className="course_tag">{cor.Language}</p>
+                                            <h4 className="CourseName mt-3">{cor.courseName}</h4>
+                                            <p className="text-secondary mt-2 flex-grow-1">{cor.Disp}</p>
+                                            <div className="course-price-row">
+                                                {free ? (
+                                                    <h6 className="course-price-free mb-0">Free</h6>
+                                                ) : (
+                                                    <h6 className="text-white mb-0 d-flex align-items-center gap-1">
+                                                        <LiaRupeeSignSolid />
+                                                        {cor.Price}
+                                                    </h6>
+                                                )}
+                                                <p className={`mb-0 fw-bold ${free ? "course-badge-free" : "course-badge-paid"}`}>
+                                                    {free ? "Free" : "Paid"}
+                                                </p>
+                                            </div>
+                                            <button className={`enroll_btn mt-3${free ? " enroll_btn--trial" : " enroll_btn--buy"}`}>
+                                                {free ? "Free Trial" : "Buy Now"}
+                                            </button>
                                         </div>
-                                        <button className={`enroll_btn mt-3${free ? " enroll_btn--trial" : " enroll_btn--buy"}`}>
-                                            {free ? "Free Trial" : "Buy Now"}
-                                        </button>
                                     </div>
-                                </div>
                                 );
                             })}
                     </div>

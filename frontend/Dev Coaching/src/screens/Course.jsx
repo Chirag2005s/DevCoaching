@@ -29,11 +29,11 @@ function Course() {
     const filteredCourses = Subject.filter((sub) => {
         const matchCategory =
             selectedCategory === 'ALL' ||
-            sub.title?.toLowerCase() === selectedCategory.toLowerCase();
+            sub.Language?.toLowerCase() === selectedCategory.toLowerCase();
 
         const matchSearch =
             sub.courseName?.toLowerCase().includes(search.toLowerCase()) ||
-            sub.title?.toLowerCase().includes(search.toLowerCase());
+            sub.Language?.toLowerCase().includes(search.toLowerCase());
 
         return matchCategory && matchSearch;
     });
@@ -63,10 +63,10 @@ function Course() {
                         </button>
 
                         <button
-                            className={`btn btn-md ${selectedCategory === 'BACKEND' ? 'btn-info' : 'btn-dark'}`}
-                            onClick={() => setSelectedCategory('BACKEND')}
+                            className={`btn btn-md ${selectedCategory === 'FRONTEND' ? 'btn-info' : 'btn-dark'}`}
+                            onClick={() => setSelectedCategory('FRONTEND')}
                         >
-                            BACKEND
+                            FRONTEND
                         </button>
 
                         <button
@@ -96,34 +96,34 @@ function Course() {
                                 filteredCourses.map((sub) => {
                                     const free = isFreeCourse(sub);
                                     return (
-                                    <div className="col-md-4 course-card-col" key={sub._id}>
-                                        <div className="course-card">
-                                            <div className="course-card__header">
-                                                <span className="course-card__tag">{sub.title}</span>
-                                                <span className={`course-card__status${free ? ' course-card__status--free' : ' course-card__status--paid'}`}>
-                                                    {free ? 'Free' : 'Paid'}
-                                                </span>
+                                        <div className="col-md-4 course-card-col" key={sub._id}>
+                                            <div className="course-card">
+                                                <div className="course-card__header">
+                                                    <span className="course-card__tag">{sub.Language}</span>
+                                                    <span className={`course-card__status${free ? ' course-card__status--free' : ' course-card__status--paid'}`}>
+                                                        {free ? 'Free' : 'Paid'}
+                                                    </span>
+                                                </div>
+
+                                                <h4 className="course-card__title">{sub.courseName}</h4>
+                                                <p className="course-card__desc">{sub.Disp}</p>
+
+                                                <div className="course-card__footer">
+                                                    {free ? (
+                                                        <h6 className="course-card__price course-card__price--free">Free</h6>
+                                                    ) : (
+                                                        <h6 className="course-card__price">
+                                                            <LiaRupeeSignSolid />
+                                                            {sub.Price}
+                                                        </h6>
+                                                    )}
+                                                </div>
+
+                                                <button className={`course-card__enroll${free ? ' course-card__enroll--trial' : ' course-card__enroll--buy'}`}>
+                                                    {free ? 'Free Trial' : 'Buy Now'}
+                                                </button>
                                             </div>
-
-                                            <h4 className="course-card__title">{sub.courseName}</h4>
-                                            <p className="course-card__desc">{sub.Disp}</p>
-
-                                            <div className="course-card__footer">
-                                                {free ? (
-                                                    <h6 className="course-card__price course-card__price--free">Free</h6>
-                                                ) : (
-                                                    <h6 className="course-card__price">
-                                                        <LiaRupeeSignSolid />
-                                                        {sub.Price}
-                                                    </h6>
-                                                )}
-                                            </div>
-
-                                            <button className={`course-card__enroll${free ? ' course-card__enroll--trial' : ' course-card__enroll--buy'}`}>
-                                                {free ? 'Free Trial' : 'Buy Now'}
-                                            </button>
                                         </div>
-                                    </div>
                                     );
                                 })
                             ) : (

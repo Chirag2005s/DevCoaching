@@ -1,9 +1,10 @@
 // const mongoose = require("mongoose");
 import mongoose from "mongoose";
 const courseSchema = new mongoose.Schema({
-    title: {
+    Language: {
         type: String,
         required: true,
+        eum: ['FRONTEND', 'PYTHON', 'BACKEND', 'UI/UX', 'FULL STACK', 'ROBOTICS'],
         unique: true
     },
     courseName: {
