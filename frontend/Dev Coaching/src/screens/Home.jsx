@@ -1,6 +1,7 @@
 import "./Home.css";
 import axios from "axios";
-// React icons
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { HiSignal } from "react-icons/hi2";
 import { MdVerified } from "react-icons/md";
@@ -14,9 +15,6 @@ import { CgGenderFemale } from "react-icons/cg";
 import { FaCode } from "react-icons/fa6";
 import { FiUsers } from "react-icons/fi";
 import { LiaRupeeSignSolid } from "react-icons/lia";
-import { useEffect, useState } from "react";
-
-// Python Tools
 import { FaGithub } from "react-icons/fa";
 import { FaGitAlt } from "react-icons/fa6";
 import { VscVscode } from "react-icons/vsc";
@@ -24,183 +22,246 @@ import { FaPython } from "react-icons/fa";
 import { BiLogoFlask } from "react-icons/bi";
 import { SiPandas } from "react-icons/si";
 import { SiPycharm } from "react-icons/si";
-
-// MERN STACK
 import { FaNodeJs } from "react-icons/fa";
 import { SiExpress } from "react-icons/si";
 import { DiMongodb } from "react-icons/di";
 import { SiPostman } from "react-icons/si";
 import { FaReact } from "react-icons/fa";
+import { SiJavascript } from "react-icons/si";
 
+const LANGUAGES = [
+    {
+        name: "Python",
+        tag: "Backend & Data",
+        tagClass: "language-card__tag--python",
+        iconClass: "language-card__icon--python",
+        icon: FaPython,
+        description: "Build apps, automate tasks, and analyze data with the world's most beginner-friendly language.",
+    },
+    {
+        name: "JavaScript & React",
+        tag: "Frontend",
+        tagClass: "language-card__tag--javascript",
+        iconClass: "language-card__icon--javascript",
+        icon: SiJavascript,
+        description: "Create dynamic UIs and modern single-page applications used by top tech companies.",
+    },
+    {
+        name: "Node.js & Backend",
+        tag: "Server Side",
+        tagClass: "language-card__tag--backend",
+        iconClass: "language-card__icon--backend",
+        icon: FaNodeJs,
+        description: "Power APIs, databases, and full-stack MERN applications with scalable backend skills.",
+    },
+];
 
+const PYTHON_TOPICS = [
+    "Python fundamentals & OOP concepts",
+    "Web development with Flask",
+    "Data analysis using Pandas & NumPy",
+    "File handling, APIs & automation scripts",
+    "Real-world projects & exam preparation",
+];
 
+const REACT_TOPICS = [
+    "React components, props & state",
+    "Hooks, routing & context API",
+    "Node.js & Express backend APIs",
+    "MongoDB database integration",
+    "Full MERN stack project builds",
+];
 
+const PYTHON_TOOLS = [
+    { icon: FaPython, label: "Python" },
+    { icon: FaGithub, label: "GitHub" },
+    { icon: FaGitAlt, label: "Git" },
+    { icon: VscVscode, label: "VS Code" },
+    { icon: BiLogoFlask, label: "Flask" },
+    { icon: SiPandas, label: "Pandas" },
+    { icon: SiPycharm, label: "PyCharm" },
+];
+
+const REACT_TOOLS = [
+    { icon: FaReact, label: "React" },
+    { icon: FaNodeJs, label: "Node.js" },
+    { icon: SiExpress, label: "Express" },
+    { icon: DiMongodb, label: "MongoDB" },
+    { icon: FaGithub, label: "GitHub" },
+    { icon: FaGitAlt, label: "Git" },
+    { icon: SiPostman, label: "Postman" },
+];
 
 function Home() {
     const [course, setCourse] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         axios
             .get("http://localhost:9000/api/Course")
             .then((res) => setCourse(res.data?.course || []));
-        // .catch((err) => console.log(err));
     }, []);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("reveal-visible");
+                    }
+                });
+            },
+            { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
+        );
+
+        document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+        return () => observer.disconnect();
+    }, [course]);
 
     return (
         <>
-            <section>
-                <div className="header_section">
-                    <div style={{ justifyContent: "center", display: "flex" }}>
-                        <p className="header_Signal">
-                            <HiSignal style={{ color: "green", fontSize: 20 }} /> 1 live class
-                            happening now
-                        </p>
-                    </div>
-                    <h1 style={{ color: "white", textAlign: "center", fontSize: 80 }}>
-                        Level up your{" "}
-                        <span style={{ color: "#14daff" }}>developer career</span>
-                        <br /> with senior mentors.
-                    </h1>
-                    <p
-                        style={{
-                            textAlign: "center",
-                            color: "#979fab",
-                            marginTop: 20,
-                            fontSize: 30,
-                        }}
-                    >
-                        Dev Coaching is exclusively for developer subjects. Live classes
-                        over <br />
-                        Google Meet, real exam papers, and direct chat with your teacher
+            {/* Hero */}
+            <section className="header_section">
+                <div className="container text-center">
+                    <p className="header_Signal hero-animate mb-4">
+                        <HiSignal style={{ color: "green", fontSize: 18 }} />
+                        1 live class happening now
                     </p>
 
-                    <div
-                        style={{
-                            display: "flex",
-                            justifyContent: "center",
-                            gap: 30,
-                            marginTop: 50,
-                        }}
-                    >
-                        <button className="header_btn">
+                    <h1 className="hero-title hero-animate hero-animate-delay-1">
+                        Level up your <span>developer career</span>
+                        <br className="d-none d-md-block" /> with senior mentors.
+                    </h1>
+
+                    <p className="hero-subtitle hero-animate hero-animate-delay-2 mt-4">
+                        Dev Coaching is exclusively for developer subjects. Live classes
+                        over Google Meet, real exam papers, and direct chat with your teacher.
+                    </p>
+
+                    <div className="d-flex flex-wrap justify-content-center gap-3 mt-5 hero-animate hero-animate-delay-3 hero-btns">
+                        <button className="header_btn" onClick={() => navigate("/course")}>
                             Explore Course
-                            <FaArrowRightLong style={{ marginLeft: 20, fontSize: 25 }} />
+                            <FaArrowRightLong />
                         </button>
-                        <button className="header_btn">Meet The Teacher</button>
+                        <button className="header_btn header_btn-outline">
+                            Meet The Teacher
+                        </button>
                     </div>
 
-                    <hr style={{ color: "white", marginTop: 140 }} />
+                    <hr className="text-secondary mt-5 pt-4" />
 
-                    <section>
-                        <div
-                            style={{
-                                marginTop: 90,
-                                display: "flex",
-                                justifyContent: "center",
-                                gap: 50,
-                            }}
-                        >
+                    {/* Info cards */}
+                    <div className="row g-4 mt-2">
+                        <div className="col-md-4 reveal reveal-delay-1">
                             <div className="Information_live">
-                                <div>
-                                    <FaCode style={{ color: "#6c9eff", fontSize: 30 }} />
-                                </div>
-                                <div>
-                                    <h5 style={{ color: "white", marginTop: 30, fontSize: 25 }}>
-                                        Developers Only
-                                    </h5>
-                                </div>
-                                <div>
-                                    <p
-                                        style={{ color: "#777777ff", marginTop: 20, fontSize: 20 }}
-                                    >
-                                        React, Python, Node, Backend(MERN), AI Tools
-                                        <br /> — no other subjects.
-                                    </p>
-                                </div>
+                                <FaCode className="info-icon" />
+                                <h5 className="info-card-title">Developers Only</h5>
+                                <p className="info-card-text">
+                                    React, Python, Node, Backend (MERN), AI Tools — no other subjects.
+                                </p>
                             </div>
-
+                        </div>
+                        <div className="col-md-4 reveal reveal-delay-2">
                             <div className="Information_live">
-                                <div>
-                                    <HiSignal style={{ color: "#6c9eff", fontSize: 30 }} />
-                                </div>
-                                <div>
-                                    <h5 style={{ color: "white", marginTop: 30, fontSize: 25 }}>
-                                        Live Classes
-                                    </h5>
-                                </div>
-                                <div>
-                                    <p
-                                        style={{ color: "#777777ff", marginTop: 20, fontSize: 20 }}
-                                    >
-                                        Attend live on Google Meet or watch back.
-                                    </p>
-                                </div>
+                                <HiSignal className="info-icon" />
+                                <h5 className="info-card-title">Live Classes</h5>
+                                <p className="info-card-text">
+                                    Attend live on Google Meet or watch back recordings anytime.
+                                </p>
                             </div>
-
+                        </div>
+                        <div className="col-md-4 reveal reveal-delay-3">
                             <div className="Information_live">
-                                <div>
-                                    <FiUsers style={{ color: "#6c9eff", fontSize: 30 }} />
+                                <FiUsers className="info-icon" />
+                                <h5 className="info-card-title">Talk to Teachers</h5>
+                                <p className="info-card-text">
+                                    Realtime chat for doubts, dues, and 1:1 help from mentors.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Languages Section */}
+            <section className="languages-section">
+                <div className="container">
+                    <div className="languages-header reveal">
+                        <span className="section-label section-label--languages">Programming Languages</span>
+                        <h2 className="languages-title">
+                            Learn the Languages <span style={{ color: "#14daff" }}>Developers Use</span>
+                        </h2>
+                        <p className="languages-subtitle">
+                            From Python to React and Node.js — master the programming languages
+                            that power modern software, taught live by senior mentors.
+                        </p>
+                    </div>
+
+                    <div className="row g-4 justify-content-center">
+                        {LANGUAGES.map((lang, i) => {
+                            const Icon = lang.icon;
+                            return (
+                                <div className={`col-md-6 col-lg-4 reveal reveal-delay-${i + 1}`} key={lang.name}>
+                                    <div className="language-card">
+                                        <div className={`language-card__icon ${lang.iconClass}`}>
+                                            <Icon />
+                                        </div>
+                                        <span className={`language-card__tag ${lang.tagClass}`}>{lang.tag}</span>
+                                        <h4 className="language-card__name">{lang.name}</h4>
+                                        <p className="language-card__desc">{lang.description}</p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <h5 style={{ color: "white", marginTop: 30, fontSize: 25 }}>
-                                        Talk to teachers
-                                    </h5>
+                            );
+                        })}
+                    </div>
+                </div>
+            </section>
+
+            {/* Python Information Section */}
+            <section className="tech-info-section" style={{paddingBottom: 160 }}>
+                <div className="container">
+                    <div className="row align-items-center g-5">
+                        <div className="col-lg-6 reveal">
+                            <span className="section-label section-label--python">Python Track</span>
+                            <h2 className="tech-info-title">Master Python Development</h2>
+                            <p className="tech-info-desc">
+                                Learn Python from scratch with live mentorship. Build real projects
+                                in web development, data science, and automation — taught by senior
+                                developers with industry experience.
+                            </p>
+                            <ul className="tech-topic-list">
+                                {PYTHON_TOPICS.map((topic) => (
+                                    <li key={topic}>{topic}</li>
+                                ))}
+                            </ul>
+                            <div>
+                                <span className="tech-stat-badge">Live Google Meet Classes</span>
+                                <span className="tech-stat-badge">Exam Papers Included</span>
+                                <span className="tech-stat-badge">1:1 Mentor Support</span>
+                            </div>
+                        </div>
+                        <div className="col-lg-6 reveal reveal-delay-2">
+                            <div className="tech-info-card">
+                                <div className="tech-icon-wrap tech-icon-wrap--python">
+                                    <FaPython style={{ fontSize: 36 }} />
                                 </div>
-                                <div>
-                                    <p
-                                        style={{ color: "#777777ff", marginTop: 20, fontSize: 20 }}
-                                    >
-                                        Realtime chat for doubts, dues, and 1:1 help.
-                                    </p>
+                                <h4 className="text-white mb-3">Python Tools & Stack</h4>
+                                <p className="tech-info-desc mb-4">
+                                    Industry-standard tools you'll use throughout the course.
+                                </p>
+                                <div className="tech-tools-grid">
+                                    {PYTHON_TOOLS.map(({ icon: Icon, label }) => (
+                                        <div className="tech-tool-item" key={label}>
+                                            <Icon className="tech-tool-icon" />
+                                            <span>{label}</span>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
                         </div>
-                    </section>
-
-                    <section>
-                        <div className="container Technology_section">
-                            {/* marquee */}
-                            <marquee>
-                                <div
-                                    style={{
-                                        display: "flex",
-                                        gap: 50,
-                                        justifyContent: "space-between",
-                                        alignItems: "center",
-                                    }}
-                                >
-                                    <h2 style={{ color: "white" }}>PYTHON TOOLS</h2>
-                                    <div className="Techno">
-                                        <FaGithub style={{ fontSize: 100, color: "white" }} />
-                                    </div>
-
-                                    <div className="Techno">
-                                        <FaGitAlt style={{ fontSize: 100, color: "white" }} />
-                                    </div>
-
-                                    <div className="Techno">
-                                        <VscVscode style={{ fontSize: 100, color: "white" }} />
-                                    </div>
-
-                                    <div className="Techno">
-                                        <FaPython style={{ fontSize: 100, color: "white" }} />
-                                    </div>
-
-                                    <div className="Techno">
-                                        <BiLogoFlask style={{ fontSize: 100, color: "white" }} />
-                                    </div>
-
-                                    <div className="Techno">
-                                        <SiPandas style={{ fontSize: 100, color: "white" }} />
-                                    </div>
-
-                                    <div className="Techno">
-                                        <SiPycharm style={{ fontSize: 100, color: "white" }} />
-                                    </div>
-                                </div>
-                            </marquee>
-                        </div>
-                    </section>
+                    </div>
+                </div>
+            </section>
 
                     <section>
                         <div className="container Technology_section">
@@ -246,125 +307,99 @@ function Home() {
                         </div>
                     </section>
 
-                    <section style={{ paddingBottom: 100 }}>
-                        <h2
-                            style={{
-                                color: "white",
-                                marginLeft: 40,
-                                marginTop: 100,
-                                fontSize: 35,
-                            }}
-                        >
-                            Featured courses{" "}
-                            <span>
-                                <button className="view_btn">View All</button>
-                            </span>
-                        </h2>
-                        <span style={{ color: "#777777ff", marginLeft: 40 }}>
-                            Hand-picked, taught live.
-                        </span>
-
-                        <div className="container">
-                            <div className="row">
-                                {course?.length > 0 &&
-                                    course?.slice(0, 3).map((cor) => (
-                                        <div className="col-md-4" key={cor._id}>
-                                            <div className="Course_section">
-                                                <div>
-                                                    <p className="course_tag">{cor.title}</p>
-                                                </div>
-                                                <h4 className="CourseName" style={{ color: "white" }}>{cor.courseName}</h4>
-                                                <p style={{ color: "#919191ff" }}>{cor.Disp}</p>
-                                                <div style={{ display: 'flex' }}>
-                                                    <h6 style={{ color: "white", fontSize: 20 }}>
-                                                        <LiaRupeeSignSolid />
-                                                        {cor.Price}
-                                                    </h6>
-                                                    <p style={{ marginLeft: 250, fontSize: 20, fontWeight: 'bold', color: 'white' }}>{cor.CourseStatus}</p>
-                                                </div>
-                                                <button className="enroll_btn">Buy Now</button>
-                                            </div>
-                                        </div>
-                                    ))}
-                            </div>
+            {/* Featured Courses */}
+            <section className="tech-info-section" style={{ paddingTop: 60,paddingBottom: 160 }}>
+                <div className="container">
+                    <div className="featured-header reveal">
+                        <div>
+                            <h2 className="featured-title">Featured courses</h2>
+                            <p className="featured-subtitle">Hand-picked, taught live.</p>
                         </div>
-                    </section>
+                        <button className="view_btn" onClick={() => navigate("/course")}>
+                            View All
+                        </button>
+                    </div>
 
-                    <h2 className="title">Why Elite Dev?</h2>
+                    <div className="row g-4">
+                        {course?.length > 0 &&
+                            course.slice(0, 3).map((cor, i) => (
+                                <div className={`col-md-6 col-lg-4 reveal reveal-delay-${i + 1}`} key={cor._id}>
+                                    <div className="Course_section">
+                                        <p className="course_tag">{cor.title}</p>
+                                        <h4 className="CourseName mt-3">{cor.courseName}</h4>
+                                        <p className="text-secondary mt-2 flex-grow-1">{cor.Disp}</p>
+                                        <div className="course-price-row">
+                                            <h6 className="text-white mb-0 d-flex align-items-center gap-1">
+                                                <LiaRupeeSignSolid />
+                                                {cor.Price}
+                                            </h6>
+                                            <p className="text-white mb-0 fw-bold">{cor.CourseStatus}</p>
+                                        </div>
+                                        <button className="enroll_btn mt-3">Buy Now</button>
+                                    </div>
+                                </div>
+                            ))}
+                    </div>
+                </div>
+            </section>
 
-                    <div className="row">
-                        <div className="col-md-6">
+            {/* Teacher Section */}
+            <section className="tech-info-section tech-info-section--alt">
+                <div className="container">
+                    <h2 className="title reveal">Why Elite Dev?</h2>
+
+                    <div className="row justify-content-center">
+                        <div className="col-lg-10 reveal reveal-delay-1">
                             <div className="cards">
                                 <div className="Tag">
-                                    <p
-                                        style={{
-                                            color: "#45c7ec",
-                                            fontSize: 10,
-                                            fontWeight: "bold",
-                                        }}
-                                    >
-                                        TEACHER
-                                    </p>
+                                    <p className="mb-0 text-info fw-bold" style={{ fontSize: 10 }}>TEACHER</p>
                                 </div>
 
-                                <div style={{ marginTop: 30, marginLeft: 20 }}>
-                                    <div style={{ display: "flex", justifyContent: "center" }}>
-                                        <div className="oneline">
-                                            <h4 style={{ color: "white", fontSize: 40 }}>
-                                                Johan Gao
-                                                <MdVerified className="verification" />
-                                            </h4>
-                                            <p style={{ color: "#3253b3", fontWeight: "bold" }}>
-                                                Senior Python Teacher
-                                            </p>
-                                            <p style={{ color: "#c9c9c9ff", fontWeight: "bold" }}>
-                                                Passlonate educator with a strong communicaton to <br />
-                                                student growth and academic excellence.
-                                            </p>
+                                <div className="mt-4 px-2">
+                                    <div className="row align-items-start">
+                                        <div className="col-md-7">
+                                            <div className="oneline">
+                                                <h4 className="text-white fs-3">
+                                                    Johan Gao
+                                                    <MdVerified className="verification" />
+                                                </h4>
+                                                <p className="text-primary fw-bold">Senior Python Teacher</p>
+                                                <p className="text-secondary">
+                                                    Passionate educator with strong communication and dedication
+                                                    to student growth and academic excellence.
+                                                </p>
+                                            </div>
                                         </div>
-                                        <div className="Active">
-                                            <h5 style={{ color: "green" }}>Active</h5>
-                                            <hr style={{ color: "white", width: 100 }} />
-                                            <p style={{ color: "white" }}>
-                                                Teacher ID : TCR-2026-6345
-                                            </p>
-                                            <p style={{ color: "white" }}>
-                                                Joining Date :<br />{" "}
-                                                <SlCalender
-                                                    style={{
-                                                        fontSize: 20,
-                                                        marginRight: 5,
-                                                        color: "#762ccfff",
-                                                    }}
-                                                />
-                                                12-5-2026
-                                            </p>
+                                        <div className="col-md-5">
+                                            <div className="Active">
+                                                <h5 className="text-success">Active</h5>
+                                                <hr className="text-white" />
+                                                <p className="text-white mb-2">Teacher ID : TCR-2026-6345</p>
+                                                <p className="text-white mb-0">
+                                                    Joining Date :{" "}
+                                                    <SlCalender className="text-primary me-1" />
+                                                    12-5-2026
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <div className="Two_section">
-                                        <div style={{ display: "flex" }}>
-                                            <div className="Years_Exp">
-                                                <div style={{ display: "flex" }}>
-                                                    <div className="Year_1">
-                                                        <PiBagSimpleFill className="Year" />
-                                                    </div>
-                                                    <div style={{ marginLeft: 20 }}>
-                                                        <h4 style={{ color: "white" }}>8+</h4>
-                                                        <span style={{ color: "white" }}>
-                                                            Year Experince
-                                                        </span>
-                                                    </div>
+                                    <div className="Two_section mt-3">
+                                        <div className="d-flex flex-wrap teacher-stats gap-4">
+                                            <div className="d-flex align-items-center Years_Exp">
+                                                <div className="Year_1 me-3">
+                                                    <PiBagSimpleFill className="Year" />
+                                                </div>
+                                                <div>
+                                                    <h4 className="text-white mb-0">8+</h4>
+                                                    <span className="text-white">Years Experience</span>
                                                 </div>
                                             </div>
-
-                                            <div style={{ display: "flex", marginLeft: 50 }}>
-                                                <div>
-                                                    <FcRating style={{ fontSize: 50 }} />
-                                                </div>
-                                                <div style={{ marginLeft: 20 }}>
-                                                    <h4 style={{ color: "white" }}>4.5</h4>
-                                                    <span style={{ color: "white" }}>Rating</span>
+                                            <div className="d-flex align-items-center">
+                                                <FcRating style={{ fontSize: 40 }} />
+                                                <div className="ms-3">
+                                                    <h4 className="text-white mb-0">4.5</h4>
+                                                    <span className="text-white">Rating</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -372,90 +407,37 @@ function Home() {
                                 </div>
 
                                 <div className="thead_section">
-                                    <div className="Persanal_info">
-                                        <div style={{ display: "flex" }}>
-                                            <div style={{ display: "flex" }}>
-                                                <div>
-                                                    <IoSchool
-                                                        style={{
-                                                            fontSize: 30,
-                                                            color: "white",
-                                                            marginTop: 5,
-                                                        }}
-                                                    />
-                                                </div>
-                                                <div style={{ marginLeft: 20 }}>
-                                                    <p style={{ color: "white" }}>
-                                                        <b style={{ color: "white" }}>Qualification</b>
-                                                        <br />
-                                                        BCA
-                                                    </p>
-                                                </div>
-                                            </div>
-
-                                            <div className="Persanal_info">
-                                                <div style={{ display: "flex", marginLeft: 130 }}>
-                                                    <div>
-                                                        <MdEmail
-                                                            style={{
-                                                                fontSize: 30,
-                                                                color: "white",
-                                                                marginTop: 5,
-                                                            }}
-                                                        />
-                                                    </div>
-                                                    <div style={{ marginLeft: 20 }}>
-                                                        <p style={{ color: "white" }}>
-                                                            <b style={{ color: "white" }}>Email ID</b>
-                                                            <br />
-                                                            Johan@gmail.com
-                                                        </p>
-                                                    </div>
-                                                </div>
+                                    <div className="row g-3">
+                                        <div className="col-sm-6">
+                                            <div className="d-flex align-items-start">
+                                                <IoSchool className="text-white fs-4 me-3 mt-1" />
+                                                <p className="text-white mb-0">
+                                                    <b>Qualification</b><br />BCA
+                                                </p>
                                             </div>
                                         </div>
-
-                                        <div style={{ display: "flex" }}>
-                                            <div className="Persanal_info">
-                                                <div style={{ display: "flex" }}>
-                                                    <div>
-                                                        <FaPhoneAlt
-                                                            style={{
-                                                                fontSize: 30,
-                                                                color: "white",
-                                                                marginTop: 5,
-                                                            }}
-                                                        />
-                                                    </div>
-                                                    <div style={{ marginLeft: 20 }}>
-                                                        <p style={{ color: "white" }}>
-                                                            <b style={{ color: "white" }}>PHONE</b>
-                                                            <br />
-                                                            +91 8248359976
-                                                        </p>
-                                                    </div>
-                                                </div>
+                                        <div className="col-sm-6">
+                                            <div className="d-flex align-items-start">
+                                                <MdEmail className="text-white fs-4 me-3 mt-1" />
+                                                <p className="text-white mb-0">
+                                                    <b>Email ID</b><br />Johan@gmail.com
+                                                </p>
                                             </div>
-
-                                            <div className="Persanal_info">
-                                                <div style={{ display: "flex", marginLeft: 100 }}>
-                                                    <div>
-                                                        <CgGenderFemale
-                                                            style={{
-                                                                fontSize: 30,
-                                                                color: "white",
-                                                                marginTop: 5,
-                                                            }}
-                                                        />
-                                                    </div>
-                                                    <div style={{ marginLeft: 20 }}>
-                                                        <p style={{ color: "white" }}>
-                                                            <b style={{ color: "white" }}>GENDER</b>
-                                                            <br />
-                                                            Male
-                                                        </p>
-                                                    </div>
-                                                </div>
+                                        </div>
+                                        <div className="col-sm-6">
+                                            <div className="d-flex align-items-start">
+                                                <FaPhoneAlt className="text-white fs-4 me-3 mt-1" />
+                                                <p className="text-white mb-0">
+                                                    <b>Phone</b><br />+91 8248359976
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div className="col-sm-6">
+                                            <div className="d-flex align-items-start">
+                                                <CgGenderFemale className="text-white fs-4 me-3 mt-1" />
+                                                <p className="text-white mb-0">
+                                                    <b>Gender</b><br />Male
+                                                </p>
                                             </div>
                                         </div>
                                     </div>
@@ -463,9 +445,7 @@ function Home() {
 
                                 <div className="btns">
                                     <button className="btn_1">Message</button>
-                                    <button type="tel" className="btn_2">
-                                        Call{" "}
-                                    </button>
+                                    <button type="button" className="btn_2">Call</button>
                                     <button className="btn_3">Email</button>
                                 </div>
                             </div>
@@ -474,28 +454,14 @@ function Home() {
                 </div>
             </section>
 
-            <section
-                style={{
-                    backgroundColor: "#090d16",
-                    textAlign: "center",
-                    paddingBottom: 50,
-                    paddingTop: 50,
-                }}
-            >
-                <div>
-                    <h1>
-                        <IoSchool style={{ color: "#6c9eff", fontSize: 60 }} />
-                    </h1>
-                    <h1 style={{ color: "white" }}>Start learning today</h1>
-                    <p style={{ color: "#999999ff", fontSize: 20 }}>
-                        Create an account, verify your email, and enroll in your first
-                        course.
-                    </p>
-
-                    <button className="started_btn">Get Started-it's free to join</button>
-                </div>
-
-                {/* <hr style={{ color: '#898989ff', marginTop: 250 }} /> */}
+            {/* CTA */}
+            <section className="cta-section reveal">
+                <IoSchool className="cta-icon" />
+                <h2 className="cta-title">Start learning today</h2>
+                <p className="cta-text">
+                    Create an account, verify your email, and enroll in your first course.
+                </p>
+                <button className="started_btn">Get Started — it's free to join</button>
             </section>
         </>
     );
