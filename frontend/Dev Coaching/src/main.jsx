@@ -8,6 +8,7 @@ import Navbar from './screens/component/Navbar.jsx'
 import Footer from './screens/component/Footer.jsx'
 import About from './screens/About.jsx'
 import Contact from './screens/Contact.jsx'
+import ChatWidget from './screens/component/ChatWidget.jsx'
 import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './page-transition.css';
@@ -34,6 +35,7 @@ createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <Navbar />
       <AnimatedRoutes />
+      <ChatWidget />
       <Footer />
     </BrowserRouter>
   </StrictMode>

@@ -75,6 +75,13 @@ function Course() {
                         >
                             MERN STACK
                         </button>
+
+                        <button
+                            className={`btn btn-md ${selectedCategory === 'UI/UX' ? 'btn-info' : 'btn-dark'}`}
+                            onClick={() => setSelectedCategory('UI/UX')}
+                        >
+                            UI/UX DESIGNER
+                        </button>
                     </div>
 
                     <div className='course-search'>

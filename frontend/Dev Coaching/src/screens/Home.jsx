@@ -25,9 +25,10 @@ import { SiPycharm } from "react-icons/si";
 import { FaNodeJs } from "react-icons/fa";
 import { SiExpress } from "react-icons/si";
 import { DiMongodb } from "react-icons/di";
-import { SiPostman } from "react-icons/si";
+import { SiPostman, SiSketch } from "react-icons/si";
 import { FaReact } from "react-icons/fa";
 import { SiJavascript } from "react-icons/si";
+import { TbBrandFigma, TbBrandAdobeXd, TbBrandSketch, TbBrandAdobePhotoshop, TbBrandAdobeIllustrator, TbBrandGithub } from "react-icons/tb";
 
 const LANGUAGES = [
     {
@@ -65,11 +66,11 @@ const PYTHON_TOPICS = [
 ];
 
 const REACT_TOPICS = [
-    "React components, props & state",
-    "Hooks, routing & context API",
-    "Node.js & Express backend APIs",
-    "MongoDB database integration",
-    "Full MERN stack project builds",
+    " MERN stack fundamentals & JavaScript concepts",
+    "Frontend development with React",
+    "Backend development with Node.js & Express",
+    "Database management with MongoDB",
+    "Real-world full-stack projects & interview preparation"
 ];
 
 const PYTHON_TOOLS = [
@@ -92,8 +93,102 @@ const REACT_TOOLS = [
     { icon: SiPostman, label: "Postman" },
 ];
 
+const UIUX_TOPICS = [
+    "User Research, Wireframes & Interaction Flows",
+    "High-Fidelity Prototyping & Design Systems",
+    "Web App Layouts & Mobile App Design (iOS/Android)",
+    "Figma components, auto-layout & variables",
+    "Micro-interactions, animation & dev handoff"
+];
+
+const UIUX_TOOLS = [
+    { icon: TbBrandFigma, label: "Figma" },
+    { icon: TbBrandAdobeXd, label: "Adobe XD" },
+    { icon: TbBrandSketch, label: "Sketch" },
+    { icon: TbBrandAdobePhotoshop, label: "Photoshop" },
+    { icon: TbBrandAdobeIllustrator, label: "Illustrator" },
+    { icon: TbBrandGithub, label: "Handoff" }
+];
+
 const DEMO_VIDEO_SRC =
     "https://assets.mixkit.co/videos/preview/mixkit-person-writing-code-on-laptop-4908-large.mp4";
+
+const REVIEWS = [
+    {
+        name: "Arjun Sharma",
+        course: "Python Track",
+        avatar: "AS",
+        rating: 5,
+        text: "Johan sir explains every concept so clearly! I went from zero Python knowledge to building Flask APIs in just 2 months. The live sessions on Google Meet are incredibly interactive.",
+        color: "#fbbf24",
+    },
+    {
+        name: "Priya Patel",
+        course: "React + JavaScript",
+        avatar: "PP",
+        rating: 5,
+        text: "The React course is absolutely top-notch. I built my first full SPA in week 3! The mentor is patient and always available for doubts. Highly recommend to anyone serious about frontend.",
+        color: "#61dafb",
+    },
+    {
+        name: "Rohit Verma",
+        course: "Full-Stack MERN",
+        avatar: "RV",
+        rating: 5,
+        text: "Best investment I made this year. The MERN course gave me everything — Node, Express, MongoDB, React. I landed a job within 3 months of completing it. Thank you Dev Coaching!",
+        color: "#4ade80",
+    },
+    {
+        name: "Sneha Iyer",
+        course: "Python Track",
+        avatar: "SI",
+        rating: 5,
+        text: "The Pandas & NumPy module alone was worth it for my data science interviews. Real exam papers are a game-changer. I cleared 2 university exams with top marks!",
+        color: "#fbbf24",
+    },
+    {
+        name: "Karan Mehta",
+        course: "React + JavaScript",
+        avatar: "KM",
+        rating: 5,
+        text: "I was skeptical about online coaching but Dev Coaching proved me wrong. Live coding sessions feel like sitting next to a senior dev. The recordings are a lifesaver for revision.",
+        color: "#61dafb",
+    },
+    {
+        name: "Divya Nair",
+        course: "Full-Stack MERN",
+        avatar: "DN",
+        rating: 4,
+        text: "Completed the MERN stack course and built 3 full projects for my portfolio. The teacher's communication style is amazing — never felt lost even in complex topics like MongoDB aggregation.",
+        color: "#4ade80",
+    },
+    {
+        name: "Aditya Singh",
+        course: "Python Track",
+        avatar: "AD",
+        rating: 5,
+        text: "Started with zero coding background. Now I can automate tasks, scrape websites and build web apps with Flask. The 1:1 doubt sessions make all the difference!",
+        color: "#fbbf24",
+    },
+    {
+        name: "Meera Krishnan",
+        course: "React + JavaScript",
+        avatar: "MK",
+        rating: 5,
+        text: "The free trial convinced me immediately. By week 2 I was hooked. Johan sir's teaching style is clear, structured, and genuinely engaging. Worth every rupee!",
+        color: "#61dafb",
+    },
+];
+
+function StarRating({ count }) {
+    return (
+        <div className="review-stars">
+            {Array.from({ length: 5 }).map((_, i) => (
+                <span key={i} className={i < count ? "star star--filled" : "star star--empty"}>★</span>
+            ))}
+        </div>
+    );
+}
 
 function isFreeCourse(course) {
     const status = course.CourseStatus?.toLowerCase?.();
@@ -180,33 +275,62 @@ function Home() {
 
                     <hr className="text-secondary mt-5 pt-4" />
 
-                    {/* Info cards */}
-                    <div className="row g-4 mt-2">
-                        <div className="col-md-4 reveal reveal-delay-1">
-                            <div className="Information_live">
-                                <FaCode className="info-icon" />
-                                <h5 className="info-card-title">Developers Only</h5>
-                                <p className="info-card-text">
-                                    React, Python, Node, Backend (MERN), AI Tools — no other subjects.
-                                </p>
+                    {/* Why Elite Dev? Section */}
+                    <div className="why-elite-section mt-5 pt-4 text-start">
+                        <h3 className="why-elite-title mb-4 reveal" style={{ color: "white", fontWeight: 800, fontSize: "1.8rem" }}>
+                            Why Elite Dev?
+                        </h3>
+                        <div className="row g-4">
+                            <div className="col-md-4 reveal reveal-delay-1">
+                                <div className="Information_live">
+                                    <div>
+                                        <FaCode className="info-icon" />
+                                        <h5 className="info-card-title">Developers Only</h5>
+                                        <p className="info-card-text">
+                                            React, Python, Node, Backend (MERN), AI Tools — no other subjects.
+                                        </p>
+                                    </div>
+                                    <button className="info-card-btn" onClick={() => navigate("/course")}>
+                                        Explore Stack
+                                        <FaArrowRightLong className="ms-2" />
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                        <div className="col-md-4 reveal reveal-delay-2">
-                            <div className="Information_live">
-                                <HiSignal className="info-icon" />
-                                <h5 className="info-card-title">Live Classes</h5>
-                                <p className="info-card-text">
-                                    Attend live on Google Meet or watch back recordings anytime.
-                                </p>
+                            <div className="col-md-4 reveal reveal-delay-2">
+                                <div className="Information_live">
+                                    <div>
+                                        <HiSignal className="info-icon" />
+                                        <h5 className="info-card-title">Live Classes</h5>
+                                        <p className="info-card-text">
+                                            Attend live on Google Meet or watch back recordings anytime.
+                                        </p>
+                                    </div>
+                                    <button className="info-card-btn" onClick={() => {
+                                        const sec = document.querySelector(".video-showcase-section");
+                                        sec?.scrollIntoView({ behavior: "smooth" });
+                                    }}>
+                                        Watch Demo
+                                        <HiSignal className="ms-2" />
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                        <div className="col-md-4 reveal reveal-delay-3">
-                            <div className="Information_live">
-                                <FiUsers className="info-icon" />
-                                <h5 className="info-card-title">Talk to Teachers</h5>
-                                <p className="info-card-text">
-                                    Realtime chat for doubts, dues, and 1:1 help from mentors.
-                                </p>
+                            <div className="col-md-4 reveal reveal-delay-3">
+                                <div className="Information_live">
+                                    <div>
+                                        <FiUsers className="info-icon" />
+                                        <h5 className="info-card-title">Talk to Teachers</h5>
+                                        <p className="info-card-text">
+                                            Realtime chat for doubts, dues, and 1:1 help from mentors.
+                                        </p>
+                                    </div>
+                                    <button className="info-card-btn" onClick={() => {
+                                        const bubble = document.querySelector(".chat-bubble");
+                                        if (bubble) bubble.click();
+                                    }}>
+                                        Chat Now
+                                        <FiUsers className="ms-2" />
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -334,6 +458,157 @@ function Home() {
                                             <span>{label}</span>
                                         </div>
                                     ))}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="row align-items-center g-5" style={{ paddingTop: 150 }}>
+                        <div className="col-lg-6 reveal reveal-delay-2">
+                            <div className="tech-info-card">
+                                <div className="tech-icon-wrap tech-icon-wrap--python">
+                                    <FaReact style={{ fontSize: 36 }} />
+                                </div>
+                                <h4 className="text-white mb-3">MERN Tools & Stack</h4>
+                                <p className="tech-info-desc mb-4">
+                                    Industry-standard tools you'll use throughout the course.
+                                </p>
+                                <div className="tech-tools-grid">
+                                    {REACT_TOOLS.map(({ icon: Icon, label }) => (
+                                        <div className="tech-tool-item" key={label}>
+                                            <Icon className="tech-tool-icon" />
+                                            <span>{label}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-lg-6 reveal">
+                            <span className="section-label section-label--python">MERN Track</span>
+                            <h2 className="tech-info-title">Master The MERN Stack</h2>
+                            <p className="tech-info-desc">
+                                Learn MERN stack from scratch with live mentorship.
+                                Build real projects in full-stack web development, REST
+                                APIs, React apps, and database-driven
+                                automation — taught by senior developers with industry
+                                experience.
+                            </p>
+                            <ul className="tech-topic-list">
+                                {REACT_TOPICS.map((topic) => (
+                                    <li key={topic}>{topic}</li>
+                                ))}
+                            </ul>
+                            <div>
+                                <span className="tech-stat-badge">Live Google Meet Classes</span>
+                                <span className="tech-stat-badge">Exam Papers Included</span>
+                                <span className="tech-stat-badge">1:1 Mentor Support</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="row align-items-center g-5" style={{ paddingTop: 150 }}>
+                        <div className="col-lg-6 reveal">
+                            <span className="section-label section-label--uiux">UI/UX Design Track</span>
+                            <h2 className="tech-info-title">Master UI/UX Design</h2>
+                            <p className="tech-info-desc">
+                                Learn the principles of modern user interface and user experience design. 
+                                Design beautiful, responsive web pages and interactive mobile apps, 
+                                and build an outstanding design portfolio from scratch.
+                            </p>
+                            <ul className="tech-topic-list">
+                                {UIUX_TOPICS.map((topic) => (
+                                    <li key={topic}>{topic}</li>
+                                ))}
+                            </ul>
+                            <div>
+                                <span className="tech-stat-badge">Figma Prototyping</span>
+                                <span className="tech-stat-badge">Mobile & Web Design</span>
+                                <span className="tech-stat-badge">Design Systems</span>
+                            </div>
+                        </div>
+                        <div className="col-lg-6 reveal reveal-delay-2">
+                            <div className="uiux-canvas-card">
+                                <div className="canvas-header">
+                                    <div className="canvas-dots">
+                                        <span className="dot dot--red"></span>
+                                        <span className="dot dot--yellow"></span>
+                                        <span className="dot dot--green"></span>
+                                    </div>
+                                    <span className="canvas-title">Figma - Mobile & Web Workspace</span>
+                                </div>
+                                <div className="canvas-body">
+                                    {/* Web Page Mockup */}
+                                    <div className="canvas-mockup mockup-web">
+                                        <div className="mockup-web__header">
+                                            <div className="mockup-web__dots">
+                                                <span></span><span></span><span></span>
+                                            </div>
+                                            <div className="mockup-web__url">devcoaching.com</div>
+                                        </div>
+                                        <div className="mockup-web__content">
+                                            <div className="mockup-web__sidebar">
+                                                <div className="mockup-web__avatar"></div>
+                                                <div className="mockup-web__nav-line"></div>
+                                                <div className="mockup-web__nav-line"></div>
+                                                <div className="mockup-web__nav-line"></div>
+                                            </div>
+                                            <div className="mockup-web__main">
+                                                <div className="mockup-web__hero-box"></div>
+                                                <div className="mockup-web__cards-grid">
+                                                    <div></div>
+                                                    <div></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {/* Figma blue active selection frame */}
+                                        <div className="figma-active-border">
+                                            <span className="figma-label">Web Frame</span>
+                                        </div>
+                                    </div>
+                                    
+                                    {/* Mobile Page Mockup */}
+                                    <div className="canvas-mockup mockup-mobile">
+                                        <div className="mockup-mobile__notch"></div>
+                                        <div className="mockup-mobile__screen">
+                                            <div className="mockup-mobile__header">
+                                                <span className="mockup-mobile__title">DevCoach App</span>
+                                                <span className="mockup-mobile__bell">🔔</span>
+                                            </div>
+                                            <div className="mockup-mobile__stat-ring">
+                                                <div className="mockup-mobile__ring-inner">
+                                                    <span>85%</span>
+                                                </div>
+                                            </div>
+                                            <div className="mockup-mobile__list">
+                                                <div className="mockup-mobile__item"></div>
+                                                <div className="mockup-mobile__item"></div>
+                                                <div className="mockup-mobile__item"></div>
+                                            </div>
+                                        </div>
+                                        {/* Figma blue active selection frame */}
+                                        <div className="figma-active-border">
+                                            <span className="figma-label">Mobile Frame</span>
+                                        </div>
+                                    </div>
+
+                                    {/* Dynamic Designer Cursor */}
+                                    <div className="figma-cursor">
+                                        <svg width="14" height="17" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M0 0V16.03L4.66 11.37H11.02L0 0Z" fill="#14daff"/>
+                                        </svg>
+                                        <span className="figma-cursor__label">Johan (Designer)</span>
+                                    </div>
+                                </div>
+                                <div className="canvas-footer">
+                                    <h5 className="canvas-footer-title">UI/UX Industry Tools</h5>
+                                    <div className="tech-tools-grid">
+                                        {UIUX_TOOLS.map(({ icon: Icon, label }) => (
+                                            <div className="tech-tool-item" key={label}>
+                                                <Icon className="tech-tool-icon" />
+                                                <span>{label}</span>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -495,6 +770,43 @@ function Home() {
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* ── Student Reviews ── */}
+            <section className="reviews-section">
+                <div className="reviews-header reveal">
+                    <span className="section-label section-label--reviews">Student Reviews</span>
+                    <h2 className="reviews-title">
+                        What Our <span style={{ color: "#14daff" }}>Students Say</span>
+                    </h2>
+                    <p className="reviews-subtitle">
+                        Real feedback from students who levelled up their careers with Dev Coaching.
+                    </p>
+                </div>
+
+                {/* Auto-scrolling track — duplicated for seamless loop */}
+                <div className="reviews-marquee">
+                    <div className="reviews-track">
+                        {[...REVIEWS, ...REVIEWS].map((r, i) => (
+                            <div className="review-card" key={i}>
+                                <div className="review-card__top">
+                                    <div
+                                        className="review-card__avatar"
+                                        style={{ background: `linear-gradient(135deg, ${r.color}33 0%, ${r.color}11 100%)`, border: `1.5px solid ${r.color}44`, color: r.color }}
+                                    >
+                                        {r.avatar}
+                                    </div>
+                                    <div>
+                                        <p className="review-card__name">{r.name}</p>
+                                        <p className="review-card__course" style={{ color: r.color }}>{r.course}</p>
+                                    </div>
+                                </div>
+                                <StarRating count={r.rating} />
+                                <p className="review-card__text">&ldquo;{r.text}&rdquo;</p>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </section>
