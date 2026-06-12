@@ -4,8 +4,7 @@ const courseSchema = new mongoose.Schema({
     Language: {
         type: String,
         required: true,
-        eum: ['FRONTEND', 'PYTHON', 'BACKEND', 'UI/UX', 'FULL STACK', 'ROBOTICS'],
-        unique: true
+        eum: ['FRONTEND', 'PYTHON', 'BACKEND', 'UI/UX', 'FULL STACK', 'ROBOTICS']
     },
     courseName: {
         type: String,

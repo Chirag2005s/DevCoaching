@@ -25,7 +25,7 @@ import { SiPycharm } from "react-icons/si";
 import { FaNodeJs } from "react-icons/fa";
 import { SiExpress } from "react-icons/si";
 import { DiMongodb } from "react-icons/di";
-import { SiPostman, SiSketch } from "react-icons/si";
+import { SiPostman } from "react-icons/si";
 import { FaReact } from "react-icons/fa";
 import { SiJavascript } from "react-icons/si";
 import { TbBrandFigma, TbBrandAdobeXd, TbBrandSketch, TbBrandAdobePhotoshop, TbBrandAdobeIllustrator, TbBrandGithub } from "react-icons/tb";
@@ -248,7 +248,11 @@ function Home() {
             {/* Hero */}
             <section className="header_section">
                 <div className="container text-center">
-                    <p className="header_Signal hero-animate mb-4">
+                    <p 
+                        className="header_Signal hero-animate mb-4" 
+                        onClick={() => navigate("/join-live")}
+                        style={{ cursor: "pointer" }}
+                    >
                         <HiSignal style={{ color: "green", fontSize: 18 }} />
                         1 live class happening now
                     </p>
@@ -324,7 +328,7 @@ function Home() {
                                         </p>
                                     </div>
                                     <button className="info-card-btn" onClick={() => {
-                                        const bubble = document.querySelector(".chat-bubble");
+                                        const bubble = document.querySelector("#chat-bubble-btn");
                                         if (bubble) bubble.click();
                                     }}>
                                         Chat Now
@@ -390,7 +394,7 @@ function Home() {
                                 <li>Recorded sessions to rewatch anytime</li>
                                 <li>Ask doubts directly during class</li>
                             </ul>
-                            <button className="header_btn mt-3" onClick={() => navigate("/course")}>
+                            <button className="header_btn mt-3" onClick={() => navigate("/join-live")}>
                                 Join a Live Class
                                 <FaArrowRightLong />
                             </button>

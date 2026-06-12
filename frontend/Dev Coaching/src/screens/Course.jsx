@@ -70,10 +70,10 @@ function Course() {
                         </button>
 
                         <button
-                            className={`btn btn-md ${selectedCategory === 'MERN STACK' ? 'btn-info' : 'btn-dark'}`}
-                            onClick={() => setSelectedCategory('MERN STACK')}
+                            className={`btn btn-md ${selectedCategory === 'BACKEND' ? 'btn-info' : 'btn-dark'}`}
+                            onClick={() => setSelectedCategory('BACKEND')}
                         >
-                            MERN STACK
+                            BACKEND
                         </button>
 
                         <button

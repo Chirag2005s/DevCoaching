@@ -8,6 +8,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 const NAV_LINKS = [
     { to: '/', label: 'Home', end: true },
     { to: '/course', label: 'Course' },
+    { to: '/join-live', label: 'Join Live' },
     { to: '/about', label: 'About' },
 ];
 
@@ -59,7 +60,7 @@ function Navbar() {
 
             <div className="container">
                 <div className="row align-items-center">
-                    <div className="col-md-3">
+                    <div className="col-md-2">
                         <button
                             type="button"
                             className="nav-brand"
@@ -72,7 +73,7 @@ function Navbar() {
                         </button>
                     </div>
 
-                    <div className="col-md-5">
+                    <div className="col-md-6">
                         <div className="nav-links-wrap" ref={navListRef}>
                             <span
                                 className="nav-indicator"

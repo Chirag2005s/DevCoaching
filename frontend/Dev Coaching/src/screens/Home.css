@@ -12,6 +12,7 @@
     opacity: 0;
     transform: translateY(32px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -19,18 +20,37 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes pulseGlow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(20, 218, 255, 0.25); }
-  50% { box-shadow: 0 0 20px 4px rgba(20, 218, 255, 0.15); }
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(20, 218, 255, 0.25);
+  }
+
+  50% {
+    box-shadow: 0 0 20px 4px rgba(20, 218, 255, 0.15);
+  }
 }
 
 @keyframes floatIcon {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
 }
 
 .reveal {
@@ -44,18 +64,40 @@
   transform: translateY(0);
 }
 
-.reveal-delay-1 { transition-delay: 0.1s; }
-.reveal-delay-2 { transition-delay: 0.2s; }
-.reveal-delay-3 { transition-delay: 0.3s; }
-.reveal-delay-4 { transition-delay: 0.4s; }
+.reveal-delay-1 {
+  transition-delay: 0.1s;
+}
+
+.reveal-delay-2 {
+  transition-delay: 0.2s;
+}
+
+.reveal-delay-3 {
+  transition-delay: 0.3s;
+}
+
+.reveal-delay-4 {
+  transition-delay: 0.4s;
+}
 
 .hero-animate {
   animation: fadeUp 0.8s ease forwards;
 }
 
-.hero-animate-delay-1 { animation-delay: 0.15s; opacity: 0; }
-.hero-animate-delay-2 { animation-delay: 0.3s; opacity: 0; }
-.hero-animate-delay-3 { animation-delay: 0.45s; opacity: 0; }
+.hero-animate-delay-1 {
+  animation-delay: 0.15s;
+  opacity: 0;
+}
+
+.hero-animate-delay-2 {
+  animation-delay: 0.3s;
+  opacity: 0;
+}
+
+.hero-animate-delay-3 {
+  animation-delay: 0.45s;
+  opacity: 0;
+}
 
 /* ── Hero ── */
 
@@ -399,9 +441,12 @@
 }
 
 @keyframes videoFramePulse {
-  0%, 100% {
+
+  0%,
+  100% {
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45), 0 0 0 0 rgba(20, 218, 255, 0);
   }
+
   50% {
     box-shadow: 0 24px 56px rgba(0, 0, 0, 0.5), 0 0 30px rgba(20, 218, 255, 0.08);
   }
@@ -823,7 +868,9 @@
   gap: 10px;
 }
 
-.btn_1, .btn_2, .btn_3 {
+.btn_1,
+.btn_2,
+.btn_3 {
   padding: 10px 20px;
   font-weight: bold;
   border-radius: 10px;
@@ -908,7 +955,7 @@
     gap: 16px;
   }
 
-  .teacher-stats > div {
+  .teacher-stats>div {
     margin-left: 0 !important;
   }
 }
@@ -1009,20 +1056,16 @@
   overflow: hidden;
   padding: 20px 0;
   position: relative;
-  mask-image: linear-gradient(
-    to right,
-    transparent 0%,
-    black 10%,
-    black 90%,
-    transparent 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent 0%,
-    black 10%,
-    black 90%,
-    transparent 100%
-  );
+  mask-image: linear-gradient(to right,
+      transparent 0%,
+      black 10%,
+      black 90%,
+      transparent 100%);
+  -webkit-mask-image: linear-gradient(to right,
+      transparent 0%,
+      black 10%,
+      black 90%,
+      transparent 100%);
 }
 
 .reviews-track {
@@ -1041,6 +1084,7 @@
   0% {
     transform: translateX(0);
   }
+
   100% {
     /* Translate exactly half of the track, since it's duplicated */
     transform: translateX(-50%);
@@ -1115,11 +1159,13 @@
 }
 
 .star--filled {
-  color: #fbbf24; /* Amber star */
+  color: #fbbf24;
+  /* Amber star */
 }
 
 .star--empty {
-  color: #4b5563; /* Gray star */
+  color: #4b5563;
+  /* Gray star */
 }
 
 .review-card__text {
@@ -1181,9 +1227,17 @@
   display: inline-block;
 }
 
-.dot--red { background: #ef4444; }
-.dot--yellow { background: #f59e0b; }
-.dot--green { background: #10b981; }
+.dot--red {
+  background: #ef4444;
+}
+
+.dot--yellow {
+  background: #f59e0b;
+}
+
+.dot--green {
+  background: #10b981;
+}
 
 .canvas-title {
   color: #7dd3fc;
@@ -1211,7 +1265,7 @@
   position: absolute;
   background: #1e293b;
   border-radius: 12px;
-  box-shadow: 0 20px 40px -15px rgba(0,0,0,0.5);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
   transition: all 0.3s ease;
 }
 
@@ -1487,15 +1541,20 @@
 }
 
 @keyframes floatCursor {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translate(0, 0);
   }
+
   25% {
     transform: translate(30px, -20px);
   }
+
   50% {
     transform: translate(-10px, 40px);
   }
+
   75% {
     transform: translate(20px, 10px);
   }
@@ -1515,5 +1574,3 @@
   font-weight: 700;
   margin-bottom: 12px;
 }
-
-
