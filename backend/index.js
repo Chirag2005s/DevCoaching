@@ -12,6 +12,13 @@ const testing = require('./APIs/test.json');
 const courseRoutes = require('./router/course.router.js');
 const Course = require('./router/course.router.js');
 const deleteCourse = require('./router/course.router.js');
+
+
+// Contact router Import
+const contactRouter = require('./router/contact.router.js');
+const getContactRouter = require('./router/contact.router.js');
+
+
 // CORS error
 app.use(cors());
 
@@ -46,11 +53,14 @@ app.get('/api/coaching', (req, res) => {
 
 // Routers
 
+// Course Routers
 app.use("/api", courseRoutes);
 app.use("/api", Course);
 app.use("/api", deleteCourse);
 
-
+// Contact Routers
+app.use("/api", contactRouter);
+app.use("/api", getContactRouter)
 
 PORT = process.env.PORT || 9000;
 app.listen(PORT, () => {
