@@ -74,19 +74,38 @@ function Contact() {
         const { name, value } = e.target;
         setForm((prev) => ({ ...prev, [name]: value }));
         if (errors[name]) setErrors((prev) => ({ ...prev, [name]: "" }));
+        if (errors.submit) setErrors((prev) => ({ ...prev, submit: "" }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (!validate()) return;
 
         setSubmitting(true);
-        setTimeout(() => {
-            setSubmitted(true);
-            setForm(INITIAL_FORM);
+        try {
+            const response = await fetch("/api/Contact", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(form),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                setSubmitted(true);
+                setForm(INITIAL_FORM);
+                setTimeout(() => setSubmitted(false), 5000);
+            } else {
+                setErrors({ submit: data.message || "Failed to send message." });
+            }
+        } catch (error) {
+            console.error("Error submitting form:", error);
+            setErrors({ submit: "A network error occurred. Please try again." });
+        } finally {
             setSubmitting(false);
-            setTimeout(() => setSubmitted(false), 5000);
-        }, 800);
+        }
     };
 
 
@@ -163,6 +182,12 @@ function Contact() {
                                 {submitted && (
                                     <div className="contact-success" role="alert">
                                         Message sent! We'll get back to you within 24 hours.
+                                    </div>
+                                )}
+
+                                {errors.submit && (
+                                    <div className="contact-error" role="alert">
+                                        {errors.submit}
                                     </div>
                                 )}
 
