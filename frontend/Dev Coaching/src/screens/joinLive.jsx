@@ -286,7 +286,8 @@ function JoinLive() {
                                     <p className="meet-subtext">Click the link below to enter the classroom. Ensure your mic is muted on arrival.</p>
 
                                     <a
-                                        href={ACTIVE_LIVE_CLASS.meetingLink}
+                                        // href={ACTIVE_LIVE_CLASS.meetingLink}
+                                        href="https://meet.google.com/egf-hfsx-est"
                                         target="_blank"
                                         rel="noreferrer"
                                         className="btn-join-meet"

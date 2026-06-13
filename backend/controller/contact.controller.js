@@ -44,4 +44,8 @@ const sendMessage = async (req, res) => {
     }
 }
 
+
+
+// Delete mehtod
+
 module.exports = { sendMessage, getContact };
