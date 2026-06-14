@@ -1,10 +1,10 @@
-// const mongoose = require("mongoose");
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
+
 const courseSchema = new mongoose.Schema({
     Language: {
         type: String,
         required: true,
-        eum: ['FRONTEND', 'PYTHON', 'BACKEND', 'UI/UX', 'FULL STACK', 'ROBOTICS']
+        enum: ['FRONTEND', 'PYTHON', 'BACKEND', 'UI/UX', 'FULL STACK', 'ROBOTICS']
     },
     courseName: {
         type: String,
@@ -23,8 +23,9 @@ const courseSchema = new mongoose.Schema({
     },
     CourseStatus: {
         type: String,
-        eum: ['Free', 'Paid']
+        enum: ['Free', 'Paid']
     }
 }, { timestamps: true });
 
-export const Course = mongoose.model("Course", courseSchema);
+const Course = mongoose.model("Course", courseSchema);
+module.exports = { Course };

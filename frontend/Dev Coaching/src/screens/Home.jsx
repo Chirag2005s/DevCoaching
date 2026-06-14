@@ -1,6 +1,7 @@
 import "./Home.css";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { HiSignal } from "react-icons/hi2";
@@ -13,7 +14,7 @@ import { MdEmail } from "react-icons/md";
 import { FaPhoneAlt } from "react-icons/fa";
 import { CgGenderFemale } from "react-icons/cg";
 import { FaCode } from "react-icons/fa6";
-import { FiUsers } from "react-icons/fi";
+import { FiUsers, FiMessageSquare } from "react-icons/fi";
 import { LiaRupeeSignSolid } from "react-icons/lia";
 import { FaGithub } from "react-icons/fa";
 import { FaGitAlt } from "react-icons/fa6";
@@ -197,8 +198,63 @@ function isFreeCourse(course) {
     return Number(course.Price) === 0;
 }
 
+const TEACHERS_DATA = [
+    {
+        id: "TCR-2026-6345",
+        name: "Johan Gao",
+        role: "Senior Python & Data Science Teacher",
+        bio: "An industry veteran with over 8 years of Python backend and machine learning experience. Passionate educator with strong communication and dedication to student growth and academic excellence.",
+        avatar: "JG",
+        experience: "8+ Yrs",
+        rating: "4.8",
+        qualification: "BCA",
+        email: "Johan@gmail.com",
+        phone: "+91 8248359976",
+        gender: "Male",
+        joiningDate: "12-5-2026",
+        isActive: true,
+        gradient: "linear-gradient(135deg, #fbbf24 0%, #d97706 100%)",
+        borderColor: "rgba(251, 191, 36, 0.4)"
+    },
+    {
+        id: "TCR-2026-8812",
+        name: "Aria Patel",
+        role: "Senior Frontend & React Specialist",
+        bio: "Frontend enthusiast and user experience advocate. Aria specializes in teaching JavaScript fundamentals, CSS layout architecture, and single-page applications built with React.",
+        avatar: "AP",
+        experience: "6+ Yrs",
+        rating: "4.9",
+        qualification: "MCA",
+        email: "Aria@gmail.com",
+        phone: "+91 9876543210",
+        gender: "Female",
+        joiningDate: "18-5-2026",
+        isActive: true,
+        gradient: "linear-gradient(135deg, #06b6d4 0%, #0891b2 100%)",
+        borderColor: "rgba(6, 182, 212, 0.4)"
+    },
+    {
+        id: "TCR-2026-4409",
+        name: "Marcus Vance",
+        role: "Backend Architect & Database Lead",
+        bio: "Database administrator and server-side expert. Marcus covers Node.js, Express APIs, MongoDB optimization, and security practices required for enterprise systems.",
+        avatar: "MV",
+        experience: "10 Yrs",
+        rating: "4.7",
+        qualification: "B.Tech CSE",
+        email: "Marcus@gmail.com",
+        phone: "+91 8765432109",
+        gender: "Male",
+        joiningDate: "20-5-2026",
+        isActive: false,
+        gradient: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+        borderColor: "rgba(16, 185, 129, 0.4)"
+    }
+];
+
 function Home() {
     const [course, setCourse] = useState([]);
+    const [activeModalTeacher, setActiveModalTeacher] = useState(null);
     const navigate = useNavigate();
     const videoRef = useRef(null);
 
@@ -248,8 +304,8 @@ function Home() {
             {/* Hero */}
             <section className="header_section">
                 <div className="container text-center">
-                    <p 
-                        className="header_Signal hero-animate mb-4" 
+                    <p
+                        className="header_Signal hero-animate mb-4"
                         onClick={() => navigate("/join-live")}
                         style={{ cursor: "pointer" }}
                     >
@@ -515,8 +571,8 @@ function Home() {
                             <span className="section-label section-label--uiux">UI/UX Design Track</span>
                             <h2 className="tech-info-title">Master UI/UX Design</h2>
                             <p className="tech-info-desc">
-                                Learn the principles of modern user interface and user experience design. 
-                                Design beautiful, responsive web pages and interactive mobile apps, 
+                                Learn the principles of modern user interface and user experience design.
+                                Design beautiful, responsive web pages and interactive mobile apps,
                                 and build an outstanding design portfolio from scratch.
                             </p>
                             <ul className="tech-topic-list">
@@ -569,7 +625,7 @@ function Home() {
                                             <span className="figma-label">Web Frame</span>
                                         </div>
                                     </div>
-                                    
+
                                     {/* Mobile Page Mockup */}
                                     <div className="canvas-mockup mockup-mobile">
                                         <div className="mockup-mobile__notch"></div>
@@ -598,7 +654,7 @@ function Home() {
                                     {/* Dynamic Designer Cursor */}
                                     <div className="figma-cursor">
                                         <svg width="14" height="17" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M0 0V16.03L4.66 11.37H11.02L0 0Z" fill="#14daff"/>
+                                            <path d="M0 0V16.03L4.66 11.37H11.02L0 0Z" fill="#14daff" />
                                         </svg>
                                         <span className="figma-cursor__label">Johan (Designer)</span>
                                     </div>
@@ -668,112 +724,102 @@ function Home() {
             </section>
 
             {/* Teacher Section */}
-            <section className="tech-info-section tech-info-section--alt">
+            <section className="tech-info-section tech-info-section--alt teacher-3d-section">
                 <div className="container">
-                    <h2 className="title reveal">Why Elite Dev?</h2>
+                    <div className="teacher-section-header text-center mb-5 reveal">
+                        <span className="section-label section-label--video">Our Mentors</span>
+                        <h2 className="tech-info-title text-center mt-2">Why Elite Dev? Meet Our Senior Mentors</h2>
+                        <p className="tech-info-desc text-center mx-auto" style={{ maxWidth: "600px" }}>
+                            Learn directly from industry experts who teach live, support you 1:1, and help build your developer profile.
+                        </p>
+                    </div>
 
-                    <div className="row justify-content-center">
-                        <div className="col-lg-10 reveal reveal-delay-1">
-                            <div className="cards">
-                                <div className="Tag">
-                                    <p className="mb-0 text-info fw-bold" style={{ fontSize: 10 }}>TEACHER</p>
-                                </div>
-
-                                <div className="mt-4 px-2">
-                                    <div className="row align-items-start">
-                                        <div className="col-md-7">
-                                            <div className="oneline">
-                                                <h4 className="text-white fs-3">
-                                                    Johan Gao
-                                                    <MdVerified className="verification" />
-                                                </h4>
-                                                <p className="text-primary fw-bold">Senior Python Teacher</p>
-                                                <p className="text-secondary">
-                                                    Passionate educator with strong communication and dedication
-                                                    to student growth and academic excellence.
-                                                </p>
-                                            </div>
+                    <div className="row g-4 justify-content-center">
+                        {TEACHERS_DATA.map((teacher, i) => (
+                            <div className={`col-lg-4 col-md-6 col-sm-12 reveal reveal-delay-${i + 1}`} key={teacher.id}>
+                                <div className="teacher-3d-card-wrapper">
+                                    <div className="teacher-3d-card">
+                                        {/* Status Badge */}
+                                        <div className="teacher-status-badge">
+                                            <span className={`status-dot ${teacher.isActive ? 'status-dot--active' : 'status-dot--inactive'}`}></span>
+                                            <span className="status-text">{teacher.isActive ? 'Active' : 'Offline'}</span>
                                         </div>
-                                        <div className="col-md-5">
-                                            <div className="Active">
-                                                <h5 className="text-success">Active</h5>
-                                                <hr className="text-white" />
-                                                <p className="text-white mb-2">Teacher ID : TCR-2026-6345</p>
-                                                <p className="text-white mb-0">
-                                                    Joining Date :{" "}
-                                                    <SlCalender className="text-primary me-1" />
-                                                    12-5-2026
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
 
-                                    <div className="Two_section mt-3">
-                                        <div className="d-flex flex-wrap teacher-stats gap-4">
-                                            <div className="d-flex align-items-center Years_Exp">
-                                                <div className="Year_1 me-3">
-                                                    <PiBagSimpleFill className="Year" />
-                                                </div>
-                                                <div>
-                                                    <h4 className="text-white mb-0">8+</h4>
-                                                    <span className="text-white">Years Experience</span>
-                                                </div>
+                                        {/* Card content */}
+                                        <div className="teacher-card-content">
+                                            {/* Avatar */}
+                                            <div className="teacher-avatar-wrap" style={{ background: teacher.gradient }}>
+                                                <span className="teacher-avatar-text">{teacher.avatar}</span>
                                             </div>
-                                            <div className="d-flex align-items-center">
-                                                <FcRating style={{ fontSize: 40 }} />
-                                                <div className="ms-3">
-                                                    <h4 className="text-white mb-0">4.5</h4>
-                                                    <span className="text-white">Rating</span>
+
+                                            {/* Teacher Header */}
+                                            <h4 className="teacher-name mt-3">
+                                                {teacher.name}
+                                                {teacher.isActive && <MdVerified className="verification-icon ms-2" />}
+                                            </h4>
+                                            <p className="teacher-role">{teacher.role}</p>
+
+                                            {/* Bio Preview */}
+                                            <p className="teacher-bio-preview">
+                                                {teacher.bio.substring(0, 95)}...
+                                            </p>
+
+                                            {/* Stats row */}
+                                            <div className="teacher-stats-row my-3">
+                                                <div className="teacher-stat">
+                                                    <span className="stat-label">Experience</span>
+                                                    <span className="stat-val">{teacher.experience}</span>
+                                                </div>
+                                                <div className="teacher-stat-divider"></div>
+                                                <div className="teacher-stat">
+                                                    <span className="stat-label">Rating</span>
+                                                    <span className="stat-val">
+                                                        <FcRating className="me-1" style={{ fontSize: '1.1rem' }} />
+                                                        {teacher.rating}
+                                                    </span>
                                                 </div>
                                             </div>
+
+                                            {/* Action buttons (Call, Email, Message) */}
+                                            <div className="teacher-action-buttons">
+                                                <button
+                                                    className="action-btn action-btn--msg"
+                                                    onClick={() => {
+                                                        const bubble = document.querySelector("#chat-bubble-btn");
+                                                        if (bubble) bubble.click();
+                                                    }}
+                                                    title="Message Mentor"
+                                                >
+                                                    <FiMessageSquare /> Message
+                                                </button>
+                                                <a
+                                                    href={`tel:${teacher.phone}`}
+                                                    className="action-btn action-btn--call"
+                                                    title="Call Mentor"
+                                                >
+                                                    <FaPhoneAlt /> Call
+                                                </a>
+                                                <a
+                                                    href={`mailto:${teacher.email}`}
+                                                    className="action-btn action-btn--email"
+                                                    title="Email Mentor"
+                                                >
+                                                    <MdEmail /> Email
+                                                </a>
+                                            </div>
+
+                                            {/* View Details button */}
+                                            <button
+                                                className="view-details-btn mt-3"
+                                                onClick={() => setActiveModalTeacher(teacher)}
+                                            >
+                                                View Details
+                                            </button>
                                         </div>
                                     </div>
-                                </div>
-
-                                <div className="thead_section">
-                                    <div className="row g-3">
-                                        <div className="col-sm-6">
-                                            <div className="d-flex align-items-start">
-                                                <IoSchool className="text-white fs-4 me-3 mt-1" />
-                                                <p className="text-white mb-0">
-                                                    <b>Qualification</b><br />BCA
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div className="col-sm-6">
-                                            <div className="d-flex align-items-start">
-                                                <MdEmail className="text-white fs-4 me-3 mt-1" />
-                                                <p className="text-white mb-0">
-                                                    <b>Email ID</b><br />Johan@gmail.com
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div className="col-sm-6">
-                                            <div className="d-flex align-items-start">
-                                                <FaPhoneAlt className="text-white fs-4 me-3 mt-1" />
-                                                <p className="text-white mb-0">
-                                                    <b>Phone</b><br />+91 8248359976
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div className="col-sm-6">
-                                            <div className="d-flex align-items-start">
-                                                <CgGenderFemale className="text-white fs-4 me-3 mt-1" />
-                                                <p className="text-white mb-0">
-                                                    <b>Gender</b><br />Male
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="btns">
-                                    <button className="btn_1">Message</button>
-                                    <button type="button" className="btn_2">Call</button>
-                                    <button className="btn_3">Email</button>
                                 </div>
                             </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
             </section>
@@ -824,6 +870,106 @@ function Home() {
                 </p>
                 <button className="started_btn">Get Started — it's free to join</button>
             </section>
+
+            {/* Teacher Details Modal */}
+            {activeModalTeacher && createPortal(
+                <div className="teacher-modal-overlay" onClick={() => setActiveModalTeacher(null)}>
+                    <div className="teacher-modal-card" onClick={(e) => e.stopPropagation()}>
+                        <button className="teacher-modal-close" onClick={() => setActiveModalTeacher(null)}>&times;</button>
+
+                        <div className="teacher-modal-header" style={{ background: activeModalTeacher.gradient }}>
+                            <div className="teacher-modal-avatar">{activeModalTeacher.avatar}</div>
+                            <div className="teacher-modal-header-info">
+                                <h3 className="modal-teacher-name text-white mb-0">
+                                    {activeModalTeacher.name}
+                                    {activeModalTeacher.isActive && <MdVerified className="verification-icon ms-2" />}
+                                </h3>
+                                <p className="modal-teacher-role text-light mb-0">{activeModalTeacher.role}</p>
+                            </div>
+                        </div>
+
+                        <div className="teacher-modal-body">
+                            <div className="modal-status-section mb-4">
+                                <span className={`status-badge-pill ${activeModalTeacher.isActive ? 'status-badge-pill--active' : 'status-badge-pill--inactive'}`}>
+                                    <span className="status-dot"></span>
+                                    {activeModalTeacher.isActive ? 'Currently Active' : 'Offline'}
+                                </span>
+                                <span className="modal-teacher-id text-secondary">ID: {activeModalTeacher.id}</span>
+                            </div>
+
+                            <h5 className="modal-section-title">Biography</h5>
+                            <p className="modal-bio text-secondary mb-4">{activeModalTeacher.bio}</p>
+
+                            <h5 className="modal-section-title">Professional Profile</h5>
+                            <div className="modal-info-grid mb-4">
+                                <div className="modal-info-item">
+                                    <IoSchool className="modal-info-icon" />
+                                    <div>
+                                        <span className="info-title">Qualification</span>
+                                        <span className="info-value text-white">{activeModalTeacher.qualification}</span>
+                                    </div>
+                                </div>
+                                <div className="modal-info-item">
+                                    <SlCalender className="modal-info-icon" />
+                                    <div>
+                                        <span className="info-title">Joining Date</span>
+                                        <span className="info-value text-white">{activeModalTeacher.joiningDate}</span>
+                                    </div>
+                                </div>
+                                <div className="modal-info-item">
+                                    <CgGenderFemale className="modal-info-icon" />
+                                    <div>
+                                        <span className="info-title">Gender</span>
+                                        <span className="info-value text-white">{activeModalTeacher.gender}</span>
+                                    </div>
+                                </div>
+                                <div className="modal-info-item">
+                                    <PiBagSimpleFill className="modal-info-icon" />
+                                    <div>
+                                        <span className="info-title">Experience</span>
+                                        <span className="info-value text-white">{activeModalTeacher.experience}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h5 className="modal-section-title">Contact & Actions</h5>
+                            <div className="modal-contact-grid mb-4">
+                                <a href={`tel:${activeModalTeacher.phone}`} className="modal-contact-item">
+                                    <FaPhoneAlt className="modal-contact-icon" style={{ color: "#378ed5" }} />
+                                    <div>
+                                        <span className="contact-title">Phone</span>
+                                        <span className="contact-value text-white">{activeModalTeacher.phone}</span>
+                                    </div>
+                                </a>
+                                <a href={`mailto:${activeModalTeacher.email}`} className="modal-contact-item">
+                                    <MdEmail className="modal-contact-icon" style={{ color: "#5baf6e" }} />
+                                    <div>
+                                        <span className="contact-title">Email</span>
+                                        <span className="contact-value text-white">{activeModalTeacher.email}</span>
+                                    </div>
+                                </a>
+                            </div>
+
+                            <div className="modal-footer-actions">
+                                <button
+                                    className="modal-action-btn modal-action-btn--msg"
+                                    onClick={() => {
+                                        setActiveModalTeacher(null);
+                                        const bubble = document.querySelector("#chat-bubble-btn");
+                                        if (bubble) bubble.click();
+                                    }}
+                                >
+                                    <FiMessageSquare className="me-2" /> Send Message
+                                </button>
+                                <button className="modal-action-btn modal-action-btn--close" onClick={() => setActiveModalTeacher(null)}>
+                                    Close Profile
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>,
+                document.body
+            )}
         </div>
     );
 }

@@ -13,14 +13,13 @@ const getCourse = async (req, res) => {
 // Post data
 const createCourse = async (req, res) => {
     try {
-
         const { Language, Disp, Price, courseName, CourseStatus } = req.body;
-        const course = await Course.findOne({ courseName });
-
 
         if (!courseName || !Language || !Disp || !Price || !CourseStatus) {
-            res.json({ message: `All fields is Required` });
+            return res.status(400).json({ message: `All fields is Required` });
         }
+
+        const course = await Course.findOne({ courseName });
 
         if (course) {
             return res.status(200).json({
@@ -61,8 +60,21 @@ const deleteCourse = async (req, res) => {
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
-}
+};
+
+// Get course by ID
+const getCourseById = async (req, res) => {
+    try {
+        const course = await Course.findById(req.params.id);
+        if (!course) {
+            return res.status(404).json({ message: "Course not found" });
+        }
+        res.status(200).json({ course });
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+};
 
 module.exports = {
-    createCourse, getCourse, deleteCourse
+    createCourse, getCourse, deleteCourse, getCourseById
 };

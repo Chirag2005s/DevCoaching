@@ -1,5 +1,6 @@
 import './Course.css';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { LiaRupeeSignSolid } from "react-icons/lia";
 import { IoSearchOutline } from "react-icons/io5";
@@ -15,6 +16,7 @@ function Course() {
     const [Subject, setSubject] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('ALL');
     const [search, setSearch] = useState('');
+    const navigate = useNavigate();
 
     useEffect(() => {
         axios.get("http://localhost:9000/api/Course")
@@ -126,7 +128,10 @@ function Course() {
                                                     )}
                                                 </div>
 
-                                                <button className={`course-card__enroll${free ? ' course-card__enroll--trial' : ' course-card__enroll--buy'}`}>
+                                                <button
+                                                    className={`course-card__enroll${free ? ' course-card__enroll--trial' : ' course-card__enroll--buy'}`}
+                                                    onClick={() => navigate(`/course/${sub._id}`)}
+                                                >
                                                     {free ? 'Free Trial' : 'Buy Now'}
                                                 </button>
                                             </div>

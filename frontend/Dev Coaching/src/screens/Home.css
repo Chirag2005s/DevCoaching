@@ -782,115 +782,635 @@
 
 /* ── Teacher card ── */
 
-.title {
-  margin-top: 60px;
-  padding-bottom: 10px;
-  color: white;
-  border-bottom: 3px solid #67bed9;
-  width: fit-content;
-  font-size: clamp(1.5rem, 3vw, 2rem);
+/* ── 3D Teacher Cards Grid ── */
+.teacher-3d-section {
+  perspective: 1200px;
 }
 
-.cards {
-  padding: 24px;
-  margin-top: 30px;
-  border: 2px solid #20242d;
-  border-radius: 14px;
-  background-color: transparent;
-  transition: all 0.3s ease-in-out;
+.teacher-3d-card-wrapper {
+  perspective: 1000px;
+  height: 100%;
 }
 
-.cards:hover {
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
-  border-color: rgba(20, 218, 255, 0.15);
-}
-
-.Tag {
-  background-color: #1f2931;
-  border-radius: 50px;
-  padding: 8px 18px;
-  width: fit-content;
-}
-
-.oneline {
-  border-left: 3px solid green;
-  padding-left: 20px;
-}
-
-.verification {
-  font-size: 1.5rem;
-  margin-left: 10px;
-  color: rgb(25, 172, 25);
-}
-
-.Active {
-  padding: 16px 20px;
-  border-radius: 10px;
-  border: 2px solid #1f2931;
-}
-
-.Two_section {
-  margin-top: 20px;
-  padding: 16px 20px;
-  border: 2px solid #686f8c;
-  border-radius: 10px;
-  background-color: transparent;
-}
-
-.Year {
-  color: white;
-  font-size: 2rem;
-}
-
-.Year_1 {
-  background-color: #004299;
-  padding: 10px;
-  border-radius: 50px;
-  text-align: center;
-}
-
-.Years_Exp {
-  border-right: 2px solid #979797;
-  padding-right: 20px;
-}
-
-.thead_section {
-  padding: 16px 20px;
-  border: 2px solid #4e4e4e;
-  border-radius: 10px;
-  margin-top: 16px;
-}
-
-.btns {
-  margin-top: 24px;
+.teacher-3d-card {
+  position: relative;
+  background: rgba(17, 24, 39, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 30px 24px;
+  height: 100%;
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-style: preserve-3d;
+  overflow: hidden;
 }
 
-.btn_1,
-.btn_2,
-.btn_3 {
-  padding: 10px 20px;
-  font-weight: bold;
-  border-radius: 10px;
+/* Elegant glow effect on hover */
+.teacher-3d-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(20, 218, 255, 0.06), transparent 40%);
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.teacher-3d-card:hover::before {
+  opacity: 1;
+}
+
+/* 3D hover transformation */
+.teacher-3d-card:hover {
+  transform: translateY(-8px) rotateX(4deg) rotateY(-4deg);
+  border-color: rgba(20, 218, 255, 0.25);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5),
+    0 0 30px rgba(20, 218, 255, 0.04);
+}
+
+/* Push items in Z-space for 3D depth */
+.teacher-avatar-wrap,
+.teacher-name,
+.teacher-role,
+.teacher-stats-row,
+.teacher-action-buttons,
+.view-details-btn {
+  transform: translateZ(25px);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.teacher-3d-card:hover .teacher-avatar-wrap {
+  transform: translateZ(45px) scale(1.05);
+}
+
+.teacher-3d-card:hover .teacher-name {
+  transform: translateZ(35px);
+}
+
+/* Status Indicator */
+.teacher-status-badge {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 6px 12px;
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #94a3b8;
+  z-index: 2;
+  transform: translateZ(30px);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.status-dot--active {
+  background-color: #10b981;
+  box-shadow: 0 0 10px #10b981;
+  border: 1.5px solid rgba(16, 185, 129, 0.5);
+  animation: statusPulse 2s infinite;
+}
+
+.status-dot--inactive {
+  background-color: #64748b;
+  border: 1.5px solid rgba(100, 116, 139, 0.5);
+}
+
+@keyframes statusPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  }
+
+  70% {
+    box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+
+/* Card Elements */
+.teacher-card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  z-index: 2;
+  height: 100%;
+}
+
+.teacher-avatar-wrap {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  margin-top: 15px;
+}
+
+.teacher-avatar-text {
+  font-size: 1.8rem;
+  font-weight: 800;
   color: white;
-  border: 2px solid;
+  letter-spacing: 0.5px;
 }
 
-.btn_1 {
-  border-color: #5a79dd;
-  background-color: #214bb7;
+.teacher-name {
+  color: white;
+  font-size: 1.35rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.btn_2 {
-  border-color: #378ed5;
-  background-color: #064896;
+.verification-icon {
+  color: #14daff;
+  font-size: 1.25rem;
 }
 
-.btn_3 {
-  border-color: #5baf6e;
-  background-color: #3e794d;
+.teacher-role {
+  color: #14daff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 15px;
+}
+
+.teacher-bio-preview {
+  color: #94a3b8;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  height: 80px;
+  overflow: hidden;
+  margin-bottom: 15px;
+}
+
+/* Teacher Stats */
+.teacher-stats-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 12px 10px;
+}
+
+.teacher-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-label {
+  font-size: 0.7rem;
+  color: #64748b;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.stat-val {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: white;
+  display: flex;
+  align-items: center;
+}
+
+.teacher-stat-divider {
+  width: 1px;
+  height: 28px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Quick Action Communication Buttons */
+.teacher-action-buttons {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.action-btn {
+  flex: 1;
+  padding: 8px 10px;
+  border-radius: 10px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: white;
+  border: 1px solid transparent;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.action-btn--msg {
+  background: rgba(59, 130, 246, 0.1);
+  border-color: rgba(59, 130, 246, 0.25);
+  color: #60a5fa;
+}
+
+.action-btn--msg:hover {
+  background: #2563eb;
+  color: white;
+  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+}
+
+.action-btn--call {
+  background: rgba(16, 185, 129, 0.1);
+  border-color: rgba(16, 185, 129, 0.25);
+  color: #34d399;
+}
+
+.action-btn--call:hover {
+  background: #059669;
+  color: white;
+  box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3);
+}
+
+.action-btn--email {
+  background: rgba(245, 158, 11, 0.1);
+  border-color: rgba(245, 158, 11, 0.25);
+  color: #fbbf24;
+}
+
+.action-btn--email:hover {
+  background: #d97706;
+  color: white;
+  box-shadow: 0 4px 15px rgba(217, 119, 6, 0.3);
+}
+
+/* View Details Button */
+.view-details-btn {
+  width: 100%;
+  padding: 10px 16px;
+  background: rgba(20, 218, 255, 0.08);
+  border: 1px solid rgba(20, 218, 255, 0.25);
+  border-radius: 10px;
+  color: #14daff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.view-details-btn:hover {
+  background: #14daff;
+  color: #090d16;
+  box-shadow: 0 0 20px rgba(20, 218, 255, 0.25);
+  border-color: #14daff;
+}
+
+/* ── Teacher Details Modal ── */
+.teacher-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(9, 13, 22, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: modalFadeIn 0.3s ease-out forwards;
+}
+
+.teacher-modal-card {
+  position: relative;
+  background: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  width: 100%;
+  max-width: 580px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+  animation: modalScaleIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.teacher-modal-close {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: #94a3b8;
+  font-size: 1.8rem;
+  font-weight: 400;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.2s ease;
+  line-height: 1;
+}
+
+.teacher-modal-close:hover {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.teacher-modal-header {
+  padding: 40px 30px 30px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.teacher-modal-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: white;
+  border: 3px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+.teacher-modal-header-info {
+  flex: 1;
+}
+
+.modal-teacher-name {
+  font-size: 1.6rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+}
+
+.modal-teacher-role {
+  font-size: 0.95rem;
+  font-weight: 600;
+  opacity: 0.95;
+}
+
+.teacher-modal-body {
+  padding: 30px;
+}
+
+.modal-status-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.status-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border: 1px solid transparent;
+}
+
+.status-badge-pill--active {
+  background: rgba(16, 185, 129, 0.1);
+  border-color: rgba(16, 185, 129, 0.25);
+  color: #34d399;
+}
+
+.status-badge-pill--active .status-dot {
+  background-color: #10b981;
+  box-shadow: 0 0 8px #10b981;
+}
+
+.status-badge-pill--inactive {
+  background: rgba(100, 116, 139, 0.1);
+  border-color: rgba(100, 116, 139, 0.25);
+  color: #94a3b8;
+}
+
+.status-badge-pill--inactive .status-dot {
+  background-color: #64748b;
+}
+
+.modal-teacher-id {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.modal-section-title {
+  color: #14daff;
+  font-size: 0.9rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 12px;
+}
+
+.modal-bio {
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* Info Grid */
+.modal-info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.modal-info-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  padding: 12px 16px;
+  border-radius: 12px;
+}
+
+.modal-info-icon {
+  font-size: 1.5rem;
+  color: #14daff;
+  flex-shrink: 0;
+}
+
+.info-title {
+  display: block;
+  font-size: 0.72rem;
+  color: #64748b;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.info-value {
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+/* Contact Grid */
+.modal-contact-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.modal-contact-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  padding: 12px 16px;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.modal-contact-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(20, 218, 255, 0.2);
+}
+
+.modal-contact-icon {
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+.contact-title {
+  display: block;
+  font-size: 0.72rem;
+  color: #64748b;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.contact-value {
+  font-size: 0.9rem;
+  font-weight: 700;
+  word-break: break-all;
+}
+
+/* Footer Actions */
+.modal-footer-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.modal-action-btn {
+  flex: 1;
+  padding: 12px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.modal-action-btn--msg {
+  background: #14daff;
+  border: 1px solid #14daff;
+  color: #090d16;
+}
+
+.modal-action-btn--msg:hover {
+  background: #0ea5e9;
+  border-color: #0ea5e9;
+  box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3);
+}
+
+.modal-action-btn--close {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: white;
+}
+
+.modal-action-btn--close:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+/* Animations */
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+
+  .modal-info-grid,
+  .modal-contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .teacher-modal-header {
+    flex-direction: column;
+    text-align: center;
+    padding: 35px 20px 20px;
+  }
+
+  .teacher-modal-body {
+    padding: 20px;
+  }
+
+  .modal-footer-actions {
+    flex-direction: column;
+  }
 }
 
 /* ── CTA ── */
