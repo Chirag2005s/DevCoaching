@@ -198,62 +198,11 @@ function isFreeCourse(course) {
     return Number(course.Price) === 0;
 }
 
-const TEACHERS_DATA = [
-    {
-        id: "TCR-2026-6345",
-        name: "Johan Gao",
-        role: "Senior Python & Data Science Teacher",
-        bio: "An industry veteran with over 8 years of Python backend and machine learning experience. Passionate educator with strong communication and dedication to student growth and academic excellence.",
-        avatar: "JG",
-        experience: "8+ Yrs",
-        rating: "4.8",
-        qualification: "BCA",
-        email: "Johan@gmail.com",
-        phone: "+91 8248359976",
-        gender: "Male",
-        joiningDate: "12-5-2026",
-        isActive: true,
-        gradient: "linear-gradient(135deg, #fbbf24 0%, #d97706 100%)",
-        borderColor: "rgba(251, 191, 36, 0.4)"
-    },
-    {
-        id: "TCR-2026-8812",
-        name: "Aria Patel",
-        role: "Senior Frontend & React Specialist",
-        bio: "Frontend enthusiast and user experience advocate. Aria specializes in teaching JavaScript fundamentals, CSS layout architecture, and single-page applications built with React.",
-        avatar: "AP",
-        experience: "6+ Yrs",
-        rating: "4.9",
-        qualification: "MCA",
-        email: "Aria@gmail.com",
-        phone: "+91 9876543210",
-        gender: "Female",
-        joiningDate: "18-5-2026",
-        isActive: true,
-        gradient: "linear-gradient(135deg, #06b6d4 0%, #0891b2 100%)",
-        borderColor: "rgba(6, 182, 212, 0.4)"
-    },
-    {
-        id: "TCR-2026-4409",
-        name: "Marcus Vance",
-        role: "Backend Architect & Database Lead",
-        bio: "Database administrator and server-side expert. Marcus covers Node.js, Express APIs, MongoDB optimization, and security practices required for enterprise systems.",
-        avatar: "MV",
-        experience: "10 Yrs",
-        rating: "4.7",
-        qualification: "B.Tech CSE",
-        email: "Marcus@gmail.com",
-        phone: "+91 8765432109",
-        gender: "Male",
-        joiningDate: "20-5-2026",
-        isActive: false,
-        gradient: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
-        borderColor: "rgba(16, 185, 129, 0.4)"
-    }
-];
+
 
 function Home() {
     const [course, setCourse] = useState([]);
+    const [teachers, setTeachers] = useState([]);
     const [activeModalTeacher, setActiveModalTeacher] = useState(null);
     const navigate = useNavigate();
     const videoRef = useRef(null);
@@ -262,6 +211,39 @@ function Home() {
         axios
             .get("http://localhost:9000/api/Course")
             .then((res) => setCourse(res.data?.course || []));
+
+        axios
+            .get("http://localhost:9000/api/Teacher")
+            .then((res) => {
+                const fetchedTeachers = res.data?.teachers || [];
+                const formatted = fetchedTeachers.map((t, index) => {
+                    const gradients = [
+                        "linear-gradient(135deg, #fbbf24 0%, #d97706 100%)",
+                        "linear-gradient(135deg, #06b6d4 0%, #0891b2 100%)",
+                        "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+                        "linear-gradient(135deg, #a855f7 0%, #7e22ce 100%)"
+                    ];
+                    return {
+                        id: t._id || t.ID,
+                        name: t.Name,
+                        role: t.Title,
+                        bio: t.Discprition || "",
+                        avatar: t.Logo || t.Name?.substring(0, 2).toUpperCase() || "T",
+                        experience: t.Exprience,
+                        rating: t.Rating,
+                        qualification: t.Qualification,
+                        email: t.Email,
+                        phone: t.PhoneNo,
+                        gender: t.Gender,
+                        joiningDate: t.JoinDate,
+                        isActive: t.Status === "active",
+                        gradient: gradients[index % gradients.length],
+                        borderColor: "rgba(255, 255, 255, 0.2)"
+                    };
+                });
+                setTeachers(formatted);
+            })
+            .catch((err) => console.log(err));
     }, []);
 
     useEffect(() => {
@@ -735,7 +717,7 @@ function Home() {
                     </div>
 
                     <div className="row g-4 justify-content-center">
-                        {TEACHERS_DATA.map((teacher, i) => (
+                        {teachers.slice(0, 3).map((teacher, i) => (
                             <div className={`col-lg-4 col-md-6 col-sm-12 reveal reveal-delay-${i + 1}`} key={teacher.id}>
                                 <div className="teacher-3d-card-wrapper">
                                     <div className="teacher-3d-card">

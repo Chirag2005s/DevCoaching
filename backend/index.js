@@ -16,6 +16,9 @@ const contactRouter = require('./router/contact.router.js');
 // Review router Import
 const reviewRouter = require('./router/review.router.js');
 
+
+const teacherRouter = require('./router/teacher.router.js');
+
 // Config env
 configDotenv.config();
 
@@ -34,6 +37,7 @@ app.get('/api/coaching', (req, res) => {
 app.use("/api", courseRoutes);
 app.use("/api", contactRouter);
 app.use("/api", reviewRouter);
+app.use("/api", teacherRouter);
 
 const PORT = process.env.PORT || 9000;
 
