@@ -9,6 +9,7 @@ const NAV_LINKS = [
     { to: '/', label: 'Home', end: true },
     { to: '/course', label: 'Course' },
     { to: '/join-live', label: 'Join Live' },
+    { to: '/instructors', label: 'Instructors' },
     { to: '/about', label: 'About' },
 ];
 
@@ -98,7 +99,6 @@ function Navbar() {
                                     </NavLink>
                                 ))}
                                 <Button className="Nav_btn nav-link nav-link--static">Notes & Exam</Button>
-                                <Button className="Nav_btn nav-link nav-link--static">Instructors</Button>
                             </div>
                         </div>
                     </div>

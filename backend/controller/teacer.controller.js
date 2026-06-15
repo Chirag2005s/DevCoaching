@@ -56,5 +56,42 @@ const createTeacher = async (req, res) => {
 };
 
 
+// Delete Method
+const deleteTeacher = async (req, res) => {
+    try {
+        const { id } = req.body;
 
-module.exports = { createTeacher, getTeachers };
+        if (!id) {
+            return res.status(400).json({ message: `All required fields must be provided` });
+        }
+
+        const teacher = await Teacher.findOne({ id });
+
+        if (!teacher) {
+            return res.status(400).json({ message: `Teacher not found` });
+        }
+
+        await Teacher.deleteOne({ id });
+
+        res.status(200).json({ message: `Teacher deleted successfully` });
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+};
+
+
+
+// Patch mthod
+const UpdateTeacher = async (req, res) => {
+    const UpdateTeacher = await Teacher.findById(req.params.id);
+
+    Object.assign(UpdateTeacher, req.body);
+    await UpdateTeacher.save();
+
+    res.status(200).json({
+        message: `Updated Teacher ${req.params.id}`
+    });
+};
+
+
+module.exports = { createTeacher, getTeachers, deleteTeacher, UpdateTeacher };
