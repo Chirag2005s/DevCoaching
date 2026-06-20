@@ -2,18 +2,19 @@ import './Footer.css';
 import { useEffect } from 'react';
 import { FaLaptopCode } from "react-icons/fa6";
 import { FaInstagram } from "react-icons/fa";
-import { FiTwitter, FiFacebook } from "react-icons/fi";
+import { FiFacebook } from "react-icons/fi";
+import { FaLinkedinIn } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 
 const QUICK_LINKS = [
     { to: '/', label: 'Home' },
     { to: '/course', label: 'Course' },
-    { to: '', label: 'Live Classes' },
+    { to: '/join-live', label: 'Live Classes' },
 ];
 
 const RESOURCE_LINKS = [
-    { to: '', label: 'Exam' },
-    { to: '', label: 'Teacher' },
+    { to: '/exams', label: 'Exam' },
+    { to: '/instructors', label: 'Teacher' },
 ];
 
 const COMPANY_LINKS = [
@@ -54,17 +55,17 @@ function Footer() {
                             </p>
                             <div className="footer-social">
                                 <div className="Footer_icons">
-                                    <Link to="" aria-label="Instagram">
+                                    <Link to="https://www.instagram.com/devcoaching.official/" aria-label="Instagram">
                                         <FaInstagram className="Footer_icons_style" />
                                     </Link>
                                 </div>
                                 <div className="Footer_icons">
                                     <Link to="" aria-label="Twitter">
-                                        <FiTwitter className="Footer_icons_style" />
+                                        <FaLinkedinIn className="Footer_icons_style" />
                                     </Link>
                                 </div>
                                 <div className="Footer_icons">
-                                    <Link to="" aria-label="Facebook">
+                                    <Link to="https://www.facebook.com/people/Dev-Coaching/pfbid02m5rEQZspUr863SJu1tGyqDEjRjgwxQWT1D8j3QyYnr6q9QayYcX2M9HNJfHy6qscl/" aria-label="Facebook">
                                         <FiFacebook className="Footer_icons_style" />
                                     </Link>
                                 </div>

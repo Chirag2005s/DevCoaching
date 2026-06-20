@@ -19,6 +19,10 @@ const reviewRouter = require('./router/review.router.js');
 
 const teacherRouter = require('./router/teacher.router.js');
 
+// Note and Exam router Imports
+const noteRouter = require('./router/note.router.js');
+const examRouter = require('./router/exam.router.js');
+
 // Config env
 configDotenv.config();
 
@@ -38,6 +42,8 @@ app.use("/api", courseRoutes);
 app.use("/api", contactRouter);
 app.use("/api", reviewRouter);
 app.use("/api", teacherRouter);
+app.use("/api", noteRouter);
+app.use("/api", examRouter);
 
 const PORT = process.env.PORT || 9000;
 

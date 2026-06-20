@@ -8,6 +8,8 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 const NAV_LINKS = [
     { to: '/', label: 'Home', end: true },
     { to: '/course', label: 'Course' },
+    { to: '/notes', label: 'Notes' },
+    { to: '/exams', label: 'Exams' },
     { to: '/join-live', label: 'Join Live' },
     { to: '/instructors', label: 'Instructors' },
     { to: '/about', label: 'About' },
@@ -98,7 +100,6 @@ function Navbar() {
                                         {link.label}
                                     </NavLink>
                                 ))}
-                                <Button className="Nav_btn nav-link nav-link--static">Notes & Exam</Button>
                             </div>
                         </div>
                     </div>

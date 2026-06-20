@@ -34,7 +34,30 @@ const getReviewsForCourse = async (req, res) => {
     }
 };
 
+// Delete 
+const deleteReview = async (res, req) => {
+    try {
+        const { id } = req.body;
+
+        if (!id) {
+            return res.status(400).json({ messge: `Please Provide ID` });
+        }
+
+        const review = await Review.findByIdAndDelete({ _id: id });
+
+        if (!review) {
+            return res.status(404).json({ message: `Review Not Found` });
+        }
+
+        return res.status(200).json({ message: `Review Deleted` });
+    }
+    catch (err) {
+        res.status(400).json({ message: `${err.message}` });
+    }
+}
+
 module.exports = {
     createReview,
-    getReviewsForCourse
+    getReviewsForCourse,
+    deleteReview
 };

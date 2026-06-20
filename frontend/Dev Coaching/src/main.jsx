@@ -12,6 +12,8 @@ import ChatWidget from './screens/component/ChatWidget.jsx'
 import JoinLive from './screens/joinLive.jsx'
 import CourseDetails from './screens/CourseDetails.jsx';
 import Instructors from './screens/Instructors.jsx';
+import Note from './screens/Note.jsx';
+import Exam from './screens/Exam.jsx';
 import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './page-transition.css';
@@ -30,6 +32,8 @@ function AnimatedRoutes() {
         <Route path='/contact' element={<Contact />} />
         <Route path='/join-live' element={<JoinLive />} />
         <Route path='/instructors' element={<Instructors />} />
+        <Route path='/notes' element={<Note />} />
+        <Route path='/exams' element={<Exam />} />
         <Route path='*' element={<Navigate to='/' replace />} />
       </Routes>
     </div>
