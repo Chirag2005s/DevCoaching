@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-// import './index.css'
+import './index.css'
 // import App from './App.jsx'
 import Home from './screens/Home.jsx'
 import Course from './screens/Course.jsx'
@@ -14,6 +14,7 @@ import CourseDetails from './screens/CourseDetails.jsx';
 import Instructors from './screens/Instructors.jsx';
 import Note from './screens/Note.jsx';
 import Exam from './screens/Exam.jsx';
+import Careers from './screens/careers.jsx';
 import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './page-transition.css';
@@ -34,6 +35,7 @@ function AnimatedRoutes() {
         <Route path='/instructors' element={<Instructors />} />
         <Route path='/notes' element={<Note />} />
         <Route path='/exams' element={<Exam />} />
+        <Route path='/careers' element={<Careers />} />
         <Route path='*' element={<Navigate to='/' replace />} />
       </Routes>
     </div>

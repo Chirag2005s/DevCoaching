@@ -1,0 +1,47 @@
+/* Careers page specific premium styling and transitions */
+
+.careers-page-container {
+  transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+              color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  min-height: 100vh;
+}
+
+/* Apply transitions to all child elements for smooth theme toggle */
+.careers-page-container *, 
+.careers-page-container *::before, 
+.careers-page-container *::after {
+  transition-property: background-color, border-color, text-decoration-color, fill, stroke, box-shadow, transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 350ms;
+}
+
+/* Hover shadow effects for light mode */
+.careers-page-container.light .hover\:shadow-md:hover {
+  box-shadow: 0 10px 20px -3px rgba(15, 23, 42, 0.06), 0 4px 6px -4px rgba(15, 23, 42, 0.04) !important;
+}
+
+/* Premium drop-shadow and glow in dark mode */
+.careers-page-container.dark .hover\:shadow-md:hover {
+  box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.2), 0 8px 10px -6px rgba(37, 99, 235, 0.15) !important;
+  border-color: rgba(37, 99, 235, 0.3) !important;
+}
+
+/* Custom glow animations for background gradients */
+@keyframes bgPulse {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translate(5%, 5%) scale(1.1);
+    opacity: 0.6;
+  }
+}
+
+.blur-3xl {
+  animation: bgPulse 12s infinite alternate ease-in-out;
+}
+
+.careers-page-container button {
+  transition: all 0.2s ease-in-out;
+}

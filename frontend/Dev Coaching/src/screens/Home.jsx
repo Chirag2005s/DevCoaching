@@ -297,7 +297,7 @@ function Home() {
 
                     <h1 className="hero-title hero-animate hero-animate-delay-1">
                         Level up your <span>developer career</span>
-                        <br className="d-none d-md-block" /> with senior mentors.
+                        <br className="d-none d-md-block" /> with senior mentors.<br />version 1.0.0
                     </h1>
 
                     <p className="hero-subtitle hero-animate hero-animate-delay-2 mt-4">

@@ -256,13 +256,13 @@ function Exam() {
                         />
                     </div>
 
-                    {/* <button
+                    <button
                         type="button"
                         className="btn-create-exam"
                         onClick={() => setIsCreateOpen(true)}
                     >
                         <MdAdd size={20} /> Create Mock Exam
-                    </button> */}
+                    </button>
                 </div>
 
                 {/* Exams List Grid */}

@@ -1,10 +1,10 @@
 import './Footer.css';
 import { useEffect } from 'react';
-import { FaLaptopCode } from "react-icons/fa6";
 import { FaInstagram } from "react-icons/fa";
 import { FiFacebook } from "react-icons/fi";
 import { FaLinkedinIn } from "react-icons/fa";
 import { Link } from 'react-router-dom';
+import logo from '../logo/logo.png';
 
 const QUICK_LINKS = [
     { to: '/', label: 'Home' },
@@ -20,7 +20,7 @@ const RESOURCE_LINKS = [
 const COMPANY_LINKS = [
     { to: '/about', label: 'About' },
     { to: '/contact', label: 'Contact' },
-    { to: '', label: 'Careers' },
+    { to: '/careers', label: 'Careers' },
 ];
 
 function Footer() {
@@ -47,7 +47,7 @@ function Footer() {
                     <div className="col-md-6 col-lg-3 footer-reveal">
                         <div className="footer-brand">
                             <h3 className="footer-brand__logo">
-                                <FaLaptopCode />
+                                <img src={logo} alt="Dev Coaching Logo" className="footer-logo-img" />
                                 Dev <span>Coaching</span>
                             </h3>
                             <p className="footer-brand__tagline">
@@ -55,19 +55,19 @@ function Footer() {
                             </p>
                             <div className="footer-social">
                                 <div className="Footer_icons">
-                                    <Link to="https://www.instagram.com/devcoaching.official/" aria-label="Instagram">
+                                    <a href="https://www.instagram.com/devcoaching.official/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
                                         <FaInstagram className="Footer_icons_style" />
-                                    </Link>
+                                    </a>
                                 </div>
                                 <div className="Footer_icons">
-                                    <Link to="" aria-label="Twitter">
+                                    <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
                                         <FaLinkedinIn className="Footer_icons_style" />
-                                    </Link>
+                                    </a>
                                 </div>
                                 <div className="Footer_icons">
-                                    <Link to="https://www.facebook.com/people/Dev-Coaching/pfbid02m5rEQZspUr863SJu1tGyqDEjRjgwxQWT1D8j3QyYnr6q9QayYcX2M9HNJfHy6qscl/" aria-label="Facebook">
+                                    <a href="https://www.facebook.com/people/Dev-Coaching/pfbid02m5rEQZspUr863SJu1tGyqDEjRjgwxQWT1D8j3QyYnr6q9QayYcX2M9HNJfHy6qscl/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
                                         <FiFacebook className="Footer_icons_style" />
-                                    </Link>
+                                    </a>
                                 </div>
                             </div>
                         </div>
