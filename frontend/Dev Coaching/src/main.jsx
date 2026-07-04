@@ -18,6 +18,7 @@ import Careers from './screens/careers.jsx';
 import Login from './screens/Login.jsx';
 import Signup from './screens/Signup.jsx';
 import { AuthProvider } from './context/AuthContext.jsx';
+import { ThemeProvider } from './context/ThemeContext.jsx';
 import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './page-transition.css';
@@ -49,13 +50,15 @@ function AnimatedRoutes() {
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <AuthProvider>
-      <BrowserRouter>
-        <Navbar />
-        <AnimatedRoutes />
-        <ChatWidget />
-        <Footer />
-      </BrowserRouter>
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <BrowserRouter>
+          <Navbar />
+          <AnimatedRoutes />
+          <ChatWidget />
+          <Footer />
+        </BrowserRouter>
+      </AuthProvider>
+    </ThemeProvider>
   </StrictMode>
 )

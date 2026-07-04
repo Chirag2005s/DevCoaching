@@ -310,7 +310,7 @@ function Home() {
                             Explore Course
                             <FaArrowRightLong />
                         </button>
-                        <button className="header_btn header_btn-outline">
+                        <button className="header_btn header_btn-outline" onClick={() => navigate("/instructors")}>
                             Meet The Teacher
                         </button>
                     </div>

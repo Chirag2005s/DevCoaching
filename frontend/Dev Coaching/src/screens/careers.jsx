@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import demoVideo from './videos/WhatsApp Video 2026-07-01 at 11.28.12 AM.mp4';
@@ -21,9 +21,8 @@ import {
   FiBookOpen,
   FiCheck,
   FiArrowRight,
-  FiSun,
-  FiMoon,
 } from 'react-icons/fi';
+import { ThemeContext } from '../context/ThemeContext';
 import './careers.css';
 
 const SERVICES = [
@@ -76,27 +75,15 @@ const FAQS = [
 
 function Careers() {
   const navigate = useNavigate();
-  // Initialize from local storage or default to true for dark mode
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    const saved = localStorage.getItem('theme');
-    return saved ? saved === 'dark' : true;
-  });
+  const { isDarkMode } = useContext(ThemeContext);
   const [activeFaq, setActiveFaq] = useState(null);
 
   useEffect(() => {
     document.title = 'Careers & Career Guidance | Dev Coaching';
-    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-  }, [isDarkMode]);
-
-  const toggleTheme = () => setIsDarkMode(!isDarkMode);
+  }, []);
 
   return (
     <div className="careers-page-container" data-theme={isDarkMode ? 'dark' : 'light'}>
-      {/* Theme Switcher Floater */}
-      <button onClick={toggleTheme} className="theme-toggle-btn" aria-label="Toggle Theme">
-        {isDarkMode ? <FiSun /> : <FiMoon />}
-      </button>
-
       {/* HERO SECTION */}
       <section className="careers-hero">
         <div className="container">

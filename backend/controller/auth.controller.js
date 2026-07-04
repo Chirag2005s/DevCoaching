@@ -1,6 +1,7 @@
 const User = require('../models/user.models');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { sendLoginEmail } = require('../utils/email');
 
 // Register a new user
 exports.register = async (req, res) => {
@@ -33,7 +34,7 @@ exports.register = async (req, res) => {
 
         // Create JWT token
         const token = jwt.sign(
-            { id: newUser._id, email: newUser.email, hasPurchasedCourse: newUser.hasPurchasedCourse },
+            { id: newUser._id, email: newUser.email, hasPurchasedCourse: newUser.hasPurchasedCourse, purchasedCourses: newUser.purchasedCourses || [] },
             process.env.JWT_SECRET || 'devcoaching_secret_key',
             { expiresIn: '7d' }
         );
@@ -45,7 +46,8 @@ exports.register = async (req, res) => {
                 id: newUser._id,
                 name: newUser.name,
                 email: newUser.email,
-                hasPurchasedCourse: newUser.hasPurchasedCourse
+                hasPurchasedCourse: newUser.hasPurchasedCourse,
+                purchasedCourses: newUser.purchasedCourses || []
             }
         });
 
@@ -79,10 +81,13 @@ exports.login = async (req, res) => {
 
         // Create JWT token
         const token = jwt.sign(
-            { id: user._id, email: user.email, hasPurchasedCourse: user.hasPurchasedCourse },
+            { id: user._id, email: user.email, hasPurchasedCourse: user.hasPurchasedCourse, purchasedCourses: user.purchasedCourses || [] },
             process.env.JWT_SECRET || 'devcoaching_secret_key',
             { expiresIn: '7d' }
         );
+
+        // Send login notification email (non-blocking)
+        sendLoginEmail(user.email, user.name);
 
         res.status(200).json({
             message: "Logged in successfully",
@@ -91,7 +96,8 @@ exports.login = async (req, res) => {
                 id: user._id,
                 name: user.name,
                 email: user.email,
-                hasPurchasedCourse: user.hasPurchasedCourse
+                hasPurchasedCourse: user.hasPurchasedCourse,
+                purchasedCourses: user.purchasedCourses || []
             }
         });
 
@@ -105,6 +111,7 @@ exports.login = async (req, res) => {
 exports.purchaseCourse = async (req, res) => {
     try {
         const userId = req.user.id;
+        const { courseId } = req.body;
         
         const user = await User.findById(userId);
         if (!user) {
@@ -112,11 +119,21 @@ exports.purchaseCourse = async (req, res) => {
         }
         
         user.hasPurchasedCourse = true;
+        
+        if (courseId) {
+            if (!user.purchasedCourses) {
+                user.purchasedCourses = [];
+            }
+            if (!user.purchasedCourses.includes(courseId)) {
+                user.purchasedCourses.push(courseId);
+            }
+        }
+        
         await user.save();
         
         // Return new token
         const token = jwt.sign(
-            { id: user._id, email: user.email, hasPurchasedCourse: user.hasPurchasedCourse },
+            { id: user._id, email: user.email, hasPurchasedCourse: user.hasPurchasedCourse, purchasedCourses: user.purchasedCourses },
             process.env.JWT_SECRET || 'devcoaching_secret_key',
             { expiresIn: '7d' }
         );
@@ -128,7 +145,8 @@ exports.purchaseCourse = async (req, res) => {
                 id: user._id,
                 name: user.name,
                 email: user.email,
-                hasPurchasedCourse: user.hasPurchasedCourse
+                hasPurchasedCourse: user.hasPurchasedCourse,
+                purchasedCourses: user.purchasedCourses
             }
         });
     } catch (error) {

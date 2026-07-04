@@ -21,7 +21,11 @@ const userSchema = new mongoose.Schema({
     hasPurchasedCourse: {
         type: Boolean,
         default: false
-    }
+    },
+    purchasedCourses: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Course'
+    }]
 }, { timestamps: true });
 
 const User = mongoose.model('User', userSchema);

@@ -2080,6 +2080,31 @@
   }
 }
 
+@media (max-width: 575px) {
+  .canvas-body {
+    flex-direction: column;
+    padding: 10px;
+    height: auto;
+    min-height: 380px;
+  }
+  .mockup-web {
+    position: relative;
+    top: auto;
+    left: auto;
+    margin-bottom: 20px;
+    transform: scale(0.9);
+  }
+  .mockup-mobile {
+    position: relative;
+    bottom: auto;
+    right: auto;
+    transform: scale(0.9);
+  }
+  .figma-cursor {
+    display: none;
+  }
+}
+
 .canvas-footer {
   background: #10141e;
   border-top: 1px solid rgba(255, 255, 255, 0.05);

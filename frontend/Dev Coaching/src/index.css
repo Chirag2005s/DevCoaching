@@ -4,3 +4,147 @@
 @import "tailwindcss/utilities" layer(utilities);
 
 @custom-variant dark (&:where(.dark, .dark *));
+
+/* Light Mode Overrides */
+[data-theme="light"] {
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --bg-card: #ffffff;
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
+  --border-color: #e2e8f0;
+  --accent-color: #3b82f6;
+}
+
+/* Override body and page wrapper backgrounds and text colors */
+body.light-theme,
+[data-theme="light"] body,
+[data-theme="light"] .home-page,
+[data-theme="light"] .Course_Body_Section,
+[data-theme="light"] .about-page,
+[data-theme="light"] .contact-page,
+[data-theme="light"] .course-details-page,
+[data-theme="light"] .exam-page,
+[data-theme="light"] .note-page,
+[data-theme="light"] .join-live-page,
+[data-theme="light"] .instructors-page,
+[data-theme="light"] .login-page-container,
+[data-theme="light"] .signup-page-container {
+  background-color: #f8fafc !important;
+  background: #f8fafc !important;
+  color: #0f172a !important;
+}
+
+/* Override text element colors for pages using hardcoded values */
+[data-theme="light"] h1,
+[data-theme="light"] h2,
+[data-theme="light"] h3,
+[data-theme="light"] h4,
+[data-theme="light"] h5,
+[data-theme="light"] h6 {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] p,
+[data-theme="light"] span:not(.nav-brand__accent):not(.hero-title span):not(.live-dot):not(.badge):not(.nav-indicator),
+[data-theme="light"] li,
+[data-theme="light"] label,
+[data-theme="light"] .info-card-text,
+[data-theme="light"] .course-desc,
+[data-theme="light"] .exam-card-description,
+[data-theme="light"] .note-card-description {
+  color: #475569 !important;
+}
+
+/* Card overrides */
+[data-theme="light"] .Information_live,
+[data-theme="light"] .tech-info-card,
+[data-theme="light"] .about-hero,
+[data-theme="light"] .about-card,
+[data-theme="light"] .contact-card,
+[data-theme="light"] .course-card,
+[data-theme="light"] .exam-card,
+[data-theme="light"] .note-card,
+[data-theme="light"] .instructor-card,
+[data-theme="light"] .login-left,
+[data-theme="light"] .signup-left,
+[data-theme="light"] .faq-item,
+[data-theme="light"] .live-class-card,
+[data-theme="light"] .live-chat-panel,
+[data-theme="light"] .live-chat-input-area {
+  background-color: #ffffff !important;
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
+}
+
+/* Input, Textarea, Select field overrides */
+[data-theme="light"] input,
+[data-theme="light"] textarea,
+[data-theme="light"] select,
+[data-theme="light"] .course-search,
+[data-theme="light"] .exam-search-wrapper,
+[data-theme="light"] .note-search-wrapper,
+[data-theme="light"] .live-chat-input-area input {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border: 1px solid #cbd5e1 !important;
+}
+
+[data-theme="light"] input::placeholder,
+[data-theme="light"] textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* Overwrite specific text highlight colors to stay legible */
+[data-theme="light"] .text-white {
+  color: #0f172a !important;
+}
+[data-theme="light"] .text-slate-100 {
+  color: #0f172a !important;
+}
+[data-theme="light"] .text-slate-400 {
+  color: #64748b !important;
+}
+[data-theme="light"] .why-elite-title {
+  color: #0f172a !important;
+}
+[data-theme="light"] .about-title {
+  color: #0f172a !important;
+}
+[data-theme="light"] .contact-title {
+  color: #0f172a !important;
+}
+[data-theme="light"] .course-title {
+  color: #0f172a !important;
+}
+[data-theme="light"] .exam-title {
+  color: #0f172a !important;
+}
+[data-theme="light"] .note-title {
+  color: #0f172a !important;
+}
+
+/* Button borders/background overrides */
+[data-theme="light"] .header_btn-outline,
+[data-theme="light"] .info-card-btn {
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+[data-theme="light"] .header_btn-outline:hover,
+[data-theme="light"] .info-card-btn:hover {
+  background-color: #f1f5f9 !important;
+}
+
+/* Footer overrides */
+[data-theme="light"] .Footer_Section {
+  background: #f1f5f9 !important;
+  border-top: 1px solid #e2e8f0 !important;
+}
+[data-theme="light"] .Footer_Section * {
+  color: #475569 !important;
+}
+[data-theme="light"] .Footer_Section h5 {
+  color: #0f172a !important;
+}

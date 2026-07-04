@@ -1,10 +1,11 @@
 import Button from '@mui/material/Button';
 import './Navbar.css';
 import { FaLaptopCode } from "react-icons/fa6";
-import { FiLogIn, FiLogOut } from "react-icons/fi";
+import { FiLogIn, FiLogOut, FiSun, FiMoon } from "react-icons/fi";
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useLayoutEffect, useRef, useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
+import { ThemeContext } from '../../context/ThemeContext';
 
 const NAV_LINKS = [
     { to: '/', label: 'Home', end: true },
@@ -24,6 +25,7 @@ function Navbar() {
     const [indicator, setIndicator] = useState({ left: 0, width: 0, opacity: 0 });
     const [isSwitching, setIsSwitching] = useState(false);
     const { user, logout } = useContext(AuthContext);
+    const { isDarkMode, toggleTheme } = useContext(ThemeContext);
 
     const updateIndicator = () => {
         const activePath = NAV_LINKS.find(
@@ -108,12 +110,26 @@ function Navbar() {
 
                     <div className="col-md-4">
                         <div className="nav-auth">
+                            <button type="button" className={`nav-theme-switch ${isDarkMode ? 'dark' : 'light'}`} onClick={toggleTheme} aria-label="Toggle Theme" style={{ marginRight: '8px' }}>
+                                <div className="switch-track">
+                                    <FiSun className="switch-icon switch-icon-sun" />
+                                    <FiMoon className="switch-icon switch-icon-moon" />
+                                    <div className="switch-knob">
+                                        {isDarkMode ? <FiMoon /> : <FiSun />}
+                                    </div>
+                                </div>
+                            </button>
                             {user ? (
                                 <>
-                                    <span style={{ marginRight: '15px', color: 'white', fontWeight: '600' }}>
+                                    <span className="nav-user-greeting" style={{ color: 'white', fontWeight: '600', marginRight: '8px' }}>
                                         Hi, {user.name.split(' ')[0]}
                                     </span>
-                                    <button type="button" className="Nav_Login" onClick={() => { logout(); navigate('/'); }}>
+                                    {user.hasPurchasedCourse && (
+                                        <span className="nav-pro-badge" style={{ background: 'linear-gradient(135deg, #fbbf24 0%, #d97706 100%)', color: '#090d16', fontSize: '0.65rem', fontWeight: '800', padding: '2px 6px', borderRadius: '4px', letterSpacing: '0.5px', marginRight: '15px' }}>
+                                            PRO
+                                        </span>
+                                    )}
+                                    <button type="button" className="Nav_Login" onClick={() => { logout(); navigate('/'); }} style={{ marginLeft: user.hasPurchasedCourse ? '0' : '15px' }}>
                                         <FiLogOut /> Logout
                                     </button>
                                 </>
