@@ -1,9 +1,10 @@
 import Button from '@mui/material/Button';
 import './Navbar.css';
 import { FaLaptopCode } from "react-icons/fa6";
-import { FiLogIn } from "react-icons/fi";
+import { FiLogIn, FiLogOut } from "react-icons/fi";
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, useContext } from 'react';
+import { AuthContext } from '../../context/AuthContext';
 
 const NAV_LINKS = [
     { to: '/', label: 'Home', end: true },
@@ -22,6 +23,7 @@ function Navbar() {
     const linkRefs = useRef({});
     const [indicator, setIndicator] = useState({ left: 0, width: 0, opacity: 0 });
     const [isSwitching, setIsSwitching] = useState(false);
+    const { user, logout } = useContext(AuthContext);
 
     const updateIndicator = () => {
         const activePath = NAV_LINKS.find(
@@ -106,10 +108,23 @@ function Navbar() {
 
                     <div className="col-md-4">
                         <div className="nav-auth">
-                            <button type="button" className="Nav_Login">
-                                <FiLogIn /> Login
-                            </button>
-                            <button type="button" className="Sgin_up">Sign up</button>
+                            {user ? (
+                                <>
+                                    <span style={{ marginRight: '15px', color: 'white', fontWeight: '600' }}>
+                                        Hi, {user.name.split(' ')[0]}
+                                    </span>
+                                    <button type="button" className="Nav_Login" onClick={() => { logout(); navigate('/'); }}>
+                                        <FiLogOut /> Logout
+                                    </button>
+                                </>
+                            ) : (
+                                <>
+                                    <button type="button" className="Nav_Login" onClick={() => navigate('/login')}>
+                                        <FiLogIn /> Login
+                                    </button>
+                                    <button type="button" className="Sgin_up" onClick={() => navigate('/signup')}>Sign up</button>
+                                </>
+                            )}
                         </div>
                     </div>
                 </div>

@@ -24,6 +24,9 @@ const teacherRouter = require('./router/teacher.router.js');
 const noteRouter = require('./router/note.router.js');
 const examRouter = require('./router/exam.router.js');
 
+// Auth router Import
+const authRouter = require('./router/auth.router.js');
+
 // Config env
 configDotenv.config();
 
@@ -48,6 +51,7 @@ app.use("/api", reviewRouter);
 app.use("/api", teacherRouter);
 app.use("/api", noteRouter);
 app.use("/api", examRouter);
+app.use("/api/auth", authRouter);
 
 const PORT = process.env.PORT || 9000;
 

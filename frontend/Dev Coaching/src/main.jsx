@@ -15,6 +15,9 @@ import Instructors from './screens/Instructors.jsx';
 import Note from './screens/Note.jsx';
 import Exam from './screens/Exam.jsx';
 import Careers from './screens/careers.jsx';
+import Login from './screens/Login.jsx';
+import Signup from './screens/Signup.jsx';
+import { AuthProvider } from './context/AuthContext.jsx';
 import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './page-transition.css';
@@ -36,6 +39,8 @@ function AnimatedRoutes() {
         <Route path='/notes' element={<Note />} />
         <Route path='/exams' element={<Exam />} />
         <Route path='/careers' element={<Careers />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/signup' element={<Signup />} />
         <Route path='*' element={<Navigate to='/' replace />} />
       </Routes>
     </div>
@@ -44,11 +49,13 @@ function AnimatedRoutes() {
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter>
-      <Navbar />
-      <AnimatedRoutes />
-      <ChatWidget />
-      <Footer />
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <Navbar />
+        <AnimatedRoutes />
+        <ChatWidget />
+        <Footer />
+      </BrowserRouter>
+    </AuthProvider>
   </StrictMode>
 )
