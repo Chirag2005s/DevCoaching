@@ -62,9 +62,11 @@ const sendLoginEmail = async (userEmail, userName) => {
 
         console.log("Login notification email sent: %s", info.messageId);
         
-        if (info.messageId && info.messageId.includes('ethereal')) {
-            console.log("Preview Ethereal URL: %s", nodemailer.getTestMessageUrl(info));
+        const previewUrl = nodemailer.getTestMessageUrl(info);
+        if (previewUrl) {
+            console.log("Preview Ethereal URL: %s", previewUrl);
         }
+
         
         return { success: true, messageId: info.messageId };
     } catch (error) {

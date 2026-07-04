@@ -23,6 +23,7 @@ import {
   FiArrowRight,
 } from 'react-icons/fi';
 import { ThemeContext } from '../context/ThemeContext';
+import devLogo from './logo/devcoaching.png.logo.png';
 import './careers.css';
 
 const SERVICES = [
@@ -88,6 +89,7 @@ function Careers() {
       <section className="careers-hero">
         <div className="container">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+            <img src={devLogo} alt="Dev Coaching" className="careers-hero-logo" />
             <h1>Build Your Future <span>with Dev Coaching</span></h1>
             <p>Learn in-demand skills, gain practical experience, and prepare for a successful developer career with live mentorship.</p>
             <div className="hero-buttons">

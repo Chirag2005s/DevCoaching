@@ -1,21 +1,13 @@
 import Button from '@mui/material/Button';
 import './Navbar.css';
-import { FaLaptopCode } from "react-icons/fa6";
 import { FiLogIn, FiLogOut, FiSun, FiMoon } from "react-icons/fi";
+import devLogo from '../logo/devcoaching.png.logo.png';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useLayoutEffect, useRef, useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { ThemeContext } from '../../context/ThemeContext';
 
-const NAV_LINKS = [
-    { to: '/', label: 'Home', end: true },
-    { to: '/course', label: 'Course' },
-    { to: '/notes', label: 'Notes' },
-    { to: '/exams', label: 'Exams' },
-    { to: '/join-live', label: 'Join Live' },
-    { to: '/instructors', label: 'Instructors' },
-    { to: '/about', label: 'About' },
-];
+// Base navigation links are generated dynamically inside the component
 
 function Navbar() {
     const navigate = useNavigate();
@@ -27,8 +19,22 @@ function Navbar() {
     const { user, logout } = useContext(AuthContext);
     const { isDarkMode, toggleTheme } = useContext(ThemeContext);
 
+    const displayLinks = [
+        { to: '/', label: 'Home', end: true },
+        { to: '/course', label: 'Course' },
+        { to: '/notes', label: 'Notes' },
+        { to: '/exams', label: 'Exams' },
+        { to: '/join-live', label: 'Join Live' },
+        { to: '/instructors', label: 'Instructors' },
+        // { to: '/about', label: 'About' },
+    ];
+
+    if (user && user.hasPurchasedCourse) {
+        displayLinks.push({ to: '/dashboard', label: 'Dashboard' });
+    }
+
     const updateIndicator = () => {
-        const activePath = NAV_LINKS.find(
+        const activePath = displayLinks.find(
             (link) =>
                 link.end
                     ? location.pathname === link.to
@@ -73,7 +79,7 @@ function Navbar() {
                             className="nav-brand"
                             onClick={() => navigate('/')}
                         >
-                            <FaLaptopCode className="nav-brand__icon" />
+                            <img src={devLogo} alt="Dev Coaching" className="nav-brand__logo" />
                             <span>
                                 Dev <span className="nav-brand__accent">Coaching</span>
                             </span>
@@ -91,7 +97,7 @@ function Navbar() {
                                 }}
                             />
                             <div className="nav-links">
-                                {NAV_LINKS.map((link) => (
+                                {displayLinks.map((link) => (
                                     <NavLink
                                         key={link.to}
                                         to={link.to}
@@ -120,7 +126,7 @@ function Navbar() {
                                 </div>
                             </button>
                             {user ? (
-                                <>
+                                <div style={{ display: 'flex', alignItems: 'center', marginRight: '15px' }}>
                                     <span className="nav-user-greeting" style={{ color: 'white', fontWeight: '600', marginRight: '8px' }}>
                                         Hi, {user.name.split(' ')[0]}
                                     </span>
@@ -132,7 +138,7 @@ function Navbar() {
                                     <button type="button" className="Nav_Login" onClick={() => { logout(); navigate('/'); }} style={{ marginLeft: user.hasPurchasedCourse ? '0' : '15px' }}>
                                         <FiLogOut /> Logout
                                     </button>
-                                </>
+                                </div>
                             ) : (
                                 <>
                                     <button type="button" className="Nav_Login" onClick={() => navigate('/login')}>

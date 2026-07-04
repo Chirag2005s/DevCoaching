@@ -28,7 +28,11 @@ function Signup() {
 
             if (response.ok) {
                 login(data.user, data.token);
-                navigate('/');
+                if (data.user.hasPurchasedCourse) {
+                    navigate('/dashboard');
+                } else {
+                    navigate('/course');
+                }
             } else {
                 setError(data.message || 'Failed to sign up');
             }

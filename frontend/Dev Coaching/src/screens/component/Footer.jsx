@@ -4,7 +4,7 @@ import { FaInstagram } from "react-icons/fa";
 import { FiFacebook } from "react-icons/fi";
 import { FaLinkedinIn } from "react-icons/fa";
 import { Link } from 'react-router-dom';
-import logo from '../logo/logo.png';
+import logo from '../logo/devcoaching.png.logo.png';
 
 const QUICK_LINKS = [
     { to: '/', label: 'Home' },
