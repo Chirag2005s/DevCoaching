@@ -1,5 +1,7 @@
 import './joinLive.css';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 import {
     HiSignal,
     HiChevronDown,
@@ -168,6 +170,8 @@ function JoinLive() {
     const [openFaq, setOpenFaq] = useState(null);
     const [playingVideo, setPlayingVideo] = useState(null);
     const modalVideoRef = useRef(null);
+    const { user } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     // Set default active day to today's weekday name
     useEffect(() => {
@@ -204,6 +208,46 @@ function JoinLive() {
             modalVideoRef.current.play().catch(() => { });
         }
     }, [playingVideo]);
+
+    if (!user) {
+        return (
+            <div className="join-live-page" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '80vh' }}>
+                <div className="bg-glow bg-glow--top" />
+                <div className="glass-panel text-center p-5 mx-3" style={{ maxWidth: '600px', zIndex: 1 }}>
+                    <div style={{ fontSize: '4rem', color: '#ff6b6b', marginBottom: '1rem' }}>
+                        <HiOutlineXMark />
+                    </div>
+                    <h2 className="text-white mb-3">Access Restricted</h2>
+                    <p className="text-secondary mb-4">
+                        You need to be logged in to access the Live Classes portal. Please log in or create an account to continue.
+                    </p>
+                    <button className="btn-join-meet px-5 py-3" onClick={() => navigate('/login')}>
+                        Log In Now
+                    </button>
+                </div>
+            </div>
+        );
+    }
+
+    if (!user.hasPurchasedCourse) {
+        return (
+            <div className="join-live-page" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '80vh' }}>
+                <div className="bg-glow bg-glow--top" />
+                <div className="glass-panel text-center p-5 mx-3" style={{ maxWidth: '600px', zIndex: 1 }}>
+                    <div style={{ fontSize: '4rem', color: '#ffd93d', marginBottom: '1rem' }}>
+                        <HiOutlineAcademicCap />
+                    </div>
+                    <h2 className="text-white mb-3">Premium Content</h2>
+                    <p className="text-secondary mb-4">
+                        Live classes are exclusively available to enrolled students. Browse our premium courses to gain full access to daily live streams, QA sessions, and recorded archives.
+                    </p>
+                    <button className="btn-join-meet px-5 py-3" onClick={() => navigate('/course')}>
+                        Browse Courses
+                    </button>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="join-live-page">

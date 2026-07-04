@@ -33,7 +33,7 @@ exports.register = async (req, res) => {
 
         // Create JWT token
         const token = jwt.sign(
-            { id: newUser._id, email: newUser.email },
+            { id: newUser._id, email: newUser.email, hasPurchasedCourse: newUser.hasPurchasedCourse },
             process.env.JWT_SECRET || 'devcoaching_secret_key',
             { expiresIn: '7d' }
         );
@@ -44,7 +44,8 @@ exports.register = async (req, res) => {
             user: {
                 id: newUser._id,
                 name: newUser.name,
-                email: newUser.email
+                email: newUser.email,
+                hasPurchasedCourse: newUser.hasPurchasedCourse
             }
         });
 
@@ -78,7 +79,7 @@ exports.login = async (req, res) => {
 
         // Create JWT token
         const token = jwt.sign(
-            { id: user._id, email: user.email },
+            { id: user._id, email: user.email, hasPurchasedCourse: user.hasPurchasedCourse },
             process.env.JWT_SECRET || 'devcoaching_secret_key',
             { expiresIn: '7d' }
         );
@@ -89,12 +90,49 @@ exports.login = async (req, res) => {
             user: {
                 id: user._id,
                 name: user.name,
-                email: user.email
+                email: user.email,
+                hasPurchasedCourse: user.hasPurchasedCourse
             }
         });
 
     } catch (error) {
         console.error("Login Error:", error);
         res.status(500).json({ message: "Server error during login", error: error.message });
+    }
+};
+
+// Purchase course (Mock)
+exports.purchaseCourse = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        
+        user.hasPurchasedCourse = true;
+        await user.save();
+        
+        // Return new token
+        const token = jwt.sign(
+            { id: user._id, email: user.email, hasPurchasedCourse: user.hasPurchasedCourse },
+            process.env.JWT_SECRET || 'devcoaching_secret_key',
+            { expiresIn: '7d' }
+        );
+        
+        res.status(200).json({
+            message: "Course purchased successfully",
+            token,
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                hasPurchasedCourse: user.hasPurchasedCourse
+            }
+        });
+    } catch (error) {
+        console.error("Purchase Error:", error);
+        res.status(500).json({ message: "Server error during purchase", error: error.message });
     }
 };

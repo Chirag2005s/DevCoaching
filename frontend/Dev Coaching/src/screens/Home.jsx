@@ -1,5 +1,6 @@
 import "./Home.css";
 import axios from "axios";
+import demoVideo from './videos/WhatsApp Video 2026-07-01 at 11.28.12 AM.mp4';
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
@@ -111,8 +112,7 @@ const UIUX_TOOLS = [
     { icon: TbBrandGithub, label: "Handoff" }
 ];
 
-const DEMO_VIDEO_SRC =
-    "https://assets.mixkit.co/videos/preview/mixkit-person-writing-code-on-laptop-4908-large.mp4";
+const DEMO_VIDEO_SRC = demoVideo;
 
 const REVIEWS = [
     {
@@ -445,9 +445,10 @@ function Home() {
                                     ref={videoRef}
                                     className="video-showcase__player"
                                     muted
+                                    autoPlay
                                     loop
                                     playsInline
-                                    preload="metadata"
+                                    preload="auto"
                                 >
                                     <source src={DEMO_VIDEO_SRC} type="video/mp4" />
                                 </video>

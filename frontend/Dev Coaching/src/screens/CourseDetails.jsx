@@ -2,6 +2,8 @@ import './coursedetails.css';
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { AuthContext } from '../context/AuthContext';
+import { useContext } from 'react';
 import { LiaRupeeSignSolid } from "react-icons/lia";
 import { IoChevronBackOutline } from "react-icons/io5";
 import { FcRating } from "react-icons/fc";
@@ -82,6 +84,9 @@ function CourseDetails() {
     const [reviews, setReviews] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const { user, token, updateUserPurchaseStatus } = useContext(AuthContext);
+    const [isPurchasing, setIsPurchasing] = useState(false);
+    const [purchaseMsg, setPurchaseMsg] = useState(null);
 
     // Form states
     const [studentName, setStudentName] = useState('');
@@ -142,6 +147,41 @@ function CourseDetails() {
             console.error("Error submitting review:", err);
             setReviewMessage({ type: 'error', text: 'Failed to submit review. Try again later.' });
             setSubmittingReview(false);
+        }
+    };
+
+    const handlePurchase = async () => {
+        if (!user) {
+            navigate('/login');
+            return;
+        }
+
+        if (user.hasPurchasedCourse) {
+            setPurchaseMsg({ type: 'success', text: 'You already have premium access!' });
+            return;
+        }
+
+        try {
+            setIsPurchasing(true);
+            const response = await fetch('http://localhost:9000/api/auth/purchase', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                updateUserPurchaseStatus(true, data.token);
+                setPurchaseMsg({ type: 'success', text: 'Course enrolled successfully! You now have full access to Live Classes.' });
+            } else {
+                setPurchaseMsg({ type: 'error', text: data.message || 'Failed to enroll in course' });
+            }
+        } catch (err) {
+            setPurchaseMsg({ type: 'error', text: 'Network error during purchase. Please try again.' });
+        } finally {
+            setIsPurchasing(false);
         }
     };
 
@@ -227,9 +267,18 @@ function CourseDetails() {
                                         </span>
                                     )}
                                 </div>
-                                <button className={`enroll-action-btn ${free ? 'enroll-action-btn--free' : 'enroll-action-btn--premium'}`}>
-                                    {free ? 'Start Free Trial' : 'Buy & Enroll Now'}
+                                <button 
+                                    className={`enroll-action-btn ${free ? 'enroll-action-btn--free' : 'enroll-action-btn--premium'}`}
+                                    onClick={handlePurchase}
+                                    disabled={isPurchasing}
+                                >
+                                    {isPurchasing ? 'Enrolling...' : (free ? 'Start Free Trial' : 'Buy & Enroll Now')}
                                 </button>
+                                {purchaseMsg && (
+                                    <div className={`alert-pill alert-pill--${purchaseMsg.type} mt-3`}>
+                                        {purchaseMsg.text}
+                                    </div>
+                                )}
                                 <p className="pricing-note text-secondary mt-2">
                                     {free ? 'Instant access to first 3 modules' : '30-day money-back guarantee'}
                                 </p>
