@@ -34,7 +34,7 @@
   left: 5%;
 }
 
-.join-live-page > .container {
+.join-live-page>.container {
   position: relative;
   z-index: 1;
 }
@@ -70,8 +70,17 @@
 }
 
 @keyframes signalBlink {
-  0%, 100% { opacity: 0.3; transform: scale(0.9); }
-  50% { opacity: 1; transform: scale(1.1); }
+
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(0.9);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
 }
 
 .live-title {
@@ -185,8 +194,15 @@
 }
 
 @keyframes badgePulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
-  50% { box-shadow: 0 0 10px 4px rgba(239, 68, 68, 0.2); }
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+  }
+
+  50% {
+    box-shadow: 0 0 10px 4px rgba(239, 68, 68, 0.2);
+  }
 }
 
 .active-time-meta {
@@ -625,7 +641,7 @@
   justify-content: center;
   /* Cyber grids visual design */
   background-size: 20px 20px;
-  background-image: 
+  background-image:
     linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
 }
@@ -645,7 +661,8 @@
 .play-icon-symbol {
   font-size: 1.5rem;
   color: white;
-  margin-left: 2px; /* optical alignment */
+  margin-left: 2px;
+  /* optical alignment */
   transition: all 0.3s ease;
 }
 
@@ -828,7 +845,8 @@
 }
 
 .faq-answer-collapse--open {
-  max-height: 250px; /* high enough threshold */
+  max-height: 250px;
+  /* high enough threshold */
 }
 
 .faq-answer-content {
@@ -859,8 +877,13 @@
 }
 
 @keyframes modalFadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .video-modal-content {
@@ -872,8 +895,15 @@
 }
 
 @keyframes modalSlideUp {
-  from { transform: translateY(40px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .video-modal-header {
@@ -985,10 +1015,12 @@
   .active-class-card {
     padding: 30px 24px;
   }
+
   .google-meet-icon-wrap {
     width: 60px;
     height: 60px;
   }
+
   .g-meet-icon {
     font-size: 2.2rem;
   }
@@ -998,13 +1030,16 @@
   .live-hero {
     padding-top: 30px;
   }
+
   .active-meta-grid {
     gap: 16px;
   }
+
   .weekday-tab {
     flex: none;
     width: 33.33%;
   }
+
   .schedule-details-content {
     padding: 10px 16px 20px;
   }

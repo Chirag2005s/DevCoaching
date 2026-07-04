@@ -11,7 +11,7 @@ const noteSchema = new mongoose.Schema({
     },
     content: {
         type: String,
-        required: true
+        default: ""
     },
     category: {
         type: String,
@@ -20,6 +20,27 @@ const noteSchema = new mongoose.Schema({
     author: {
         type: String,
         required: true
+    },
+    noteType: {
+        type: String,
+        enum: ["text", "link", "pdf"],
+        default: "text"
+    },
+    link: {
+        type: String,
+        default: ""
+    },
+    pdfUrl: {
+        type: String,
+        default: ""
+    },
+    likes: {
+        type: Number,
+        default: 0
+    },
+    views: {
+        type: Number,
+        default: 0
     }
 }, { timestamps: true });
 

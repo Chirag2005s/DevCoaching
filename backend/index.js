@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 const app = express();
 const configDotenv = require('dotenv');
 const cors = require('cors');
@@ -31,6 +32,9 @@ app.use(cors());
 
 // Body parser
 app.use(express.json());
+
+// Serve uploaded files (PDFs)
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // static API Data
 app.get('/api/coaching', (req, res) => {
