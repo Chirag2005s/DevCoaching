@@ -85,7 +85,7 @@ const BOT_FLOWS = {
         ],
     },
     contact: {
-        botText: "📞 **Contact Dev Coaching:**\n\n📧 Email: Johan@gmail.com\n📱 Phone: +91 8248359976\n\nFeel free to reach out — we typically respond within minutes! 😊",
+        botText: "📞 **Contact Dev Coaching:**\n\n📧 Email: Johan@gmail.com\n📱 Phone: +91 7023400611\n\nFeel free to reach out — we typically respond within minutes! 😊",
         options: [
             { label: "📚 View Courses", value: "courses" },
             { label: "✅ How to Enroll", value: "enroll" },

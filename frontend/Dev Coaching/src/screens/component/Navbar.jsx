@@ -1,13 +1,11 @@
 import Button from '@mui/material/Button';
 import './Navbar.css';
-import { FiLogIn, FiLogOut, FiSun, FiMoon } from "react-icons/fi";
+import { FiLogIn, FiLogOut, FiSun, FiMoon, FiShoppingBag } from "react-icons/fi";
 import devLogo from '../logo/devcoaching.png.logo.png';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useLayoutEffect, useRef, useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { ThemeContext } from '../../context/ThemeContext';
-
-// Base navigation links are generated dynamically inside the component
 
 function Navbar() {
     const navigate = useNavigate();
@@ -20,13 +18,12 @@ function Navbar() {
     const { isDarkMode, toggleTheme } = useContext(ThemeContext);
 
     const displayLinks = [
-        { to: '/', label: 'Home', end: true },
+        // { to: '/', label: 'Home', end: true },
         { to: '/course', label: 'Course' },
         { to: '/notes', label: 'Notes' },
         { to: '/exams', label: 'Exams' },
         { to: '/join-live', label: 'Join Live' },
         { to: '/instructors', label: 'Instructors' },
-        // { to: '/about', label: 'About' },
     ];
 
     if (user && user.hasPurchasedCourse) {
@@ -69,6 +66,11 @@ function Navbar() {
 
     return (
         <section className={`Nav_Section ${isSwitching ? 'Nav_Section--switching' : ''}`}>
+            {/* Announcement Bar */}
+            <div className="announcement-bar">
+                <span>🚀 Special Offer: Get 20% off on all courses this week! Use code: <strong>DEV20</strong> at checkout</span>
+            </div>
+
             <div className="nav-progress-bar" aria-hidden="true" />
 
             <div className="container">
@@ -116,7 +118,17 @@ function Navbar() {
 
                     <div className="col-md-4">
                         <div className="nav-auth">
-                            <button type="button" className={`nav-theme-switch ${isDarkMode ? 'dark' : 'light'}`} onClick={toggleTheme} aria-label="Toggle Theme" style={{ marginRight: '8px' }}>
+                            {/* Course Enrollment Bag/Cart Icon */}
+                            <div className="nav-cart-wrapper" onClick={() => navigate(user ? '/dashboard' : '/course')} title={user ? "My Enrolled Courses" : "Explore Courses"}>
+                                <FiShoppingBag className="nav-cart-icon" />
+                                {user && (
+                                    <span className="nav-cart-badge">
+                                        {user.hasPurchasedCourse ? '1' : '0'}
+                                    </span>
+                                )}
+                            </div>
+
+                            <button type="button" className={`nav-theme-switch ${isDarkMode ? 'dark' : 'light'}`} onClick={toggleTheme} aria-label="Toggle Theme">
                                 <div className="switch-track">
                                     <FiSun className="switch-icon switch-icon-sun" />
                                     <FiMoon className="switch-icon switch-icon-moon" />
@@ -127,11 +139,11 @@ function Navbar() {
                             </button>
                             {user ? (
                                 <div style={{ display: 'flex', alignItems: 'center', marginRight: '15px' }}>
-                                    <span className="nav-user-greeting" style={{ color: 'white', fontWeight: '600', marginRight: '8px' }}>
+                                    <span className="nav-user-greeting" style={{ fontWeight: '600', marginRight: '8px' }}>
                                         Hi, {user.name.split(' ')[0]}
                                     </span>
                                     {user.hasPurchasedCourse && (
-                                        <span className="nav-pro-badge" style={{ background: 'linear-gradient(135deg, #fbbf24 0%, #d97706 100%)', color: '#090d16', fontSize: '0.65rem', fontWeight: '800', padding: '2px 6px', borderRadius: '4px', letterSpacing: '0.5px', marginRight: '15px' }}>
+                                        <span className="nav-pro-badge">
                                             PRO
                                         </span>
                                     )}

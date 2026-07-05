@@ -37,17 +37,17 @@
   left: 0;
   width: 100%;
   z-index: 1000;
-  background: rgba(16, 19, 26, 0.75);
+  background: var(--surface);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid var(--border);
   animation: navSlideDown 0.55s ease forwards;
-  transition: border-color 0.35s ease, box-shadow 0.35s ease;
+  transition: border-color 0.35s ease, box-shadow 0.35s ease, background 0.3s ease;
 }
 
 .Nav_Section--switching {
-  border-bottom-color: rgba(20, 218, 255, 0.2);
-  box-shadow: 0 4px 24px rgba(20, 218, 255, 0.08);
+  border-bottom-color: var(--primary);
+  box-shadow: 0 4px 24px rgba(37, 99, 235, 0.08);
 }
 
 .nav-progress-bar {
@@ -56,7 +56,7 @@
   left: 0;
   height: 2px;
   width: 100%;
-  background: linear-gradient(90deg, #14daff, #6c9eff);
+  background: var(--gradient);
   transform: scaleX(0);
   transform-origin: left center;
   opacity: 0;
@@ -74,7 +74,7 @@
   padding: 10px 0;
   border: none;
   background: transparent;
-  color: white;
+  color: var(--text);
   font-size: 1.4rem;
   font-weight: 700;
   cursor: pointer;
@@ -87,7 +87,7 @@
 
 .nav-brand__icon {
   font-size: 2.2rem;
-  color: #6c9eff;
+  color: var(--primary);
   transition: transform 0.35s ease, color 0.35s ease;
 }
 
@@ -109,7 +109,7 @@
 }
 
 .nav-brand__accent {
-  color: #6c9eff;
+  color: var(--primary);
 }
 
 .nav-links-wrap {
@@ -132,19 +132,19 @@
   left: 0;
   height: 2px;
   border-radius: 2px;
-  background: linear-gradient(90deg, #14daff, #6c9eff);
+  background: var(--gradient);
   transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
     width 0.35s cubic-bezier(0.4, 0, 0.2, 1),
     opacity 0.25s ease;
   pointer-events: none;
-  box-shadow: 0 0 12px rgba(20, 218, 255, 0.45);
+  box-shadow: 0 0 12px rgba(37, 99, 235, 0.35);
 }
 
 .Nav_btn,
 .nav-link {
   position: relative;
   padding: 14px 16px !important;
-  color: #94a3b8 !important;
+  color: var(--text-light) !important;
   font-size: 15px !important;
   font-weight: 500 !important;
   text-decoration: none !important;
@@ -155,17 +155,17 @@
 }
 
 .nav-link:hover {
-  color: white !important;
-  background: rgba(255, 255, 255, 0.05) !important;
+  color: var(--text) !important;
+  background: rgba(0, 0, 0, 0.04) !important;
 }
 
 .nav-link--active {
-  color: #14daff !important;
+  color: var(--primary) !important;
   animation: navLinkPop 0.35s ease;
 }
 
 .nav-link--static {
-  color: #94a3b8 !important;
+  color: var(--text-light) !important;
 }
 
 .nav-auth {
@@ -180,20 +180,20 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--text);
+  border: 1px solid var(--border);
   padding: 10px 20px;
   border-radius: 30px;
   font-weight: bold;
-  background: rgba(255, 255, 255, 0.04);
+  background: transparent;
   transition: all 0.3s ease;
   cursor: pointer;
 }
 
 .Nav_Login:hover {
-  color: #14daff;
-  border-color: rgba(20, 218, 255, 0.35);
-  background: rgba(20, 218, 255, 0.08);
+  color: var(--primary);
+  border-color: var(--primary);
+  background: rgba(37, 99, 235, 0.08);
   transform: translateY(-1px);
 }
 
@@ -202,16 +202,16 @@
   border: none;
   border-radius: 10px;
   font-weight: bold;
-  background-color: #6c9eff;
+  background-color: var(--primary);
   color: white;
   transition: all 0.3s ease;
   cursor: pointer;
 }
 
 .Sgin_up:hover {
-  background-color: #14daff;
+  background-color: var(--primary-hover);
   transform: translateY(-1px);
-  box-shadow: 0 4px 16px rgba(20, 218, 255, 0.3);
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3);
 }
 
 @media (max-width: 767px) {
@@ -229,8 +229,8 @@
   }
 
   .nav-link--active {
-    background: rgba(20, 218, 255, 0.1) !important;
-    border: 1px solid rgba(20, 218, 255, 0.2) !important;
+    background: rgba(37, 99, 235, 0.1) !important;
+    border: 1px solid rgba(37, 99, 235, 0.2) !important;
   }
 }
 
@@ -238,8 +238,8 @@
   width: 56px;
   height: 30px;
   border-radius: 30px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid var(--border);
+  background: rgba(0, 0, 0, 0.04);
   position: relative;
   cursor: pointer;
   display: inline-flex;
@@ -261,7 +261,7 @@
 
 .switch-icon {
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.4);
+  color: var(--text-light);
   z-index: 1;
 }
 
@@ -340,5 +340,111 @@
 [data-theme="light"] .nav-user-greeting {
   color: #0f172a !important;
 }
+
+/* Announcement Bar styles */
+.announcement-bar {
+  background: var(--gradient);
+  color: white;
+  text-align: center;
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.announcement-bar strong {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 4px;
+}
+
+/* Nav Cart icon styling */
+.nav-cart-wrapper {
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  margin-right: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-cart-wrapper:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--primary);
+  transform: scale(1.05);
+}
+
+.nav-cart-icon {
+  font-size: 18px;
+  color: #94a3b8;
+  transition: color 0.3s ease;
+}
+
+.nav-cart-wrapper:hover .nav-cart-icon {
+  color: var(--primary);
+}
+
+.nav-cart-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: var(--primary);
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 700;
+  min-width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  box-shadow: 0 2px 5px rgba(37, 99, 235, 0.4);
+}
+
+/* Pro badge custom layout */
+.nav-pro-badge {
+  background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%) !important;
+  color: #090d16 !important;
+  font-size: 0.65rem !important;
+  font-weight: 800 !important;
+  padding: 2px 6px !important;
+  border-radius: 4px !important;
+  letter-spacing: 0.5px !important;
+  margin-right: 15px !important;
+  box-shadow: 0 2px 6px rgba(251, 191, 36, 0.3) !important;
+}
+
+/* Light Theme overrides for cart elements */
+[data-theme="light"] .nav-cart-wrapper {
+  background: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .nav-cart-wrapper:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .nav-cart-icon {
+  color: #64748b;
+}
+
+/* Adjust general spacing in Nav Section to handle announcement bar height */
+.Nav_Section {
+  padding-top: 0 !important;
+}
+
 
 

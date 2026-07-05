@@ -1,8 +1,9 @@
 import './Footer.css';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { FaInstagram } from "react-icons/fa";
 import { FiFacebook } from "react-icons/fi";
 import { FaLinkedinIn } from "react-icons/fa";
+import { FiArrowUp } from "react-icons/fi";
 import { Link } from 'react-router-dom';
 import logo from '../logo/devcoaching.png.logo.png';
 
@@ -24,6 +25,10 @@ const COMPANY_LINKS = [
 ];
 
 function Footer() {
+    const [showScrollTop, setShowScrollTop] = useState(false);
+    const [email, setEmail] = useState('');
+    const [subscribed, setSubscribed] = useState(false);
+
     useEffect(() => {
         const observer = new IntersectionObserver(
             (entries) => {
@@ -37,8 +42,38 @@ function Footer() {
         );
 
         document.querySelectorAll('.footer-reveal').forEach((el) => observer.observe(el));
-        return () => observer.disconnect();
+
+        const handleScroll = () => {
+            if (window.scrollY > 400) {
+                setShowScrollTop(true);
+            } else {
+                setShowScrollTop(false);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            observer.disconnect();
+            window.removeEventListener('scroll', handleScroll);
+        };
     }, []);
+
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    };
+
+    const handleSubscribe = (e) => {
+        e.preventDefault();
+        if (email.trim()) {
+            setSubscribed(true);
+            setEmail('');
+            setTimeout(() => setSubscribed(false), 5000);
+        }
+    };
 
     return (
         <footer className="Footer">
@@ -53,6 +88,55 @@ function Footer() {
                             <p className="footer-brand__tagline">
                                 Level up your developer career with senior mentors.
                             </p>
+
+                            {/* Newsletter form */}
+                            <div className="footer-newsletter" style={{ marginBottom: '24px' }}>
+                                <h5 className="footer-newsletter__title" style={{ fontSize: '0.9rem', fontWeight: '600', marginBottom: '10px', color: 'var(--text)' }}>
+                                    Join Our Newsletter
+                                </h5>
+                                {subscribed ? (
+                                    <div className="footer-newsletter__success" style={{ color: 'var(--success)', fontSize: '0.85rem', fontWeight: '500' }}>
+                                        🎉 Subscribed successfully!
+                                    </div>
+                                ) : (
+                                    <form className="footer-newsletter__form" onSubmit={handleSubscribe} style={{ display: 'flex', gap: '8px' }}>
+                                        <input
+                                            type="email"
+                                            placeholder="Enter your email"
+                                            required
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            className="footer-newsletter__input"
+                                            style={{
+                                                flex: 1,
+                                                padding: '8px 12px',
+                                                borderRadius: '8px',
+                                                border: '1px solid var(--border)',
+                                                fontSize: '0.8rem',
+                                                background: 'var(--surface)',
+                                                color: 'var(--text)'
+                                            }}
+                                        />
+                                        <button
+                                            type="submit"
+                                            className="footer-newsletter__btn"
+                                            style={{
+                                                padding: '8px 16px',
+                                                borderRadius: '8px',
+                                                background: 'var(--primary)',
+                                                color: 'white',
+                                                border: 'none',
+                                                cursor: 'pointer',
+                                                fontWeight: '600',
+                                                fontSize: '0.8rem'
+                                            }}
+                                        >
+                                            Join
+                                        </button>
+                                    </form>
+                                )}
+                            </div>
+
                             <div className="footer-social">
                                 <div className="Footer_icons">
                                     <a href="https://www.instagram.com/devcoaching.official/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
@@ -114,6 +198,16 @@ function Footer() {
                     Copyright © 2024 Dev Coaching | All rights reserved.
                 </p>
             </div>
+
+            {/* Scroll to Top Button */}
+            <button
+                type="button"
+                className={`scroll-to-top ${showScrollTop ? 'scroll-to-top--visible' : ''}`}
+                onClick={scrollToTop}
+                aria-label="Scroll to top"
+            >
+                <FiArrowUp />
+            </button>
         </footer>
     );
 }
