@@ -1,7 +1,7 @@
 import Button from '@mui/material/Button';
 import './Navbar.css';
 import { FiLogIn, FiLogOut, FiSun, FiMoon, FiShoppingBag } from "react-icons/fi";
-import devLogo from '../logo/devcoaching.png.logo.png';
+import devLogo from '../logo/logo.png';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useLayoutEffect, useRef, useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
