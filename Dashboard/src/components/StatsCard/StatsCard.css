@@ -1,0 +1,121 @@
+/* ============================================================
+   STATS CARD
+   ============================================================ */
+
+.stats-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 22px 22px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  transition: var(--transition);
+  cursor: default;
+  overflow: hidden;
+  position: relative;
+  animation: fadeInUp 0.4s ease;
+}
+
+.stats-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--icon-color, var(--brand-gradient));
+}
+
+.stats-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--brand-primary);
+}
+
+/* ---- Top row ---- */
+.stats-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 18px;
+}
+
+.stats-card-info { flex: 1; min-width: 0; }
+
+.stats-card-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.stats-card-value {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+
+/* ---- Trend ---- */
+.stats-card-trend {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.stats-card-trend.positive { color: var(--success); }
+.stats-card-trend.negative { color: var(--danger); }
+
+.trend-arrow { font-size: 0.9rem; }
+
+.trend-label {
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  margin-left: 2px;
+}
+
+/* ---- Icon ---- */
+.stats-card-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--icon-color, var(--brand-primary)) 15%, transparent);
+  color: var(--icon-color, var(--brand-primary));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  transition: var(--transition-bounce);
+}
+
+.stats-card:hover .stats-card-icon {
+  transform: scale(1.12) rotate(-8deg);
+}
+
+/* ---- Bottom bar ---- */
+.stats-card-bar {
+  height: 3px;
+  background: var(--border-color);
+  margin: 0 -22px;
+}
+
+.stats-card-bar-fill {
+  height: 100%;
+  width: 70%;
+  border-radius: var(--radius-full);
+  opacity: 0.6;
+  animation: expand-bar 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes expand-bar {
+  from { width: 0; }
+  to   { width: 70%; }
+}

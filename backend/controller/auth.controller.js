@@ -6,7 +6,7 @@ const { sendLoginEmail } = require('../utils/email');
 // Register a new user
 exports.register = async (req, res) => {
     try {
-        const { name, email, password } = req.body;
+        const { name, email, password, role } = req.body;
 
         // Validation
         if (!name || !email || !password) {
@@ -23,18 +23,23 @@ exports.register = async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
+        // Allowed roles (prevent role escalation from public API)
+        const allowedRoles = ['student', 'teacher'];
+        const assignedRole = allowedRoles.includes(role) ? role : 'student';
+
         // Create new user
         const newUser = new User({
             name,
             email,
-            password: hashedPassword
+            password: hashedPassword,
+            role: assignedRole
         });
 
         await newUser.save();
 
         // Create JWT token
         const token = jwt.sign(
-            { id: newUser._id, email: newUser.email, hasPurchasedCourse: newUser.hasPurchasedCourse, purchasedCourses: newUser.purchasedCourses || [] },
+            { id: newUser._id, email: newUser.email, role: newUser.role, hasPurchasedCourse: newUser.hasPurchasedCourse, purchasedCourses: newUser.purchasedCourses || [] },
             process.env.JWT_SECRET || 'devcoaching_secret_key',
             { expiresIn: '7d' }
         );
@@ -46,6 +51,7 @@ exports.register = async (req, res) => {
                 id: newUser._id,
                 name: newUser.name,
                 email: newUser.email,
+                role: newUser.role,
                 hasPurchasedCourse: newUser.hasPurchasedCourse,
                 purchasedCourses: newUser.purchasedCourses || []
             }
@@ -81,10 +87,14 @@ exports.login = async (req, res) => {
 
         // Create JWT token
         const token = jwt.sign(
-            { id: user._id, email: user.email, hasPurchasedCourse: user.hasPurchasedCourse, purchasedCourses: user.purchasedCourses || [] },
+            { id: user._id, email: user.email, role: user.role, hasPurchasedCourse: user.hasPurchasedCourse, purchasedCourses: user.purchasedCourses || [] },
             process.env.JWT_SECRET || 'devcoaching_secret_key',
             { expiresIn: '7d' }
         );
+
+        // Update lastLogin
+        user.lastLogin = new Date();
+        await user.save();
 
         // Send login notification email (non-blocking)
         sendLoginEmail(user.email, user.name);
@@ -96,6 +106,7 @@ exports.login = async (req, res) => {
                 id: user._id,
                 name: user.name,
                 email: user.email,
+                role: user.role,
                 hasPurchasedCourse: user.hasPurchasedCourse,
                 purchasedCourses: user.purchasedCourses || []
             }
