@@ -396,6 +396,19 @@
   animation: formFlipIn 0.5s ease;
 }
 
+.contact-error {
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  border-radius: 12px;
+  background: rgba(248, 113, 113, 0.1);
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  color: #f87171;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-align: center;
+  animation: formFlipIn 0.5s ease;
+}
+
 /* ── Responsive ── */
 
 @media (max-width: 991px) {

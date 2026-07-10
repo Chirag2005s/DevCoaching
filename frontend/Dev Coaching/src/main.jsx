@@ -18,6 +18,7 @@ import Careers from './screens/careers.jsx';
 import Login from './screens/Login.jsx';
 import Signup from './screens/Signup.jsx';
 import Dashboard from './screens/Dashboard.jsx';
+import Batch from './screens/Batch.jsx';
 import { AuthProvider } from './context/AuthContext.jsx';
 import { ThemeProvider } from './context/ThemeContext.jsx';
 import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom';
@@ -44,6 +45,7 @@ function AnimatedRoutes() {
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<Signup />} />
         <Route path='/dashboard' element={<Dashboard />} />
+        <Route path='/batches' element={<Batch />} />
         <Route path='*' element={<Navigate to='/' replace />} />
       </Routes>
     </div>

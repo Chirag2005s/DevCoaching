@@ -53,6 +53,34 @@ function Exam() {
         };
     }, []);
 
+    // Submit Quiz Answers
+    const handleQuizSubmit = (auto = false) => {
+        if (!auto && !window.confirm("Are you sure you want to submit your exam answers?")) {
+            return;
+        }
+
+        if (timerRef.current) clearInterval(timerRef.current);
+
+        // Calculate score based on totalQuestions and weighting
+        let correctCount = 0;
+        activeExam.questions.forEach((q, idx) => {
+            if (selectedAnswers[idx] === q.correctOptionIndex) {
+                correctCount++;
+            }
+        });
+
+        // 10 marks per question matching controller defaults
+        const marksPerQ = Math.round(activeExam.totalMarks / activeExam.questions.length);
+        const finalScore = correctCount * marksPerQ;
+
+        setScore(finalScore);
+        setIsQuizMode(false);
+        setIsResultsMode(true);
+        if (auto) {
+            alert("Time's up! Your exam has been auto-submitted.");
+        }
+    };
+
     // Timer implementation for active quiz
     useEffect(() => {
         if (isQuizMode && timeLeft > 0) {
@@ -60,7 +88,6 @@ function Exam() {
                 setTimeLeft((prev) => {
                     if (prev <= 1) {
                         clearInterval(timerRef.current);
-                        // Auto-submit
                         handleQuizSubmit(true);
                         return 0;
                     }
@@ -97,34 +124,6 @@ function Exam() {
             ...prev,
             [currentQIndex]: optionIndex
         }));
-    };
-
-    // Submit Quiz Answers
-    const handleQuizSubmit = (auto = false) => {
-        if (!auto && !window.confirm("Are you sure you want to submit your exam answers?")) {
-            return;
-        }
-
-        if (timerRef.current) clearInterval(timerRef.current);
-
-        // Calculate score based on totalQuestions and weighting
-        let correctCount = 0;
-        activeExam.questions.forEach((q, idx) => {
-            if (selectedAnswers[idx] === q.correctOptionIndex) {
-                correctCount++;
-            }
-        });
-
-        // 10 marks per question matching controller defaults
-        const marksPerQ = Math.round(activeExam.totalMarks / activeExam.questions.length);
-        const finalScore = correctCount * marksPerQ;
-
-        setScore(finalScore);
-        setIsQuizMode(false);
-        setIsResultsMode(true);
-        if (auto) {
-            alert("Time's up! Your exam has been auto-submitted.");
-        }
     };
 
     // Add another blank question fields in creation form

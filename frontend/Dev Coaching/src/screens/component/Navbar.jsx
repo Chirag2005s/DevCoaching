@@ -20,6 +20,7 @@ function Navbar() {
     const displayLinks = [
         // { to: '/', label: 'Home', end: true },
         { to: '/course', label: 'Course' },
+        { to: '/batches', label: 'Batches' },
         { to: '/notes', label: 'Notes' },
         { to: '/exams', label: 'Exams' },
         { to: '/join-live', label: 'Join Live' },

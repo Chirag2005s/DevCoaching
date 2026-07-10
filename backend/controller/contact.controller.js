@@ -1,51 +1,37 @@
-const { contact } = require("../models/contact.models.js")
+const { Contact } = require("../models/contact.models.js");
 
-
-
-//GET method
 const getContact = async (req, res) => {
-    const Message = await contact.find();
-
-    res.status(200).json({ message: Message });
-}
-
-
-
-
-
-// POST method
-const sendMessage = async (req, res) => {
-    const { name, email, subject, message } = req.body;
-    const Message = await contact.findOne({ message })
     try {
+        const messages = await Contact.find().sort({ createdAt: -1 });
+        res.status(200).json({ messages });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
 
-        if (!name || !email || !subject || !message) {
-            res.status(401).json({ message: `All fields required...` });
+const sendMessage = async (req, res) => {
+    try {
+        const { name, email, subject, message } = req.body;
+
+        if (!name?.trim() || !email?.trim() || !subject || !message?.trim()) {
+            return res.status(400).json({ message: "All fields are required." });
         }
 
-        if (Message) {
-            return res.json({ message: `Message is already sended...` });
-        }
-
-        const newContact = new contact({
-            name: req.body.name,
-            email: req.body.email,
-            subject: req.body.subject,
-            message: req.body.message
-        })
+        const newContact = new Contact({
+            name: name.trim(),
+            email: email.trim(),
+            subject,
+            message: message.trim(),
+        });
 
         await newContact.save();
 
-        res.status(201).json({ message: req.body });
-
+        res.status(201).json({
+            message: "Message sent successfully. We'll get back to you within 24 hours.",
+        });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
     }
-    catch (err) {
-        res.status(500).json({ message: `${err.message}` });
-    }
-}
-
-
-
-// Delete mehtod
+};
 
 module.exports = { sendMessage, getContact };

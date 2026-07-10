@@ -65,7 +65,8 @@ body,
 .join-live-page,
 .instructors-page,
 .login-page-container,
-.signup-page-container {
+.signup-page-container,
+.batch-page {
   background-color: var(--background) !important;
   background: var(--background) !important;
   color: var(--text) !important;

@@ -23,6 +23,7 @@ const teacherRouter = require('./router/teacher.router.js');
 // Note and Exam router Imports
 const noteRouter = require('./router/note.router.js');
 const examRouter = require('./router/exam.router.js');
+const batchRouter = require('./router/batch.router.js');
 
 // Auth router Import
 const authRouter = require('./router/auth.router.js');
@@ -51,6 +52,7 @@ app.use("/api", reviewRouter);
 app.use("/api", teacherRouter);
 app.use("/api", noteRouter);
 app.use("/api", examRouter);
+app.use("/api", batchRouter);
 app.use("/api/auth", authRouter);
 
 const PORT = process.env.PORT || 9000;

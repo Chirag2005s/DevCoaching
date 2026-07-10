@@ -254,7 +254,6 @@ function Contact() {
                                         type="submit"
                                         className="contact-form__submit"
                                         disabled={submitting}
-                                        onClick={handleSubmit}
                                     >
                                         {submitting ? "Sending..." : "Send Message"}
                                     </button>
