@@ -1,4 +1,4 @@
-import Button from '@mui/material/Button';
+﻿import Button from '@mui/material/Button';
 import './Navbar.css';
 import { FiLogIn, FiLogOut, FiSun, FiMoon, FiShoppingBag } from "react-icons/fi";
 import devLogo from '../logo/logo.png';
@@ -21,8 +21,7 @@ function Navbar() {
         // { to: '/', label: 'Home', end: true },
         { to: '/course', label: 'Course' },
         { to: '/batches', label: 'Batches' },
-        { to: '/notes', label: 'Notes' },
-        { to: '/exams', label: 'Exams' },
+        { to: '/resources', label: 'Resources' },
         { to: '/join-live', label: 'Join Live' },
         { to: '/instructors', label: 'Instructors' },
     ];
@@ -69,7 +68,7 @@ function Navbar() {
         <section className={`Nav_Section ${isSwitching ? 'Nav_Section--switching' : ''}`}>
             {/* Announcement Bar */}
             <div className="announcement-bar">
-                <span>🚀 Special Offer: Get 20% off on all courses this week! Use code: <strong>DEV20</strong> at checkout</span>
+                <span>ðŸš€ Special Offer: Get 20% off on all courses this week! Use code: <strong>DEV20</strong> at checkout</span>
             </div>
 
             <div className="nav-progress-bar" aria-hidden="true" />
@@ -169,3 +168,4 @@ function Navbar() {
 }
 
 export default Navbar;
+

@@ -9,6 +9,7 @@ function Exam() {
     const [search, setSearch] = useState('');
     const [isCreateOpen, setIsCreateOpen] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
+    const [isGenerating, setIsGenerating] = useState(false);
 
     // Quiz Player State
     const [isQuizMode, setIsQuizMode] = useState(false);
@@ -159,6 +160,52 @@ function Exam() {
             }
             return copy;
         });
+    };
+
+    const handleGenerateQuestions = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        if (file.size > 10 * 1024 * 1024) {
+            setErrorMsg("File size cannot exceed 10MB");
+            return;
+        }
+
+        const isImage = file.type.startsWith('image/');
+        const isPdf = file.type === 'application/pdf';
+
+        if (!isImage && !isPdf) {
+            setErrorMsg("Please upload a PDF or an Image.");
+            return;
+        }
+
+        const formData = new FormData();
+        const fieldName = isImage ? "image" : "pdf";
+        const endpoint = isImage ? "/api/exams/generate-from-image" : "/api/exams/generate-from-pdf";
+        formData.append(fieldName, file);
+
+        setIsGenerating(true);
+        setErrorMsg('');
+
+        try {
+            const res = await axios.post(`http://localhost:9000${endpoint}`, formData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            });
+            
+            if (res.data && res.data.questions && res.data.questions.length > 0) {
+                const currentIsEmpty = questions.length === 1 && !questions[0].questionText.trim();
+                if (currentIsEmpty) {
+                    setQuestions(res.data.questions);
+                } else {
+                    setQuestions([...questions, ...res.data.questions]);
+                }
+            }
+        } catch (error) {
+            setErrorMsg(error.response?.data?.message || "Failed to generate questions from file.");
+        } finally {
+            setIsGenerating(false);
+            e.target.value = null;
+        }
     };
 
     // Create Exam API Call
@@ -375,6 +422,37 @@ function Exam() {
                                     onChange={(e) => setDuration(e.target.value)}
                                     required
                                 />
+                            </div>
+
+                            {/* AI Generate Section */}
+                            <div className="ai-generate-card mb-3 p-3 rounded" style={{ backgroundColor: 'rgba(99, 102, 241, 0.1)', border: '1px solid rgba(99, 102, 241, 0.3)' }}>
+                                <div className="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                                    <div>
+                                        <h5 className="mb-1 d-flex align-items-center gap-2" style={{ color: '#818cf8', fontSize: '1.05rem', fontWeight: 600 }}>
+                                            ✨ Auto-Generate with AI
+                                        </h5>
+                                        <p className="mb-0 text-muted" style={{ fontSize: '0.85rem' }}>Upload a PDF or an Image (Notes/Diagram) and let AI generate multiple-choice questions.</p>
+                                    </div>
+                                    <div>
+                                        <label htmlFor="ai-pdf-upload" className="btn-create-exam btn-sm d-flex align-items-center gap-2" style={{ cursor: isGenerating ? 'not-allowed' : 'pointer', opacity: isGenerating ? 0.7 : 1, padding: '8px 16px', background: 'linear-gradient(135deg, #6366f1, #8b5cf6)', border: 'none', color: '#fff', borderRadius: '8px' }}>
+                                            {isGenerating ? (
+                                                <>
+                                                    <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Generating...
+                                                </>
+                                            ) : (
+                                                "Upload PDF / Image"
+                                            )}
+                                        </label>
+                                        <input 
+                                            type="file" 
+                                            id="ai-pdf-upload" 
+                                            accept=".pdf, image/*" 
+                                            style={{ display: 'none' }} 
+                                            onChange={handleGenerateQuestions}
+                                            disabled={isGenerating}
+                                        />
+                                    </div>
+                                </div>
                             </div>
 
                             <label className="form-label">Questions Builder</label>

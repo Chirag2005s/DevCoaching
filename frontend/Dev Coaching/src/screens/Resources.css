@@ -1,0 +1,129 @@
+﻿/* ── Resources Page ─────────────────────────────────────────────── */
+
+.resources-page {
+    min-height: 100vh;
+}
+
+.resources-hero {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 60%, #0f172a 100%);
+    border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+    padding: 3.5rem 0 0;
+    text-align: center;
+}
+
+.resources-hero__title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 900;
+    color: #f1f5f9;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.5px;
+}
+
+.resources-hero__title span {
+    background: linear-gradient(135deg, #6366f1, #06b6d4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.resources-hero__sub {
+    color: #94a3b8;
+    font-size: 1.05rem;
+    margin-bottom: 2rem;
+}
+
+/* ── Tab Switcher ───────────────────────────────────────────────── */
+.resources-tab-switcher {
+    display: inline-flex;
+    gap: 0;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px 14px 0 0;
+    overflow: hidden;
+    border-bottom: none;
+    margin-bottom: -1px;
+}
+
+.resources-tab {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.9rem 2rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #64748b;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: color 0.2s ease, background 0.2s ease;
+    white-space: nowrap;
+}
+
+.resources-tab:hover {
+    color: #cbd5e1;
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.resources-tab--active {
+    color: #f1f5f9;
+    background: rgba(99, 102, 241, 0.12);
+}
+
+.resources-tab__icon {
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.resources-tab--active .resources-tab__icon {
+    color: #6366f1;
+}
+
+.resources-tab__indicator {
+    position: absolute;
+    bottom: 0;
+    left: 10%;
+    width: 80%;
+    height: 3px;
+    background: linear-gradient(90deg, #6366f1, #06b6d4);
+    border-radius: 3px 3px 0 0;
+}
+
+/* ── Panel Visibility ───────────────────────────────────────────── */
+.resources-panel {
+    transition: opacity 0.25s ease;
+}
+
+.panel-visible {
+    display: block;
+    opacity: 1;
+    animation: fadeInPanel 0.25s ease;
+}
+
+.panel-hidden {
+    display: none;
+    opacity: 0;
+}
+
+@keyframes fadeInPanel {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Note/Exam pages already have their own top padding — remove double hero space */
+.resources-panel .note-page,
+.resources-panel .exam-page {
+    padding-top: 1.5rem;
+}
+
+/* Remove Note/Exam internal h1 title since Resources hero already has a heading */
+.resources-panel .note-header h1,
+.resources-panel .exam-header h1 {
+    display: none;
+}
+
+.resources-panel .note-header,
+.resources-panel .exam-header {
+    padding-top: 0;
+    margin-top: 0;
+}

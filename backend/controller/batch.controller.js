@@ -1,4 +1,5 @@
 const { Batch } = require("../models/batch.models.js");
+const User = require("../models/user.models.js");
 
 // GET all batches (with course name populated)
 const getBatches = async (req, res) => {
@@ -95,22 +96,71 @@ const deleteBatch = async (req, res) => {
     }
 };
 
-// PATCH enroll into a batch (increment enrolledCount)
+// PATCH enroll into a batch — requires auth, one-time per student
 const enrollBatch = async (req, res) => {
     try {
-        const batch = await Batch.findById(req.params.id);
+        const userId = req.user.id;
+        const batchId = req.params.id;
+
+        const batch = await Batch.findById(batchId);
         if (!batch) {
             return res.status(404).json({ message: "Batch not found" });
         }
+
+        if (batch.status === "Completed") {
+            return res.status(400).json({ message: "This batch is already completed" });
+        }
+
         if (batch.enrolledCount >= batch.maxSeats) {
             return res.status(400).json({ message: "Batch is full" });
         }
+
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // One-time enrollment guard
+        const alreadyEnrolled = user.enrolledBatches.some(
+            (id) => id.toString() === batchId
+        );
+        if (alreadyEnrolled) {
+            return res.status(409).json({ message: "You are already enrolled in this batch" });
+        }
+
+        // Enroll: increment batch count + save batchId in user
         batch.enrolledCount += 1;
         await batch.save();
-        res.status(200).json({ message: "Enrolled successfully", enrolledCount: batch.enrolledCount });
+
+        user.enrolledBatches.push(batchId);
+        await user.save();
+
+        res.status(200).json({
+            message: "Enrolled successfully",
+            enrolledCount: batch.enrolledCount
+        });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
 
-module.exports = { getBatches, getBatchById, createBatch, updateBatch, deleteBatch, enrollBatch };
+// GET my enrolled batches — requires auth
+const getMyBatches = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const user = await User.findById(userId).populate({
+            path: "enrolledBatches",
+            populate: { path: "courseId", select: "courseName Language" }
+        });
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        res.status(200).json({ batches: user.enrolledBatches || [] });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+module.exports = { getBatches, getBatchById, createBatch, updateBatch, deleteBatch, enrollBatch, getMyBatches };

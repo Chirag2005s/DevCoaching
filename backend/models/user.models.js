@@ -25,6 +25,10 @@ const userSchema = new mongoose.Schema({
     purchasedCourses: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Course'
+    }],
+    enrolledBatches: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Batch'
     }]
 }, { timestamps: true });
 

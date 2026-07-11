@@ -8,8 +8,8 @@ import { MdEmail, MdOutlineWatchLater } from "react-icons/md";
 import { FaArrowRightLong } from "react-icons/fa6";
 
 const CONTACT_INFO = [
-    { icon: FaLocationArrow, title: "Address", text: "123 Main St, Anytown, USA" },
-    { icon: FaPhoneAlt, title: "Phone", text: "+91 9876543210" },
+    { icon: FaLocationArrow, title: "Address", text: "Ahmedabad, Gujarat" },
+    { icon: FaPhoneAlt, title: "Phone", text: "+91 7023400611" },
     { icon: MdEmail, title: "Email", text: "coachingdev072@gmail.com" },
     { icon: MdOutlineWatchLater, title: "Working Hours", text: "Mon to Sat: 9:00 AM - 11:00 PM" },
 ];

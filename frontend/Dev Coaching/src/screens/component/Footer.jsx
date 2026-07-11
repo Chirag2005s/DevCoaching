@@ -144,7 +144,7 @@ function Footer() {
                                     </a>
                                 </div>
                                 <div className="Footer_icons">
-                                    <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                                    <a href="https://www.linkedin.com/company/dev-coaching/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
                                         <FaLinkedinIn className="Footer_icons_style" />
                                     </a>
                                 </div>
