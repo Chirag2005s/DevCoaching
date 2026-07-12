@@ -38,7 +38,7 @@ function Exam() {
 
     // Fetch exams
     const fetchExams = () => {
-        axios.get('http://localhost:9000/api/exams')
+        axios.get('https://devcoaching-83f2.onrender.com/api/exams')
             .then((res) => {
                 setExams(res.data?.exams || []);
             })
@@ -188,10 +188,10 @@ function Exam() {
         setErrorMsg('');
 
         try {
-            const res = await axios.post(`http://localhost:9000${endpoint}`, formData, {
+            const res = await axios.post(`https://devcoaching-83f2.onrender.com${endpoint}`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
-            
+
             if (res.data && res.data.questions && res.data.questions.length > 0) {
                 const currentIsEmpty = questions.length === 1 && !questions[0].questionText.trim();
                 if (currentIsEmpty) {
@@ -237,7 +237,7 @@ function Exam() {
         const totalMarks = questions.length * 10;
         const newExam = { title, subject, duration: Number(duration), questions, totalMarks };
 
-        axios.post('http://localhost:9000/api/exams', newExam)
+        axios.post('https://devcoaching-83f2.onrender.com/api/exams', newExam)
             .then(() => {
                 setTitle('');
                 setSubject('');
@@ -261,7 +261,7 @@ function Exam() {
     // Delete Exam API Call
     const handleDeleteExam = (id) => {
         if (window.confirm("Are you sure you want to delete this mock exam?")) {
-            axios.delete(`http://localhost:9000/api/exams/${id}`)
+            axios.delete(`https://devcoaching-83f2.onrender.com/api/exams/${id}`)
                 .then(() => {
                     fetchExams();
                 })
@@ -443,11 +443,11 @@ function Exam() {
                                                 "Upload PDF / Image"
                                             )}
                                         </label>
-                                        <input 
-                                            type="file" 
-                                            id="ai-pdf-upload" 
-                                            accept=".pdf, image/*" 
-                                            style={{ display: 'none' }} 
+                                        <input
+                                            type="file"
+                                            id="ai-pdf-upload"
+                                            accept=".pdf, image/*"
+                                            style={{ display: 'none' }}
                                             onChange={handleGenerateQuestions}
                                             disabled={isGenerating}
                                         />

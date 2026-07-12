@@ -11,7 +11,7 @@ import { FiExternalLink } from "react-icons/fi";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-const API = "http://localhost:9000/api";
+const API = "https://devcoaching-83f2.onrender.com/api";
 const STATUS_TABS = ["ALL", "Upcoming", "Ongoing", "Completed"];
 const TRACKS = ["FRONTEND", "PYTHON", "BACKEND", "UI/UX", "FULL STACK", "ROBOTICS"];
 

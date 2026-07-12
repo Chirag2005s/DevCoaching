@@ -14,9 +14,9 @@ function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
-        
+
         try {
-            const response = await fetch('http://localhost:9000/api/auth/login', {
+            const response = await fetch('https://devcoaching-83f2.onrender.com/api/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -44,19 +44,19 @@ function Login() {
     return (
         <div className="login-page-container">
             <div className="login-left">
-                <h1>Welcome Back<br/>To Your Path</h1>
+                <h1>Welcome Back<br />To Your Path</h1>
                 <p>Log in to pick up right where you left off. Access your notes, live classes, and keep advancing your skills.</p>
             </div>
-            
+
             <div className="login-right">
                 <div className="login-form-wrapper">
                     <div className="login-header">
                         <h2>Log In</h2>
                         <p>Welcome back! Please enter your details.</p>
                     </div>
-                    
+
                     {error && <div className="login-error">{error}</div>}
-                    
+
                     <form onSubmit={handleSubmit}>
                         <div className="input-group">
                             <label htmlFor="email">Email Address</label>
@@ -84,7 +84,7 @@ function Login() {
                             <FiLogIn className="btn-icon" /> Log In
                         </button>
                     </form>
-                    
+
                     <div className="login-footer">
                         <p>Don't have an account? <Link to="/signup">Sign Up</Link></p>
                     </div>

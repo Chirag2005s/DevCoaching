@@ -209,11 +209,11 @@ function Home() {
 
     useEffect(() => {
         axios
-            .get("http://localhost:9000/api/Course")
+            .get("https://devcoaching-83f2.onrender.com/api/Course")
             .then((res) => setCourse(res.data?.course || []));
 
         axios
-            .get("http://localhost:9000/api/Teacher")
+            .get("https://devcoaching-83f2.onrender.com/api/Teacher")
             .then((res) => {
                 const fetchedTeachers = res.data?.teachers || [];
                 const formatted = fetchedTeachers.map((t, index) => {

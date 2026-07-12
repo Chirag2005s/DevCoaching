@@ -16,7 +16,7 @@ import 'react-pdf/dist/Page/TextLayer.css';
 // Set PDF.js worker
 pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
-const API_BASE = 'http://localhost:9000/api';
+const API_BASE = 'https://devcoaching-83f2.onrender.com/api';
 
 function Note() {
     const [notes, setNotes] = useState([]);

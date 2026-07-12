@@ -34,7 +34,7 @@ function Instructors() {
     /* ── Fetch teachers ── */
     useEffect(() => {
         axios
-            .get('http://localhost:9000/api/Teacher')
+            .get('https://devcoaching-83f2.onrender.com/api/Teacher')
             .then((res) => {
                 const raw = res.data?.teachers || [];
                 const formatted = raw.map((t, i) => ({

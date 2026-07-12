@@ -14,9 +14,9 @@ function Signup() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
-        
+
         try {
-            const response = await fetch('http://localhost:9000/api/auth/register', {
+            const response = await fetch('https://devcoaching-83f2.onrender.com/api/auth/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -44,19 +44,19 @@ function Signup() {
     return (
         <div className="signup-page-container">
             <div className="signup-left">
-                <h1>Unlock Your<br/>Coding Potential</h1>
+                <h1>Unlock Your<br />Coding Potential</h1>
                 <p>Join Dev Coaching to master web development with world-class instructors, comprehensive notes, and live classes.</p>
             </div>
-            
+
             <div className="signup-right">
                 <div className="signup-form-wrapper">
                     <div className="signup-header">
                         <h2>Create Account</h2>
                         <p>Sign up to get started</p>
                     </div>
-                    
+
                     {error && <div className="signup-error">{error}</div>}
-                    
+
                     <form onSubmit={handleSubmit}>
                         <div className="input-group">
                             <label htmlFor="name">Full Name</label>
@@ -96,7 +96,7 @@ function Signup() {
                             Sign Up
                         </button>
                     </form>
-                    
+
                     <div className="signup-footer">
                         <p>Already have an account? <Link to="/login">Log In</Link></p>
                     </div>

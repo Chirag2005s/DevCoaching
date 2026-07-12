@@ -100,11 +100,11 @@ function CourseDetails() {
             try {
                 setLoading(true);
                 // Fetch single course
-                const courseRes = await axios.get(`http://localhost:9000/api/Course/${id}`);
+                const courseRes = await axios.get(`https://devcoaching-83f2.onrender.com0/api/Course/${id}`);
                 setCourse(courseRes.data?.course);
 
                 // Fetch reviews for course
-                const reviewsRes = await axios.get(`http://localhost:9000/api/reviews/${id}`);
+                const reviewsRes = await axios.get(`https://devcoaching-83f2.onrender.com/api/reviews/${id}`);
                 setReviews(reviewsRes.data?.reviews || []);
 
                 setLoading(false);
@@ -127,7 +127,7 @@ function CourseDetails() {
 
         try {
             setSubmittingReview(true);
-            const res = await axios.post('http://localhost:9000/api/reviews', {
+            const res = await axios.post('https://devcoaching-83f2.onrender.com/api/reviews', {
                 courseId: id,
                 studentName,
                 rating,
@@ -140,7 +140,7 @@ function CourseDetails() {
             setRating(5);
 
             // Reload reviews list
-            const reviewsRes = await axios.get(`http://localhost:9000/api/reviews/${id}`);
+            const reviewsRes = await axios.get(`https://devcoaching-83f2.onrender.com/api/reviews/${id}`);
             setReviews(reviewsRes.data?.reviews || []);
             setSubmittingReview(false);
         } catch (err) {
@@ -163,7 +163,7 @@ function CourseDetails() {
 
         try {
             setIsPurchasing(true);
-            const response = await fetch('http://localhost:9000/api/auth/purchase', {
+            const response = await fetch('https://devcoaching-83f2.onrender.com/api/auth/purchase', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -267,7 +267,7 @@ function CourseDetails() {
                                         </span>
                                     )}
                                 </div>
-                                <button 
+                                <button
                                     className={`enroll-action-btn ${free ? 'enroll-action-btn--free' : 'enroll-action-btn--premium'}`}
                                     onClick={handlePurchase}
                                     disabled={isPurchasing}

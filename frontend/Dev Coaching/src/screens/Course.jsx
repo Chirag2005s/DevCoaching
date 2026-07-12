@@ -19,7 +19,7 @@ function Course() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get("http://localhost:9000/api/Course")
+        axios.get("https://devcoaching-83f2.onrender.com/api/Course")
             .then((res) => {
                 setSubject(res.data?.course || []);
             })
