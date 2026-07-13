@@ -39,6 +39,11 @@ function Dashboard() {
                         {user.hasPurchasedCourse && (
                             <span className="dashboard-pro-badge">PRO MEMBER</span>
                         )}
+                        {user.enrollmentNumber && (
+                            <p className="mt-2 text-info" style={{ fontSize: '0.9rem' }}>
+                                <strong>Enrollment No:</strong> {user.enrollmentNumber}
+                            </p>
+                        )}
                     </div>
                 </div>
 

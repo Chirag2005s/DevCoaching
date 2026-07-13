@@ -24,9 +24,10 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem('token', authToken);
     };
 
-    const updateUserPurchaseStatus = (hasPurchased, newToken) => {
+    const updateUserPurchaseStatus = (hasPurchased, newToken, enrollmentNumber) => {
         if (user) {
             const updatedUser = { ...user, hasPurchasedCourse: hasPurchased };
+            if (enrollmentNumber) updatedUser.enrollmentNumber = enrollmentNumber;
             setUser(updatedUser);
             setToken(newToken);
             localStorage.setItem('user', JSON.stringify(updatedUser));

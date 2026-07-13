@@ -29,7 +29,11 @@ const userSchema = new mongoose.Schema({
     enrolledBatches: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Batch'
-    }]
+    }],
+    enrollmentNumber: {
+        type: String,
+        sparse: true
+    }
 }, { timestamps: true });
 
 const User = mongoose.model('User', userSchema);

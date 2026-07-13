@@ -173,6 +173,23 @@ function JoinLive() {
     const { user } = useContext(AuthContext);
     const navigate = useNavigate();
 
+    const [enrollmentInput, setEnrollmentInput] = useState("");
+    const [enrollError, setEnrollError] = useState("");
+    const [canJoin, setCanJoin] = useState(false);
+
+    const handleVerifyEnrollment = () => {
+        if (!user || !user.enrollmentNumber) {
+            setEnrollError("You don't have an enrollment number assigned.");
+            return;
+        }
+        if (enrollmentInput.trim() === user.enrollmentNumber) {
+            setCanJoin(true);
+            setEnrollError("");
+        } else {
+            setEnrollError("Invalid Enrollment Number.");
+        }
+    };
+
     // Set default active day to today's weekday name
     useEffect(() => {
         const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -327,18 +344,36 @@ function JoinLive() {
                                         <MdVideoCall className="g-meet-icon" />
                                     </div>
                                     <h4 className="meet-heading text-white">Join via Google Meet</h4>
-                                    <p className="meet-subtext">Click the link below to enter the classroom. Ensure your mic is muted on arrival.</p>
+                                    <p className="meet-subtext">Enter your Enrollment Number to enter the classroom. Ensure your mic is muted on arrival.</p>
 
-                                    <a
-                                        // href={ACTIVE_LIVE_CLASS.meetingLink}
-                                        href="https://meet.google.com/egf-hfsx-est"
-                                        target="_blank"
-                                        rel="noreferrer"
-                                        className="btn-join-meet"
-                                    >
-                                        <FaGoogle className="google-logo" />
-                                        <span>Enter Live Classroom</span>
-                                    </a>
+                                    {!canJoin ? (
+                                        <div className="enrollment-verification mt-3 text-start">
+                                            <label className="form-label text-white small">Enrollment Number</label>
+                                            <div className="d-flex flex-column gap-2">
+                                                <div className="d-flex gap-2">
+                                                    <input 
+                                                        type="text" 
+                                                        className="form-control bg-dark text-white border-secondary" 
+                                                        placeholder="e.g. DEV123456"
+                                                        value={enrollmentInput}
+                                                        onChange={(e) => setEnrollmentInput(e.target.value)}
+                                                    />
+                                                    <button className="btn btn-info px-3" onClick={handleVerifyEnrollment}>Verify</button>
+                                                </div>
+                                                {enrollError && <span className="text-danger small">{enrollError}</span>}
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <a
+                                            href="https://meet.google.com/egf-hfsx-est"
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            className="btn-join-meet mt-3 d-block text-center"
+                                        >
+                                            <FaGoogle className="google-logo" />
+                                            <span>Enter Live Classroom</span>
+                                        </a>
+                                    )}
 
                                     <div className="materials-download-row mt-3">
                                         <a href={ACTIVE_LIVE_CLASS.materials.github} target="_blank" rel="noreferrer" className="btn-material-link">

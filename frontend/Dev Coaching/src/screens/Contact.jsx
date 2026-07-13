@@ -83,7 +83,7 @@ function Contact() {
 
         setSubmitting(true);
         try {
-            const response = await fetch("/api/Contact", {
+            const response = await fetch("https://devcoaching-83f2.onrender.com/api/Contact", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

@@ -120,6 +120,11 @@ exports.purchaseCourse = async (req, res) => {
         
         user.hasPurchasedCourse = true;
         
+        if (!user.enrollmentNumber) {
+            // Auto-generate an enrollment number: DEV + 6 random digits
+            user.enrollmentNumber = "DEV" + Math.floor(100000 + Math.random() * 900000).toString();
+        }
+        
         if (courseId) {
             if (!user.purchasedCourses) {
                 user.purchasedCourses = [];
@@ -133,7 +138,7 @@ exports.purchaseCourse = async (req, res) => {
         
         // Return new token
         const token = jwt.sign(
-            { id: user._id, email: user.email, hasPurchasedCourse: user.hasPurchasedCourse, purchasedCourses: user.purchasedCourses },
+            { id: user._id, email: user.email, hasPurchasedCourse: user.hasPurchasedCourse, purchasedCourses: user.purchasedCourses, enrollmentNumber: user.enrollmentNumber },
             process.env.JWT_SECRET || 'devcoaching_secret_key',
             { expiresIn: '7d' }
         );
@@ -146,7 +151,8 @@ exports.purchaseCourse = async (req, res) => {
                 name: user.name,
                 email: user.email,
                 hasPurchasedCourse: user.hasPurchasedCourse,
-                purchasedCourses: user.purchasedCourses
+                purchasedCourses: user.purchasedCourses,
+                enrollmentNumber: user.enrollmentNumber
             }
         });
     } catch (error) {

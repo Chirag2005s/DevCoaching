@@ -87,6 +87,7 @@ function CourseDetails() {
     const { user, token, updateUserPurchaseStatus } = useContext(AuthContext);
     const [isPurchasing, setIsPurchasing] = useState(false);
     const [purchaseMsg, setPurchaseMsg] = useState(null);
+    const [teacher, setTeacher] = useState(null);
 
     // Form states
     const [studentName, setStudentName] = useState('');
@@ -100,8 +101,26 @@ function CourseDetails() {
             try {
                 setLoading(true);
                 // Fetch single course
-                const courseRes = await axios.get(`https://devcoaching-83f2.onrender.com0/api/Course/${id}`);
-                setCourse(courseRes.data?.course);
+                const courseRes = await axios.get(`https://devcoaching-83f2.onrender.com/api/Course/${id}`);
+                const courseData = courseRes.data?.course;
+                setCourse(courseData);
+
+                // Fetch Teachers
+                try {
+                    const teacherRes = await axios.get(`https://devcoaching-83f2.onrender.com/api/Teacher`);
+                    const teachers = teacherRes.data?.teachers || [];
+                    if (teachers.length > 0) {
+                        // try to find a teacher whose Title or Qualification matches the course language
+                        const lang = courseData?.Language?.toLowerCase() || '';
+                        let matchedTeacher = teachers.find(t => t.Title?.toLowerCase().includes(lang) || t.Discprition?.toLowerCase().includes(lang));
+                        if (!matchedTeacher) {
+                            matchedTeacher = teachers[0]; // fallback to first teacher
+                        }
+                        setTeacher(matchedTeacher);
+                    }
+                } catch (tErr) {
+                    console.error("Error fetching teachers", tErr);
+                }
 
                 // Fetch reviews for course
                 const reviewsRes = await axios.get(`https://devcoaching-83f2.onrender.com/api/reviews/${id}`);
@@ -168,13 +187,18 @@ function CourseDetails() {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
-                }
+                },
+                body: JSON.stringify({ courseId: id })
             });
 
             const data = await response.json();
             if (response.ok) {
-                updateUserPurchaseStatus(true, data.token);
-                setPurchaseMsg({ type: 'success', text: 'Course enrolled successfully! You now have full access to Live Classes.' });
+                const updatedEnrollmentNumber = data.user?.enrollmentNumber || user.enrollmentNumber;
+                updateUserPurchaseStatus(true, data.token, updatedEnrollmentNumber);
+                setPurchaseMsg({ 
+                    type: 'success', 
+                    text: `Course enrolled successfully! Your Enrollment Number is ${updatedEnrollmentNumber}. You now have full access to Live Classes.` 
+                });
             } else {
                 setPurchaseMsg({ type: 'error', text: data.message || 'Failed to enroll in course' });
             }
@@ -239,7 +263,7 @@ function CourseDetails() {
                                     <FaUser className="meta-icon text-info" />
                                     <div>
                                         <span className="meta-label">Instructor</span>
-                                        <span className="meta-val text-white">{course.Instructor || instructor}</span>
+                                        <span className="meta-val text-white">{teacher ? teacher.Name : (course.Instructor || instructor)}</span>
                                     </div>
                                 </div>
                                 {avgRating && (
@@ -315,16 +339,16 @@ function CourseDetails() {
                                 Your Instructor
                             </h3>
                             <div className="d-flex align-items-center gap-3 mt-3">
-                                <div className="instructor-avatar">
-                                    {instructor.split(' ').map(n => n[0]).join('')}
+                                <div className="instructor-avatar" style={teacher?.Logo ? { backgroundImage: `url(${teacher.Logo})`, backgroundSize: 'cover', backgroundPosition: 'center', color: 'transparent' } : {}}>
+                                    {!teacher?.Logo && (teacher ? teacher.Name.split(' ').map(n => n[0]).join('') : instructor.split(' ').map(n => n[0]).join(''))}
                                 </div>
                                 <div>
-                                    <h5 className="instructor-name text-white mb-1">{course.Instructor || instructor}</h5>
-                                    <p className="instructor-title text-info mb-0">Senior Software Mentor</p>
+                                    <h5 className="instructor-name text-white mb-1">{teacher ? teacher.Name : (course.Instructor || instructor)}</h5>
+                                    <p className="instructor-title text-info mb-0">{teacher ? teacher.Title : "Senior Software Mentor"}</p>
                                 </div>
                             </div>
                             <p className="instructor-bio text-secondary mt-3">
-                                Dedicated programming instructor and software engineer at Dev Coaching. Providing 1:1 chat support and live sessions to help code production-grade applications.
+                                {teacher ? teacher.Discprition : "Dedicated programming instructor and software engineer at Dev Coaching. Providing 1:1 chat support and live sessions to help code production-grade applications."}
                             </p>
                         </div>
                     </div>
