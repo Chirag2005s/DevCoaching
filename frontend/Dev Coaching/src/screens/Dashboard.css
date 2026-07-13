@@ -28,69 +28,216 @@
   font-size: 1.1rem;
 }
 
-/* User Profile Section */
-.profile-card {
+/* Dashboard Layout */
+.dashboard-content-layout {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+/* Student ID Card */
+.student-id-card {
+  background: linear-gradient(145deg, #1e293b, #0f172a);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+}
+
+.id-card-header {
+  background: #14daff;
+  color: #090d16;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 800;
+}
+
+.id-logo-text {
+  font-size: 1rem;
+  letter-spacing: 1px;
+}
+
+.id-title {
+  font-size: 0.8rem;
+  background: #090d16;
+  color: #14daff;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.id-card-body {
+  padding: 25px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.id-avatar-wrap {
+  position: relative;
+  margin-bottom: 15px;
+}
+
+.id-avatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #14daff, #3b82f6);
+  border: 3px solid #1e293b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  color: white;
+  font-weight: 800;
+}
+
+.id-pro-badge {
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fbbf24;
+  color: #090d16;
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 10px;
+  text-transform: uppercase;
+}
+
+.id-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 4px;
+}
+
+.id-email {
+  color: #94a3b8;
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+}
+
+.id-enrollment-box {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px dashed rgba(20, 218, 255, 0.3);
+  padding: 10px 15px;
+  border-radius: 8px;
+  width: 100%;
+}
+
+.enrollment-label {
+  display: block;
+  font-size: 0.7rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.enrollment-value {
+  display: block;
+  font-size: 1.2rem;
+  color: #14daff;
+  font-weight: 700;
+  margin-top: 4px;
+  letter-spacing: 2px;
+}
+
+.id-card-footer {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.id-barcode {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.2rem;
+  color: #64748b;
+  letter-spacing: 2px;
+}
+
+.id-validity {
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+/* Progress Report */
+.progress-report-card {
   background: rgba(17, 24, 39, 0.5);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 16px;
   padding: 30px;
-  display: flex;
-  align-items: center;
-  gap: 25px;
-  margin-bottom: 40px;
-  position: relative;
-  overflow: hidden;
-}
-
-.profile-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 4px;
   height: 100%;
-  background: linear-gradient(180deg, #14daff, #6366f1);
 }
 
-.profile-avatar {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #1e293b, #0f172a);
-  border: 2px solid #334155;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2.5rem;
-  color: #14daff;
-  font-weight: 800;
-}
-
-.profile-info h2 {
-  font-size: 1.8rem;
+.progress-title {
+  font-size: 1.4rem;
   font-weight: 700;
-  margin-bottom: 5px;
+  color: white;
+  margin-bottom: 25px;
+}
+
+.progress-item {
+  margin-bottom: 25px;
+}
+
+.progress-item:last-child {
+  margin-bottom: 0;
+}
+
+.progress-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.progress-label {
+  font-size: 0.95rem;
+  color: #e2e8f0;
+}
+
+.progress-percent {
+  font-size: 0.9rem;
+  font-weight: 700;
   color: white;
 }
 
-.profile-info p {
-  color: #94a3b8;
-  font-size: 1rem;
-  margin-bottom: 10px;
+.progress-track {
+  width: 100%;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
 }
 
-.dashboard-pro-badge {
-  display: inline-block;
-  background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
-  color: #090d16;
-  font-size: 0.75rem;
-  font-weight: 800;
-  padding: 4px 10px;
-  border-radius: 6px;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
+.progress-fill {
+  height: 100%;
+  border-radius: 10px;
+  transition: width 1s ease-in-out;
+}
+
+.fill-blue {
+  background: linear-gradient(90deg, #3b82f6, #14daff);
+}
+
+.fill-green {
+  background: linear-gradient(90deg, #10b981, #34d399);
+}
+
+.fill-purple {
+  background: linear-gradient(90deg, #8b5cf6, #c084fc);
 }
 
 /* Quick Links Grid */

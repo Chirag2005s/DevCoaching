@@ -13,17 +13,19 @@ const courseSchema = new mongoose.Schema({
     },
     Disp: {
         type: String,
-        required: true,
-        unique: true
+        required: true
     },
     Price: {
         type: Number,
-        required: true,
-        unique: true
+        required: true
     },
     CourseStatus: {
         type: String,
         enum: ['Free', 'Paid']
+    },
+    Topics: {
+        type: [String],
+        default: []
     }
 }, { timestamps: true });
 

@@ -33,7 +33,11 @@ const userSchema = new mongoose.Schema({
     enrollmentNumber: {
         type: String,
         sparse: true
-    }
+    },
+    completedTopics: [{
+        courseId: { type: mongoose.Schema.Types.ObjectId, ref: 'Course' },
+        topics: [String]
+    }]
 }, { timestamps: true });
 
 const User = mongoose.model('User', userSchema);

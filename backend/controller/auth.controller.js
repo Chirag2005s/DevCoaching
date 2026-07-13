@@ -34,7 +34,7 @@ exports.register = async (req, res) => {
 
         // Create JWT token
         const token = jwt.sign(
-            { id: newUser._id, email: newUser.email, hasPurchasedCourse: newUser.hasPurchasedCourse, purchasedCourses: newUser.purchasedCourses || [] },
+            { id: newUser._id, email: newUser.email, hasPurchasedCourse: newUser.hasPurchasedCourse, purchasedCourses: newUser.purchasedCourses || [], enrollmentNumber: newUser.enrollmentNumber, completedTopics: [] },
             process.env.JWT_SECRET || 'devcoaching_secret_key',
             { expiresIn: '7d' }
         );
@@ -47,7 +47,9 @@ exports.register = async (req, res) => {
                 name: newUser.name,
                 email: newUser.email,
                 hasPurchasedCourse: newUser.hasPurchasedCourse,
-                purchasedCourses: newUser.purchasedCourses || []
+                purchasedCourses: newUser.purchasedCourses || [],
+                enrollmentNumber: newUser.enrollmentNumber,
+                completedTopics: []
             }
         });
 
@@ -81,7 +83,7 @@ exports.login = async (req, res) => {
 
         // Create JWT token
         const token = jwt.sign(
-            { id: user._id, email: user.email, hasPurchasedCourse: user.hasPurchasedCourse, purchasedCourses: user.purchasedCourses || [] },
+            { id: user._id, email: user.email, hasPurchasedCourse: user.hasPurchasedCourse, purchasedCourses: user.purchasedCourses || [], enrollmentNumber: user.enrollmentNumber, completedTopics: user.completedTopics || [] },
             process.env.JWT_SECRET || 'devcoaching_secret_key',
             { expiresIn: '7d' }
         );
@@ -97,7 +99,9 @@ exports.login = async (req, res) => {
                 name: user.name,
                 email: user.email,
                 hasPurchasedCourse: user.hasPurchasedCourse,
-                purchasedCourses: user.purchasedCourses || []
+                purchasedCourses: user.purchasedCourses || [],
+                enrollmentNumber: user.enrollmentNumber,
+                completedTopics: user.completedTopics || []
             }
         });
 
@@ -138,7 +142,7 @@ exports.purchaseCourse = async (req, res) => {
         
         // Return new token
         const token = jwt.sign(
-            { id: user._id, email: user.email, hasPurchasedCourse: user.hasPurchasedCourse, purchasedCourses: user.purchasedCourses, enrollmentNumber: user.enrollmentNumber },
+            { id: user._id, email: user.email, hasPurchasedCourse: user.hasPurchasedCourse, purchasedCourses: user.purchasedCourses, enrollmentNumber: user.enrollmentNumber, completedTopics: user.completedTopics || [] },
             process.env.JWT_SECRET || 'devcoaching_secret_key',
             { expiresIn: '7d' }
         );
@@ -152,11 +156,63 @@ exports.purchaseCourse = async (req, res) => {
                 email: user.email,
                 hasPurchasedCourse: user.hasPurchasedCourse,
                 purchasedCourses: user.purchasedCourses,
-                enrollmentNumber: user.enrollmentNumber
+                enrollmentNumber: user.enrollmentNumber,
+                completedTopics: user.completedTopics || []
             }
         });
     } catch (error) {
         console.error("Purchase Error:", error);
         res.status(500).json({ message: "Server error during purchase", error: error.message });
+    }
+};
+
+// Toggle Topic completion progress
+exports.updateProgress = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const { courseId, topic } = req.body;
+
+        if (!courseId || !topic) {
+            return res.status(400).json({ message: "Course ID and Topic are required" });
+        }
+
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        if (!user.completedTopics) {
+            user.completedTopics = [];
+        }
+
+        let courseProgress = user.completedTopics.find(cp => cp.courseId.toString() === courseId.toString());
+        if (!courseProgress) {
+            courseProgress = { courseId, topics: [] };
+            user.completedTopics.push(courseProgress);
+        }
+
+        const topicIndex = courseProgress.topics.indexOf(topic);
+        if (topicIndex > -1) {
+            courseProgress.topics.splice(topicIndex, 1);
+        } else {
+            courseProgress.topics.push(topic);
+        }
+
+        await user.save();
+
+        const token = jwt.sign(
+            { id: user._id, email: user.email, hasPurchasedCourse: user.hasPurchasedCourse, purchasedCourses: user.purchasedCourses, enrollmentNumber: user.enrollmentNumber, completedTopics: user.completedTopics },
+            process.env.JWT_SECRET || 'devcoaching_secret_key',
+            { expiresIn: '7d' }
+        );
+
+        res.status(200).json({
+            message: "Progress updated successfully",
+            token,
+            completedTopics: user.completedTopics
+        });
+    } catch (error) {
+        console.error("Update Progress Error:", error);
+        res.status(500).json({ message: "Server error during progress update", error: error.message });
     }
 };

@@ -19,6 +19,14 @@ function Dashboard() {
 
     if (!user) return null;
 
+    // Compute overall course progress from completedTopics
+    const totalTopicsPerCourse = 5; // each course has 5 topics by default
+    const purchasedCount = user.purchasedCourses?.length || (user.hasPurchasedCourse ? 1 : 0);
+    const totalTopics = purchasedCount * totalTopicsPerCourse;
+    const totalCompleted = (user.completedTopics || []).reduce((sum, cp) => sum + (cp.topics?.length || 0), 0);
+    const overallPct = totalTopics > 0 ? Math.round((totalCompleted / totalTopics) * 100) : 0;
+    const overallLabel = `${totalCompleted}/${totalTopics}`;
+
     return (
         <div className="dashboard-page">
             <div className="container">
@@ -29,21 +37,77 @@ function Dashboard() {
                     <p className="dashboard-subtitle">Manage your learning journey and access your resources.</p>
                 </div>
 
-                <div className="profile-card">
-                    <div className="profile-avatar">
-                        {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                <div className="dashboard-content-layout">
+                    {/* Left Column: ID Card */}
+                    <div className="dashboard-left-col">
+                        <div className="student-id-card">
+                            <div className="id-card-header">
+                                <div className="id-logo-text">DEV COACHING</div>
+                                <div className="id-title">STUDENT ID</div>
+                            </div>
+                            <div className="id-card-body">
+                                <div className="id-avatar-wrap">
+                                    <div className="id-avatar">
+                                        {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                                    </div>
+                                    {user.hasPurchasedCourse && (
+                                        <span className="id-pro-badge">PRO</span>
+                                    )}
+                                </div>
+                                <div className="id-details">
+                                    <h2 className="id-name">{user.name}</h2>
+                                    <p className="id-email">{user.email}</p>
+                                    
+                                    <div className="id-enrollment-box">
+                                        <span className="enrollment-label">ENROLLMENT NO.</span>
+                                        <span className="enrollment-value">{user.enrollmentNumber || 'PENDING'}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="id-card-footer">
+                                <div className="id-barcode">
+                                    || |||| | ||| || |||| | | ||
+                                </div>
+                                <span className="id-validity">Valid: 2026-2027</span>
+                            </div>
+                        </div>
                     </div>
-                    <div className="profile-info">
-                        <h2>{user.name}</h2>
-                        <p>{user.email}</p>
-                        {user.hasPurchasedCourse && (
-                            <span className="dashboard-pro-badge">PRO MEMBER</span>
-                        )}
-                        {user.enrollmentNumber && (
-                            <p className="mt-2 text-info" style={{ fontSize: '0.9rem' }}>
-                                <strong>Enrollment No:</strong> {user.enrollmentNumber}
-                            </p>
-                        )}
+
+                    {/* Right Column: Progress Report */}
+                    <div className="dashboard-right-col">
+                        <div className="progress-report-card">
+                            <h3 className="progress-title">Academic Progress</h3>
+                            
+                            <div className="progress-item">
+                                <div className="progress-meta">
+                                    <span className="progress-label">Overall Course Completion</span>
+                                    <span className="progress-percent">{overallPct}% ({overallLabel} topics)</span>
+                                </div>
+                                <div className="progress-track">
+                                    <div className="progress-fill fill-blue" style={{ width: `${overallPct}%` }}></div>
+                                </div>
+                            </div>
+
+                            <div className="progress-item">
+                                <div className="progress-meta">
+                                    <span className="progress-label">Assignments Completed</span>
+                                    <span className="progress-percent">8/12</span>
+                                </div>
+                                <div className="progress-track">
+                                    <div className="progress-fill fill-green" style={{ width: '75%' }}></div>
+                                </div>
+                            </div>
+
+                            <div className="progress-item">
+                                <div className="progress-meta">
+                                    <span className="progress-label">Live Classes Attended</span>
+                                    <span className="progress-percent">14/20</span>
+                                </div>
+                                <div className="progress-track">
+                                    <div className="progress-fill fill-purple" style={{ width: '70%' }}></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

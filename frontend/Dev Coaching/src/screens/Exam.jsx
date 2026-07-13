@@ -1,10 +1,14 @@
 import './Exam.css';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 import axios from 'axios';
 import { MdAdd, MdDeleteOutline, MdOutlineClose, MdTimer, MdAssignment, MdCheckCircle, MdCancel, MdChevronLeft, MdChevronRight } from "react-icons/md";
 import { FiAward } from "react-icons/fi";
 
 function Exam() {
+    const { user } = useContext(AuthContext);
+    const navigate = useNavigate();
     const [exams, setExams] = useState([]);
     const [search, setSearch] = useState('');
     const [isCreateOpen, setIsCreateOpen] = useState(false);
@@ -53,6 +57,19 @@ function Exam() {
             if (timerRef.current) clearInterval(timerRef.current);
         };
     }, []);
+
+    // Redirect to login if user is not authenticated or hasn't purchased
+    useEffect(() => {
+        if (!user) {
+            navigate('/login');
+        } else if (!user.hasPurchasedCourse) {
+            navigate('/course'); // redirect to courses so they can buy
+        }
+    }, [user, navigate]);
+
+    if (!user || !user.hasPurchasedCourse) {
+        return null; // render nothing while redirecting
+    }
 
     // Submit Quiz Answers
     const handleQuizSubmit = (auto = false) => {

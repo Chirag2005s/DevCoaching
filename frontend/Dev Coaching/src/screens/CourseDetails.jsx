@@ -8,7 +8,7 @@ import { LiaRupeeSignSolid } from "react-icons/lia";
 import { IoChevronBackOutline } from "react-icons/io5";
 import { FcRating } from "react-icons/fc";
 import { IoSchool } from "react-icons/io5";
-import { FaBookOpen, FaUser, FaStar, FaRegStar } from "react-icons/fa";
+import { FaBookOpen, FaUser, FaStar, FaRegStar, FaCheckCircle } from "react-icons/fa";
 
 function isFreeCourse(course) {
     const status = course.CourseStatus?.toLowerCase?.();
@@ -84,10 +84,11 @@ function CourseDetails() {
     const [reviews, setReviews] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const { user, token, updateUserPurchaseStatus } = useContext(AuthContext);
+    const { user, token, updateUserPurchaseStatus, updateUserProgress } = useContext(AuthContext);
     const [isPurchasing, setIsPurchasing] = useState(false);
     const [purchaseMsg, setPurchaseMsg] = useState(null);
     const [teacher, setTeacher] = useState(null);
+    const [togglingTopic, setTogglingTopic] = useState(null);
 
     // Form states
     const [studentName, setStudentName] = useState('');
@@ -136,6 +137,36 @@ function CourseDetails() {
 
         fetchCourseData();
     }, [id]);
+
+    // Get completed topics for this course from user context
+    const getCompletedTopicsForCourse = () => {
+        if (!user?.completedTopics || !course?._id) return [];
+        const cp = user.completedTopics.find(cp => cp.courseId === course._id || cp.courseId?.toString() === course._id?.toString());
+        return cp?.topics || [];
+    };
+
+    const handleTopicToggle = async (topic) => {
+        if (!user || !user.hasPurchasedCourse || !course?._id) return;
+        setTogglingTopic(topic);
+        try {
+            const res = await fetch('https://devcoaching-83f2.onrender.com/api/auth/update-progress', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ courseId: course._id, topic })
+            });
+            const data = await res.json();
+            if (res.ok) {
+                updateUserProgress(data.completedTopics, data.token);
+            }
+        } catch (err) {
+            console.error('Error toggling topic:', err);
+        } finally {
+            setTogglingTopic(null);
+        }
+    };
 
     const handleReviewSubmit = async (e) => {
         e.preventDefault();
@@ -322,13 +353,47 @@ function CourseDetails() {
                             <p className="panel-desc text-secondary">
                                 This syllabus is structured by senior developers to ensure you get hands-on coding experience with modern industry standards.
                             </p>
+
+                            {/* Progress bar for enrolled students */}
+                            {user?.hasPurchasedCourse && (() => {
+                                const topicList = course.Topics && course.Topics.length > 0 ? course.Topics : topics;
+                                const completedList = getCompletedTopicsForCourse();
+                                const pct = topicList.length > 0 ? Math.round((completedList.length / topicList.length) * 100) : 0;
+                                return (
+                                    <div className="syllabus-progress-wrap mt-3 mb-3">
+                                        <div className="d-flex justify-content-between align-items-center mb-1">
+                                            <span className="small text-secondary">Your Progress</span>
+                                            <span className="small fw-bold text-info">{pct}% ({completedList.length}/{topicList.length} topics)</span>
+                                        </div>
+                                        <div className="progress-track">
+                                            <div className="progress-fill fill-blue" style={{ width: `${pct}%`, transition: 'width 0.5s ease' }}></div>
+                                        </div>
+                                    </div>
+                                );
+                            })()}
+
                             <ul className="syllabus-list mt-3">
-                                {(course.Topics && course.Topics.length > 0 ? course.Topics : topics).map((topic, i) => (
-                                    <li key={i} className="syllabus-item">
-                                        <span className="syllabus-number">0{i + 1}</span>
-                                        <span className="syllabus-text text-white">{topic}</span>
-                                    </li>
-                                ))}
+                                {(course.Topics && course.Topics.length > 0 ? course.Topics : topics).map((topic, i) => {
+                                    const completedList = getCompletedTopicsForCourse();
+                                    const isDone = completedList.includes(topic);
+                                    const isToggling = togglingTopic === topic;
+                                    return (
+                                        <li key={i} className={`syllabus-item ${isDone ? 'syllabus-item--done' : ''}`}>
+                                            <span className="syllabus-number">0{i + 1}</span>
+                                            <span className="syllabus-text text-white" style={{ flex: 1, textDecoration: isDone ? 'line-through' : 'none', opacity: isDone ? 0.6 : 1 }}>{topic}</span>
+                                            {user?.hasPurchasedCourse && (
+                                                <button
+                                                    className={`topic-check-btn ${isDone ? 'topic-check-btn--done' : ''}`}
+                                                    onClick={() => handleTopicToggle(topic)}
+                                                    disabled={isToggling}
+                                                    title={isDone ? 'Mark as incomplete' : 'Mark as complete'}
+                                                >
+                                                    {isToggling ? '...' : isDone ? <FaCheckCircle /> : <span className="topic-check-circle" />}
+                                                </button>
+                                            )}
+                                        </li>
+                                    );
+                                })}
                             </ul>
                         </div>
 

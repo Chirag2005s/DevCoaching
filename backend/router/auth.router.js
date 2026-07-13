@@ -12,4 +12,7 @@ router.post('/login', authController.login);
 // Purchase course route (Mock)
 router.post('/purchase', verifyToken, authController.purchaseCourse);
 
+// Update progress route
+router.post('/update-progress', verifyToken, authController.updateProgress);
+
 module.exports = router;

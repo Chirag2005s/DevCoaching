@@ -24,14 +24,27 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem('token', authToken);
     };
 
-    const updateUserPurchaseStatus = (hasPurchased, newToken, enrollmentNumber) => {
+    const updateUserPurchaseStatus = (hasPurchased, newToken, enrollmentNumber, completedTopics) => {
         if (user) {
             const updatedUser = { ...user, hasPurchasedCourse: hasPurchased };
             if (enrollmentNumber) updatedUser.enrollmentNumber = enrollmentNumber;
+            if (completedTopics) updatedUser.completedTopics = completedTopics;
             setUser(updatedUser);
             setToken(newToken);
             localStorage.setItem('user', JSON.stringify(updatedUser));
             localStorage.setItem('token', newToken);
+        }
+    };
+
+    const updateUserProgress = (completedTopics, newToken) => {
+        if (user) {
+            const updatedUser = { ...user, completedTopics };
+            setUser(updatedUser);
+            if (newToken) {
+                setToken(newToken);
+                localStorage.setItem('token', newToken);
+            }
+            localStorage.setItem('user', JSON.stringify(updatedUser));
         }
     };
 
@@ -43,7 +56,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, token, login, logout, updateUserPurchaseStatus }}>
+        <AuthContext.Provider value={{ user, token, login, logout, updateUserPurchaseStatus, updateUserProgress }}>
             {children}
         </AuthContext.Provider>
     );
