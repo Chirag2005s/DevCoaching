@@ -1,4 +1,4 @@
-﻿import { StrictMode } from "react";
+import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import Home from "./screens/Home.jsx";
@@ -17,6 +17,7 @@ import Login from "./screens/Login.jsx";
 import Signup from "./screens/Signup.jsx";
 import Dashboard from "./screens/Dashboard.jsx";
 import Batch from "./screens/Batch.jsx";
+import Attendance from "./screens/Attendance.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import { ThemeProvider } from "./context/ThemeContext.jsx";
 import { BrowserRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
@@ -46,6 +47,7 @@ function AnimatedRoutes() {
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/batches" element={<Batch />} />
+                <Route path="/attendance" element={<Attendance />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
         </div>

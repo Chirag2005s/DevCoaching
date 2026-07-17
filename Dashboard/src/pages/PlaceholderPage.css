@@ -1,0 +1,30 @@
+.placeholder-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 140px); /* Adjust based on topbar and padding */
+}
+
+.placeholder-content {
+  text-align: center;
+  background-color: var(--card-bg);
+  border: 1px dashed var(--border-color);
+  padding: 60px;
+  border-radius: 16px;
+  backdrop-filter: blur(12px);
+  max-width: 500px;
+}
+
+.placeholder-icon {
+  color: var(--warning);
+  margin-bottom: 20px;
+}
+
+.placeholder-content h1 {
+  margin-bottom: 12px;
+  font-size: 1.8rem;
+}
+
+.placeholder-content p {
+  color: var(--text-secondary);
+}

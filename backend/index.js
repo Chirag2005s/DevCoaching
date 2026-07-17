@@ -24,6 +24,8 @@ const teacherRouter = require('./router/teacher.router.js');
 const noteRouter = require('./router/note.router.js');
 const examRouter = require('./router/exam.router.js');
 const batchRouter = require('./router/batch.router.js');
+const attendanceRouter = require('./router/attendance.router.js');
+const statsRouter = require('./router/stats.router.js');
 
 // Auth router Import
 const authRouter = require('./router/auth.router.js');
@@ -53,6 +55,8 @@ app.use("/api", teacherRouter);
 app.use("/api", noteRouter);
 app.use("/api", examRouter);
 app.use("/api", batchRouter);
+app.use("/api", attendanceRouter);
+app.use("/api", statsRouter);
 app.use("/api/auth", authRouter);
 
 const PORT = process.env.PORT || 9000;

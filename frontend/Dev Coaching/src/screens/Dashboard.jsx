@@ -1,7 +1,7 @@
 import { useContext, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
-import { FaLaptopCode, FaBookOpen, FaClipboardList, FaVideo } from 'react-icons/fa';
+import { FaLaptopCode, FaBookOpen, FaClipboardList, FaVideo, FaHistory } from 'react-icons/fa';
 import './Dashboard.css';
 
 function Dashboard() {
@@ -142,6 +142,14 @@ function Dashboard() {
                         </div>
                         <h3>Live Classes</h3>
                         <p>Join interactive live sessions with instructors.</p>
+                    </Link>
+
+                    <Link to="/attendance" className="dashboard-card">
+                        <div className="dashboard-card-icon icon-attendance" style={{ color: '#8b5cf6', backgroundColor: 'rgba(139, 92, 246, 0.1)' }}>
+                            <FaHistory />
+                        </div>
+                        <h3>My Attendance</h3>
+                        <p>Track your class attendance and history.</p>
                     </Link>
                 </div>
             </div>
