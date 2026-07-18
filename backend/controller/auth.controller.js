@@ -2,11 +2,49 @@ const User = require('../models/user.models');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { sendLoginEmail } = require('../utils/email');
+const AccessLog = require('../models/accessLog.models');
+
+function getDeviceType(userAgentString) {
+    if (!userAgentString) return 'Bot/Unknown';
+    const ua = userAgentString.toLowerCase();
+    if (ua.includes('bot') || ua.includes('crawler') || ua.includes('spider')) {
+        return 'Bot/Unknown';
+    }
+    if (ua.includes('ipad') || (ua.includes('android') && !ua.includes('mobile'))) {
+        return 'Tablet';
+    }
+    if (ua.includes('iphone') || ua.includes('mobile') || ua.includes('ipod')) {
+        return 'Mobile';
+    }
+    return 'Desktop';
+}
+
+async function recordAccessLog({ req, email, name, userId, action, status, reason }) {
+    try {
+        const ipAddress = req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress || '127.0.0.1';
+        const userAgent = req.headers['user-agent'] || 'Unknown';
+        const deviceType = getDeviceType(userAgent);
+        
+        await AccessLog.create({
+            userId,
+            name,
+            email,
+            status,
+            action,
+            reason,
+            ipAddress,
+            userAgent,
+            deviceType
+        });
+    } catch (error) {
+        console.error("Failed to record access log:", error);
+    }
+}
 
 // Register a new user
 exports.register = async (req, res) => {
     try {
-        const { name, email, password } = req.body;
+        const { name, email, password, role } = req.body;
 
         // Validation
         if (!name || !email || !password) {
@@ -27,17 +65,28 @@ exports.register = async (req, res) => {
         const newUser = new User({
             name,
             email,
-            password: hashedPassword
+            password: hashedPassword,
+            role: role || 'student'
         });
 
         await newUser.save();
 
         // Create JWT token
         const token = jwt.sign(
-            { id: newUser._id, email: newUser.email, hasPurchasedCourse: newUser.hasPurchasedCourse, purchasedCourses: newUser.purchasedCourses || [], enrollmentNumber: newUser.enrollmentNumber, completedTopics: [] },
+            { id: newUser._id, email: newUser.email, hasPurchasedCourse: newUser.hasPurchasedCourse, purchasedCourses: newUser.purchasedCourses || [], enrollmentNumber: newUser.enrollmentNumber, completedTopics: [], role: newUser.role },
             process.env.JWT_SECRET || 'devcoaching_secret_key',
             { expiresIn: '7d' }
         );
+
+        // Record successful registration log
+        await recordAccessLog({
+            req,
+            email: newUser.email,
+            name: newUser.name,
+            userId: newUser._id,
+            action: 'registration',
+            status: 'success'
+        });
 
         res.status(201).json({
             message: "User registered successfully",
@@ -49,12 +98,23 @@ exports.register = async (req, res) => {
                 hasPurchasedCourse: newUser.hasPurchasedCourse,
                 purchasedCourses: newUser.purchasedCourses || [],
                 enrollmentNumber: newUser.enrollmentNumber,
-                completedTopics: []
+                completedTopics: [],
+                role: newUser.role
             }
         });
 
     } catch (error) {
         console.error("Register Error:", error);
+        // Record failed registration
+        await recordAccessLog({
+            req,
+            email: req.body.email || 'unknown',
+            name: req.body.name || 'Unknown',
+            userId: null,
+            action: 'registration',
+            status: 'failed',
+            reason: error.message || 'unknown_error'
+        });
         res.status(500).json({ message: "Server error during registration", error: error.message });
     }
 };
@@ -72,24 +132,52 @@ exports.login = async (req, res) => {
         // Find user
         const user = await User.findOne({ email });
         if (!user) {
+            await recordAccessLog({
+                req,
+                email,
+                name: 'Unknown',
+                userId: null,
+                action: 'login',
+                status: 'failed',
+                reason: 'user_not_found'
+            });
             return res.status(401).json({ message: "Invalid credentials" });
         }
 
         // Compare password
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
+            await recordAccessLog({
+                req,
+                email: user.email,
+                name: user.name,
+                userId: user._id,
+                action: 'login',
+                status: 'failed',
+                reason: 'invalid_password'
+            });
             return res.status(401).json({ message: "Invalid credentials" });
         }
 
         // Create JWT token
         const token = jwt.sign(
-            { id: user._id, email: user.email, hasPurchasedCourse: user.hasPurchasedCourse, purchasedCourses: user.purchasedCourses || [], enrollmentNumber: user.enrollmentNumber, completedTopics: user.completedTopics || [] },
+            { id: user._id, email: user.email, hasPurchasedCourse: user.hasPurchasedCourse, purchasedCourses: user.purchasedCourses || [], enrollmentNumber: user.enrollmentNumber, completedTopics: user.completedTopics || [], role: user.role },
             process.env.JWT_SECRET || 'devcoaching_secret_key',
             { expiresIn: '7d' }
         );
 
         // Send login notification email (non-blocking)
         sendLoginEmail(user.email, user.name);
+
+        // Record successful login
+        await recordAccessLog({
+            req,
+            email: user.email,
+            name: user.name,
+            userId: user._id,
+            action: 'login',
+            status: 'success'
+        });
 
         res.status(200).json({
             message: "Logged in successfully",
@@ -101,12 +189,22 @@ exports.login = async (req, res) => {
                 hasPurchasedCourse: user.hasPurchasedCourse,
                 purchasedCourses: user.purchasedCourses || [],
                 enrollmentNumber: user.enrollmentNumber,
-                completedTopics: user.completedTopics || []
+                completedTopics: user.completedTopics || [],
+                role: user.role
             }
         });
 
     } catch (error) {
         console.error("Login Error:", error);
+        await recordAccessLog({
+            req,
+            email: req.body.email || 'unknown',
+            name: 'Unknown',
+            userId: null,
+            action: 'login',
+            status: 'failed',
+            reason: error.message || 'unknown_error'
+        });
         res.status(500).json({ message: "Server error during login", error: error.message });
     }
 };
@@ -142,7 +240,7 @@ exports.purchaseCourse = async (req, res) => {
         
         // Return new token
         const token = jwt.sign(
-            { id: user._id, email: user.email, hasPurchasedCourse: user.hasPurchasedCourse, purchasedCourses: user.purchasedCourses, enrollmentNumber: user.enrollmentNumber, completedTopics: user.completedTopics || [] },
+            { id: user._id, email: user.email, hasPurchasedCourse: user.hasPurchasedCourse, purchasedCourses: user.purchasedCourses, enrollmentNumber: user.enrollmentNumber, completedTopics: user.completedTopics || [], role: user.role },
             process.env.JWT_SECRET || 'devcoaching_secret_key',
             { expiresIn: '7d' }
         );
@@ -201,7 +299,7 @@ exports.updateProgress = async (req, res) => {
         await user.save();
 
         const token = jwt.sign(
-            { id: user._id, email: user.email, hasPurchasedCourse: user.hasPurchasedCourse, purchasedCourses: user.purchasedCourses, enrollmentNumber: user.enrollmentNumber, completedTopics: user.completedTopics },
+            { id: user._id, email: user.email, hasPurchasedCourse: user.hasPurchasedCourse, purchasedCourses: user.purchasedCourses, enrollmentNumber: user.enrollmentNumber, completedTopics: user.completedTopics, role: user.role },
             process.env.JWT_SECRET || 'devcoaching_secret_key',
             { expiresIn: '7d' }
         );

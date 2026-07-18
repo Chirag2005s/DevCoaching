@@ -21,3 +21,17 @@ exports.verifyToken = (req, res, next) => {
         res.status(401).json({ message: 'Token is not valid' });
     }
 };
+
+exports.verifyAdmin = (req, res, next) => {
+    if (!req.user || (req.user.role !== 'admin' && req.user.role !== 'superadmin')) {
+        return res.status(403).json({ message: 'Access denied: Admin permissions required' });
+    }
+    next();
+};
+
+exports.verifySuperAdmin = (req, res, next) => {
+    if (!req.user || req.user.role !== 'superadmin') {
+        return res.status(403).json({ message: 'Access denied: Super Admin permissions required' });
+    }
+    next();
+};

@@ -25,7 +25,7 @@ export default function SignupPage() {
 
     setLoading(true);
     try {
-      const res = await api.post('/auth/register', { name, email, password });
+      const res = await api.post('/auth/register', { name, email, password, role: 'admin' });
       if (res.data.token && res.data.user) {
         login(res.data.user, res.data.token);
         navigate('/');

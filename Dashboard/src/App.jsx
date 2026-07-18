@@ -14,7 +14,8 @@ import {
   ShieldCheck, 
   Settings,
   Mail,
-  User
+  User,
+  History
 } from 'lucide-react';
 import { AuthProvider, useAuth } from './hooks/AuthContext';
 import LoginPage from './pages/auth/LoginPage';
@@ -29,6 +30,7 @@ import CoursesPage from './pages/CoursesPage';
 import BatchesPage from './pages/BatchesPage';
 import ExamsPage from './pages/ExamsPage';
 import ContactPage from './pages/ContactPage';
+import AccessLogsPage from './pages/AccessLogsPage';
 import PlaceholderPage from './pages/PlaceholderPage';
 import './App.css';
 
@@ -117,6 +119,10 @@ function AppContent() {
             </NavLink>
 
             <div className="nav-group-title">System</div>
+            <NavLink to="/access-logs" className={({ isActive }) => (isActive ? 'nav-item active' : 'nav-item')}>
+              <History className="nav-icon" />
+              <span>Access Logs</span>
+            </NavLink>
             <NavLink to="/notifications" className={({ isActive }) => (isActive ? 'nav-item active' : 'nav-item')}>
               <Bell className="nav-icon" />
               <span>Notifications</span>
@@ -152,6 +158,7 @@ function AppContent() {
             <Routes>
               {/* Active Routes */}
               <Route path="/" element={<DashboardOverview />} />
+              <Route path="/access-logs" element={<AccessLogsPage />} />
               <Route path="/attendance" element={<AttendanceTracker />} />
               <Route path="/instructor-check" element={<InstructorCheck />} />
               <Route path="/students" element={<StudentsPage />} />

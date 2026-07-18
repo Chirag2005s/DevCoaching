@@ -37,7 +37,12 @@ const userSchema = new mongoose.Schema({
     completedTopics: [{
         courseId: { type: mongoose.Schema.Types.ObjectId, ref: 'Course' },
         topics: [String]
-    }]
+    }],
+    role: {
+        type: String,
+        enum: ['student', 'admin', 'superadmin'],
+        default: 'student'
+    }
 }, { timestamps: true });
 
 const User = mongoose.model('User', userSchema);
