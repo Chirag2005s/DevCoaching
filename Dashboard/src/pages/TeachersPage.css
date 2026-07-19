@@ -1,0 +1,377 @@
+/* ═══════════════════════════════════════════════════════════════
+   Teachers Page — Premium Card UI
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Page Icon ───────────────────────────────────────────────── */
+.tcp-page-icon {
+  width: 46px; height: 46px; border-radius: 13px;
+  background: rgba(139, 92, 246, 0.15);
+  border: 1px solid rgba(139, 92, 246, 0.25);
+  color: #8b5cf6;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ── Stats Row ───────────────────────────────────────────────── */
+.tcp-stats-row {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.tcp-stat-pill {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  border-radius: 14px;
+  background: var(--card-bg);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  flex: 1;
+  min-width: 130px;
+  backdrop-filter: blur(12px);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.tcp-stat-pill:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+
+.tcp-stat-pill > svg { flex-shrink: 0; }
+
+.tcp-stat-pill div { display: flex; flex-direction: column; gap: 2px; }
+.tcp-stat-val { font-size: 1.4rem; font-weight: 800; line-height: 1; }
+.tcp-stat-lbl { font-size: 0.7rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+
+.tcp-stat-blue  { border-left: 3px solid #3b82f6; }
+.tcp-stat-blue  svg, .tcp-stat-blue  .tcp-stat-val { color: #3b82f6; }
+.tcp-stat-green { border-left: 3px solid #10b981; }
+.tcp-stat-green svg, .tcp-stat-green .tcp-stat-val { color: #10b981; }
+.tcp-stat-red   { border-left: 3px solid #ef4444; }
+.tcp-stat-red   svg, .tcp-stat-red   .tcp-stat-val { color: #ef4444; }
+.tcp-stat-amber { border-left: 3px solid #f59e0b; }
+.tcp-stat-amber svg, .tcp-stat-amber .tcp-stat-val { color: #f59e0b; }
+
+/* ── Filter Row ──────────────────────────────────────────────── */
+.tcp-filter-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.tcp-search {
+  flex: 1;
+  min-width: 240px;
+}
+
+.tcp-filter-tabs {
+  display: flex;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  padding: 5px;
+  border-radius: 12px;
+}
+
+.tcp-tab {
+  padding: 7px 16px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s;
+  white-space: nowrap;
+}
+.tcp-tab:hover { background: rgba(255, 255, 255, 0.06); color: var(--text-primary); }
+.tcp-tab-active {
+  background: var(--accent-primary) !important;
+  color: white !important;
+  box-shadow: 0 3px 10px rgba(59, 130, 246, 0.3);
+}
+
+/* ── Cards Grid ──────────────────────────────────────────────── */
+.tcp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 18px;
+}
+
+/* ── Teacher Card ────────────────────────────────────────────── */
+.tcp-card {
+  position: relative;
+  background: var(--card-bg);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 18px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+  transition: transform 0.22s, box-shadow 0.22s, border-color 0.22s;
+}
+
+.tcp-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.25);
+}
+
+.tcp-card-active  { border-color: rgba(16, 185, 129, 0.18); }
+.tcp-card-inactive { border-color: rgba(239, 68, 68, 0.14); }
+
+.tcp-card-active:hover  { border-color: rgba(16, 185, 129, 0.35); }
+.tcp-card-inactive:hover { border-color: rgba(239, 68, 68, 0.3); }
+
+/* Colored strip at top of card */
+.tcp-card-strip {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  border-radius: 18px 18px 0 0;
+}
+.strip-active   { background: linear-gradient(to right, #10b981, #059669); }
+.strip-inactive { background: linear-gradient(to right, #ef4444, #dc2626); }
+
+/* ── Card Header ─────────────────────────────────────────────── */
+.tcp-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  padding-top: 4px;
+}
+
+/* Avatar */
+.tcp-avatar-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.tcp-avatar-img {
+  width: 58px; height: 58px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+.tcp-avatar-fallback {
+  width: 58px; height: 58px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem; font-weight: 800; color: white;
+}
+
+.tcp-avatar-ring {
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  pointer-events: none;
+}
+.ring-active   { border-color: #10b981; box-shadow: 0 0 10px rgba(16,185,129,0.4); }
+.ring-inactive { border-color: #ef4444; box-shadow: 0 0 10px rgba(239,68,68,0.3); }
+
+/* Title block */
+.tcp-card-title { flex: 1; min-width: 0; }
+.tcp-name {
+  font-size: 1rem; font-weight: 700;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  margin-bottom: 2px;
+}
+.tcp-title {
+  font-size: 0.77rem; color: var(--text-secondary);
+  margin-bottom: 6px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* Star Rating */
+.tcp-stars {
+  display: flex; align-items: center; gap: 2px;
+}
+.tcp-rating-num {
+  font-size: 0.78rem; font-weight: 700; color: #f59e0b;
+  margin-left: 4px;
+}
+
+/* Status badge (top-right of header) */
+.tcp-status-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 0.68rem; font-weight: 700; padding: 4px 9px;
+  border-radius: 20px; white-space: nowrap; flex-shrink: 0;
+  text-transform: uppercase; letter-spacing: 0.04em;
+}
+.tcp-badge-active {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+.tcp-badge-inactive {
+  background: rgba(239, 68, 68, 0.12);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.25);
+}
+
+/* ── Divider ─────────────────────────────────────────────────── */
+.tcp-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* ── Meta Grid ───────────────────────────────────────────────── */
+.tcp-meta-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 12px;
+}
+
+.tcp-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow: hidden;
+}
+.tcp-meta-item.full { grid-column: 1 / -1; }
+
+.tcp-meta-icon { color: var(--text-secondary); flex-shrink: 0; }
+.tcp-meta-label {
+  font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.05em; color: var(--text-secondary); flex-shrink: 0;
+}
+.tcp-meta-value {
+  font-size: 0.8rem; color: var(--text-primary);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.tcp-meta-value.mono { font-family: 'Courier New', Courier, monospace; }
+
+/* ── Bio ─────────────────────────────────────────────────────── */
+.tcp-bio {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  cursor: help;
+}
+
+/* ── Card Actions ────────────────────────────────────────────── */
+.tcp-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+}
+
+/* Toggle button — primary action */
+.tcp-toggle-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 9px 14px;
+  border-radius: 10px;
+  border: none;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+/* Activate (currently inactive) */
+.tcp-toggle-activate {
+  background: rgba(16, 185, 129, 0.12);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.25);
+}
+.tcp-toggle-activate:hover:not(:disabled) {
+  background: rgba(16, 185, 129, 0.22);
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.2);
+  transform: translateY(-1px);
+}
+
+/* Deactivate (currently active) */
+.tcp-toggle-deactivate {
+  background: rgba(245, 158, 11, 0.1);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.25);
+}
+.tcp-toggle-deactivate:hover:not(:disabled) {
+  background: rgba(245, 158, 11, 0.2);
+  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.2);
+  transform: translateY(-1px);
+}
+
+.tcp-toggle-btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+
+/* Delete button */
+.tcp-delete-btn {
+  padding: 9px 12px;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+/* ── Toast ───────────────────────────────────────────────────── */
+.tcp-toast {
+  position: fixed; bottom: 28px; right: 28px; z-index: 9999;
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 20px; border-radius: 12px;
+  font-size: 0.88rem; font-weight: 500;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(10px);
+  animation: tcp-toast-in 0.28s ease;
+}
+
+@keyframes tcp-toast-in {
+  from { transform: translateY(14px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.tcp-toast-success {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+.tcp-toast-warn {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+.tcp-toast-error {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* ── Confirm Modal Overrides ─────────────────────────────────── */
+.tcp-confirm-box {
+  background: #0f172a !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65) !important;
+  border-radius: 18px !important;
+}
+
+.tcp-confirm-icon {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: rgba(239, 68, 68, 0.12);
+  border: 2px solid rgba(239, 68, 68, 0.25);
+  color: #ef4444;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 16px;
+}
+
+/* ── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .tcp-grid { grid-template-columns: 1fr; }
+  .tcp-stats-row { flex-direction: column; }
+  .tcp-filter-row { flex-direction: column; align-items: stretch; }
+  .tcp-filter-tabs { justify-content: center; }
+}
