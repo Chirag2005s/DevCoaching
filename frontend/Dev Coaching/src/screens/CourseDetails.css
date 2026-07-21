@@ -1,0 +1,565 @@
+/* ── Page Wrapper ── */
+.course-details-page {
+    background-color: #090d16;
+    min-height: 100vh;
+    padding: 120px 0 80px;
+    color: white;
+}
+
+/* ── Buttons & Back Button ── */
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    padding: 8px 16px;
+    color: #94a3b8;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.back-btn:hover {
+    background: rgba(20, 218, 255, 0.08);
+    border-color: #14daff;
+    color: #14daff;
+    transform: translateX(-4px);
+    box-shadow: 0 0 15px rgba(20, 218, 255, 0.15);
+}
+
+/* ── Loading and Error containers ── */
+.course-details-loading-container,
+.course-details-error-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    background-color: #090d16;
+    color: white;
+    padding: 40px;
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 3px solid rgba(20, 218, 255, 0.1);
+    border-top-color: #14daff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.course-details-error-container h2 {
+    color: #ef4444;
+    margin-bottom: 15px;
+}
+
+.course-details-error-container p {
+    color: #94a3b8;
+    margin-bottom: 25px;
+}
+
+/* ── Course Header Card ── */
+.course-details-header-card {
+    position: relative;
+    background: linear-gradient(135deg, rgba(17, 24, 39, 0.6) 0%, rgba(15, 23, 42, 0.4) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    padding: 40px;
+    overflow: hidden;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    margin-bottom: 30px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.header-card-glow {
+    position: absolute;
+    top: -30%;
+    right: -20%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(20, 218, 255, 0.1) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.course-details__tag {
+    background: rgba(167, 139, 250, 0.1);
+    border: 1px solid rgba(167, 139, 250, 0.25);
+    color: #c084fc;
+    padding: 4px 14px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.course-details__status {
+    padding: 4px 14px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border: 1px solid transparent;
+}
+
+.status--free {
+    background: rgba(74, 222, 128, 0.1);
+    border-color: rgba(74, 222, 128, 0.25);
+    color: #4ade80;
+}
+
+.status--paid {
+    background: rgba(20, 218, 255, 0.1);
+    border-color: rgba(20, 218, 255, 0.25);
+    color: #14daff;
+}
+
+.course-details__title {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 850;
+    line-height: 1.2;
+}
+
+.course-details__disp {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    max-width: 800px;
+}
+
+.course-meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.meta-icon {
+    font-size: 1.6rem;
+}
+
+.meta-label {
+    display: block;
+    font-size: 0.72rem;
+    color: #64748b;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.meta-val {
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+/* ── Pricing Box ── */
+.pricing-box {
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 24px;
+    text-align: center;
+}
+
+.pricing-title {
+    font-size: 0.75rem;
+    color: #64748b;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+}
+
+.price-tag-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.price-free {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #4ade80;
+}
+
+.price-val {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.enroll-action-btn {
+    width: 100%;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    border: 1px solid transparent;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.enroll-action-btn--free {
+    background: #4ade80;
+    color: #090d16;
+}
+
+.enroll-action-btn--free:hover {
+    background: #22c55e;
+    box-shadow: 0 0 20px rgba(74, 222, 128, 0.3);
+}
+
+.enroll-action-btn--premium {
+    background: #14daff;
+    color: #090d16;
+}
+
+.enroll-action-btn--premium:hover {
+    background: #0ea5e9;
+    box-shadow: 0 0 20px rgba(20, 218, 255, 0.3);
+}
+
+.pricing-note {
+    font-size: 0.75rem;
+}
+
+/* ── Info Panels ── */
+.details-card-panel {
+    background: rgba(17, 24, 39, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 20px;
+    padding: 30px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.panel-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 15px;
+}
+
+.panel-icon {
+    font-size: 1.35rem;
+}
+
+.panel-desc {
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* Syllabus list */
+.syllabus-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.syllabus-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.syllabus-item:last-child {
+    border-bottom: none;
+}
+
+.syllabus-number {
+    color: #14daff;
+    font-size: 0.9rem;
+    font-weight: 800;
+    background: rgba(20, 218, 255, 0.08);
+    border: 1px solid rgba(20, 218, 255, 0.15);
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.syllabus-text {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    padding-top: 2px;
+}
+
+/* Instructor Section */
+.instructor-avatar {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #14daff 0%, #002e6a 100%);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 800;
+    font-size: 1.25rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.instructor-name {
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+.instructor-bio {
+    font-size: 0.92rem;
+    line-height: 1.6;
+}
+
+/* ── Reviews Form Panel ── */
+.review-form-panel {
+    background: rgba(17, 24, 39, 0.5);
+    border-color: rgba(20, 218, 255, 0.15);
+}
+
+.form-label {
+    display: block;
+    font-size: 0.85rem;
+    color: #94a3b8;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.form-input {
+    width: 100%;
+    background: rgba(9, 13, 22, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 10px 16px;
+    color: white;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #14daff;
+    box-shadow: 0 0 10px rgba(20, 218, 255, 0.15);
+}
+
+.rating-select {
+    display: flex;
+    gap: 8px;
+}
+
+.star-select-btn {
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: #4b5563;
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.2s ease;
+}
+
+.star-select-btn:hover {
+    transform: scale(1.15);
+}
+
+.star-selected {
+    color: #fbbf24;
+}
+
+.form-textarea {
+    width: 100%;
+    background: rgba(9, 13, 22, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 12px 16px;
+    color: white;
+    font-size: 0.95rem;
+    resize: vertical;
+    transition: all 0.2s ease;
+}
+
+.form-textarea:focus {
+    outline: none;
+    border-color: #14daff;
+    box-shadow: 0 0 10px rgba(20, 218, 255, 0.15);
+}
+
+.submit-review-btn {
+    width: 100%;
+    padding: 12px;
+    background: #14daff;
+    color: #090d16;
+    border: none;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.submit-review-btn:hover:not(:disabled) {
+    background: #0ea5e9;
+    box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3);
+}
+
+.submit-review-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.alert-pill {
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border: 1px solid transparent;
+}
+
+.alert-pill--success {
+    background: rgba(16, 185, 129, 0.1);
+    border-color: rgba(16, 185, 129, 0.25);
+    color: #34d399;
+}
+
+.alert-pill--error {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: rgba(239, 68, 68, 0.25);
+    color: #f87171;
+}
+
+/* ── Submitted Reviews ── */
+.reviews-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+/* Custom scrollbar for reviews list */
+.reviews-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.reviews-list::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 10px;
+}
+
+.reviews-list::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.reviews-list::-webkit-scrollbar-thumb:hover {
+    background: rgba(20, 218, 255, 0.3);
+}
+
+.student-review-item {
+    background: rgba(255, 255, 255, 0.01);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    padding: 18px;
+    border-radius: 14px;
+}
+
+.review-header-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.student-initial {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(20, 218, 255, 0.1);
+    border: 1px solid rgba(20, 218, 255, 0.25);
+    color: #14daff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+}
+
+.student-info {
+    flex: 1;
+}
+
+.student-name {
+    display: block;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.star-rating {
+    display: flex;
+    gap: 2px;
+}
+
+.star-icon {
+    font-size: 0.8rem;
+    line-height: 1;
+}
+
+.star--filled {
+    color: #fbbf24;
+}
+
+.star--empty {
+    color: #4b5563;
+}
+
+.review-date {
+    font-size: 0.75rem;
+}
+
+.review-body {
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* Responsive adjustments */
+@media (max-width: 991px) {
+    .course-details-page {
+        padding-top: 100px;
+    }
+
+    .course-details-header-card {
+        padding: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .pricing-box {
+        margin-top: 20px;
+    }
+
+    .course-meta-row {
+        gap: 20px;
+    }
+}
