@@ -1,0 +1,229 @@
+.playground-page {
+    background-color: var(--background);
+    min-height: 100vh;
+    padding: 140px 0 80px;
+    color: var(--text);
+}
+
+.playground-header {
+    margin-bottom: 30px;
+}
+
+.playground-title {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    margin-bottom: 8px;
+}
+
+.playground-title span {
+    color: var(--primary);
+}
+
+.playground-subtitle {
+    color: var(--text-light);
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+/* Workspace */
+.playground-workspace {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 600px;
+}
+
+.playground-workspace.fullscreen {
+    border-radius: 0;
+    height: 100vh;
+}
+
+/* Toolbar */
+.pg-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    background: rgba(0,0,0,0.03);
+    border-bottom: 1px solid var(--border);
+    padding: 0 16px;
+}
+
+[data-theme="dark"] .pg-toolbar {
+    background: rgba(255,255,255,0.02);
+}
+
+.pg-tabs {
+    display: flex;
+    gap: 2px;
+}
+
+.pg-tab {
+    padding: 12px 24px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-light);
+    background: transparent;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    margin-top: 8px;
+    border: 1px solid transparent;
+    border-bottom: none;
+    cursor: default;
+}
+
+.pg-tab.active {
+    background: var(--surface);
+    color: var(--primary);
+    border-color: var(--border);
+}
+
+.pg-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 8px;
+}
+
+.pg-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.pg-btn.icon {
+    background: transparent;
+    color: var(--text-light);
+    padding: 6px;
+    font-size: 1.1rem;
+}
+.pg-btn.icon:hover { color: var(--text); background: rgba(0,0,0,0.05); }
+[data-theme="dark"] .pg-btn.icon:hover { background: rgba(255,255,255,0.05); }
+
+.pg-btn.text {
+    background: transparent;
+    color: var(--text-light);
+    padding: 4px 8px;
+}
+.pg-btn.text:hover { color: var(--danger); background: rgba(239, 68, 68, 0.1); }
+
+.pg-btn.primary {
+    background: var(--success);
+    color: white;
+    padding: 8px 16px;
+}
+.pg-btn.primary:hover {
+    background: #16a34a; /* darker green */
+    transform: translateY(-1px);
+}
+
+/* Panels */
+.pg-panels {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+.pg-editor-panel {
+    flex: 1.2;
+    display: flex;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    position: relative;
+}
+
+.pg-line-numbers {
+    padding: 16px 12px;
+    background: rgba(0,0,0,0.02);
+    border-right: 1px solid var(--border);
+    color: var(--text-light);
+    font-family: 'Fira Code', 'Courier New', monospace;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    text-align: right;
+    user-select: none;
+}
+[data-theme="dark"] .pg-line-numbers { background: rgba(255,255,255,0.01); }
+
+.pg-textarea {
+    flex: 1;
+    border: none;
+    resize: none;
+    padding: 16px;
+    font-family: 'Fira Code', 'Courier New', monospace;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    background: transparent;
+    color: var(--text);
+    outline: none;
+    white-space: pre;
+    overflow-wrap: normal;
+    overflow-x: auto;
+}
+
+.pg-output-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #0f172a; /* Always dark for terminal */
+}
+
+.pg-output-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 16px;
+    background: #1e293b;
+    border-bottom: 1px solid #334155;
+    color: #cbd5e1;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.pg-terminal {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+    font-family: 'Fira Code', 'Courier New', monospace;
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+.pg-terminal-empty {
+    color: #64748b;
+    font-style: italic;
+}
+
+.pg-log {
+    margin-bottom: 6px;
+    word-break: break-all;
+}
+
+.pg-log.type-log { color: #f8fafc; }
+.pg-log.type-error { color: #ef4444; }
+
+.pg-prompt {
+    color: #10b981;
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+@media (max-width: 900px) {
+    .pg-panels {
+        flex-direction: column;
+    }
+    
+    .pg-editor-panel {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+    }
+}

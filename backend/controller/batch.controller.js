@@ -120,12 +120,9 @@ const enrollBatch = async (req, res) => {
             return res.status(404).json({ message: "User not found" });
         }
 
-        // One-time enrollment guard
-        const alreadyEnrolled = user.enrolledBatches.some(
-            (id) => id.toString() === batchId
-        );
-        if (alreadyEnrolled) {
-            return res.status(409).json({ message: "You are already enrolled in this batch" });
+        // One-time enrollment guard (global)
+        if (user.enrolledBatches && user.enrolledBatches.length > 0) {
+            return res.status(409).json({ message: "You are already enrolled in a batch. A user can only apply for one batch." });
         }
 
         // Enroll: increment batch count + save batchId in user

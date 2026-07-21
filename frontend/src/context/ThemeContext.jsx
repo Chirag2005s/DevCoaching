@@ -8,6 +8,10 @@ export const ThemeProvider = ({ children }) => {
         return saved ? saved === 'dark' : true; // Default to dark mode
     });
 
+    const [palette, setPalette] = useState(() => {
+        return localStorage.getItem('theme_palette') || 'ocean';
+    });
+
     useEffect(() => {
         const root = document.documentElement;
         if (isDarkMode) {
@@ -22,10 +26,17 @@ export const ThemeProvider = ({ children }) => {
         localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
     }, [isDarkMode]);
 
+    useEffect(() => {
+        const root = document.documentElement;
+        root.setAttribute('data-palette', palette);
+        localStorage.setItem('theme_palette', palette);
+    }, [palette]);
+
     const toggleTheme = () => setIsDarkMode(prev => !prev);
+    const changePalette = (newPalette) => setPalette(newPalette);
 
     return (
-        <ThemeContext.Provider value={{ isDarkMode, toggleTheme }}>
+        <ThemeContext.Provider value={{ isDarkMode, toggleTheme, palette, changePalette }}>
             {children}
         </ThemeContext.Provider>
     );

@@ -1,0 +1,50 @@
+.streak-widget {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(0, 0, 0, 0.04);
+    padding: 6px 12px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+}
+
+[data-theme="dark"] .streak-widget {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.streak-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.streak-icon {
+    font-size: 1.1rem;
+}
+
+.streak-icon.fire {
+    /* animate slight flicker */
+    animation: fireFlicker 2s infinite alternate ease-in-out;
+}
+
+.streak-icon.star {
+    color: #eab308; /* yellow */
+}
+
+.streak-value {
+    font-weight: 700;
+    color: var(--text);
+    font-size: 0.95rem;
+}
+
+.streak-unit {
+    font-size: 0.75rem;
+    color: var(--text-light);
+    font-weight: 600;
+}
+
+@keyframes fireFlicker {
+    0% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.1) rotate(-3deg); }
+    100% { transform: scale(0.95) rotate(3deg); }
+}

@@ -160,29 +160,8 @@ function CourseDetails() {
             setPurchaseMsg({ type: 'success', text: 'You already have premium access!' });
             return;
         }
-
-        try {
-            setIsPurchasing(true);
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/purchase`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-
-            const data = await response.json();
-            if (response.ok) {
-                updateUserPurchaseStatus(true, data.token);
-                setPurchaseMsg({ type: 'success', text: 'Course enrolled successfully! You now have full access to Live Classes.' });
-            } else {
-                setPurchaseMsg({ type: 'error', text: data.message || 'Failed to enroll in course' });
-            }
-        } catch (err) {
-            setPurchaseMsg({ type: 'error', text: 'Network error during purchase. Please try again.' });
-        } finally {
-            setIsPurchasing(false);
-        }
+        
+        navigate(`/purchase/${id}`);
     };
 
     if (loading) {

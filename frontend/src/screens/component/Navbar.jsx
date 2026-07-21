@@ -1,13 +1,14 @@
-import Button from '@mui/material/Button';
 import './Navbar.css';
-import { FiLogIn, FiLogOut, FiSun, FiMoon, FiShoppingBag } from "react-icons/fi";
+import { FiLogIn, FiLogOut, FiSun, FiMoon, FiShoppingBag, FiSearch } from "react-icons/fi";
 import devLogo from '../logo/logo.png';
+import ThemePicker from './ThemePicker';
+import NotificationBell from './NotificationBell';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useLayoutEffect, useRef, useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { ThemeContext } from '../../context/ThemeContext';
 
-function Navbar() {
+function Navbar({ onOpenSearch }) {
     const navigate = useNavigate();
     const location = useLocation();
     const navListRef = useRef(null);
@@ -18,13 +19,15 @@ function Navbar() {
     const { isDarkMode, toggleTheme } = useContext(ThemeContext);
 
     const displayLinks = [
-        // { to: '/', label: 'Home', end: true },
         { to: '/course', label: 'Course' },
-        { to: '/notes', label: 'Notes' },
-        { to: '/exams', label: 'Exams' },
-        { to: '/join-live', label: 'Join Live' },
-        { to: '/instructors', label: 'Instructors' },
+        { to: '/learning-hub', label: 'Hub' },
+        { to: '/join-live', label: 'Live' },
+        { to: '/instructors', label: 'Mentors' },
     ];
+
+    if (user) {
+        displayLinks.push({ to: '/batches', label: 'Batches' });
+    }
 
     if (user && user.hasPurchasedCourse) {
         displayLinks.push({ to: '/dashboard', label: 'Dashboard' });
@@ -49,6 +52,8 @@ function Navbar() {
                 width: elRect.width,
                 opacity: 1,
             });
+        } else {
+            setIndicator(prev => ({ ...prev, opacity: 0 }));
         }
     };
 
@@ -59,111 +64,119 @@ function Navbar() {
     }, [location.pathname]);
 
     useLayoutEffect(() => {
-        updateIndicator();
+        // Small delay to ensure layout is done
+        const timer = setTimeout(updateIndicator, 50);
         window.addEventListener('resize', updateIndicator);
-        return () => window.removeEventListener('resize', updateIndicator);
-    }, [location.pathname]);
+        return () => {
+            clearTimeout(timer);
+            window.removeEventListener('resize', updateIndicator);
+        };
+    }, [location.pathname, user]);
 
     return (
-        <section className={`Nav_Section ${isSwitching ? 'Nav_Section--switching' : ''}`}>
+        <header className={`Nav_Section ${isSwitching ? 'Nav_Section--switching' : ''}`}>
             {/* Announcement Bar */}
             <div className="announcement-bar">
-                <span>🚀 Special Offer: Get 20% off on all courses this week! Use code: <strong>DEV20</strong> at checkout</span>
+                <span>🚀 Special Offer: Get 20% off on all courses this week! Use code: <strong>DEV20</strong></span>
             </div>
 
             <div className="nav-progress-bar" aria-hidden="true" />
 
-            <div className="container">
-                <div className="row align-items-center">
-                    <div className="col-md-2">
-                        <button
-                            type="button"
-                            className="nav-brand"
-                            onClick={() => navigate('/')}
-                        >
-                            <img src={devLogo} alt="Dev Coaching" className="nav-brand__logo" />
-                            <span>
-                                Dev <span className="nav-brand__accent">Coaching</span>
-                            </span>
-                        </button>
-                    </div>
+            <div className="nav-container">
+                {/* Brand */}
+                <button type="button" className="nav-brand" onClick={() => navigate('/')}>
+                    <img src={devLogo} alt="Dev Coaching" className="nav-brand__logo" />
+                    <span>Dev <span className="nav-brand__accent">Coaching</span></span>
+                </button>
 
-                    <div className="col-md-6">
-                        <div className="nav-links-wrap" ref={navListRef}>
-                            <span
-                                className="nav-indicator"
-                                style={{
-                                    transform: `translateX(${indicator.left}px)`,
-                                    width: indicator.width,
-                                    opacity: indicator.opacity,
-                                }}
-                            />
-                            <div className="nav-links">
-                                {displayLinks.map((link) => (
-                                    <NavLink
-                                        key={link.to}
-                                        to={link.to}
-                                        end={link.end}
-                                        ref={(el) => { linkRefs.current[link.to] = el; }}
-                                        className={({ isActive }) =>
-                                            `Nav_btn nav-link${isActive ? ' nav-link--active' : ''}`
-                                        }
-                                    >
-                                        {link.label}
-                                    </NavLink>
-                                ))}
+                {/* Navigation Links */}
+                <div className="nav-links-wrap" ref={navListRef}>
+                    <span
+                        className="nav-indicator"
+                        style={{
+                            transform: `translateX(${indicator.left}px)`,
+                            width: indicator.width,
+                            opacity: indicator.opacity,
+                        }}
+                    />
+                    <nav className="nav-links">
+                        {displayLinks.map((link) => (
+                            <NavLink
+                                key={link.to}
+                                to={link.to}
+                                end={link.end}
+                                ref={(el) => { linkRefs.current[link.to] = el; }}
+                                className={({ isActive }) =>
+                                    `nav-link${isActive ? ' nav-link--active' : ''}`
+                                }
+                            >
+                                {link.label}
+                            </NavLink>
+                        ))}
+                    </nav>
+                </div>
+
+                {/* Actions & Auth */}
+                <div className="nav-auth">
+                    {/* Search */}
+                    <button type="button" className="nav-search-btn" onClick={() => onOpenSearch?.()} title="Search">
+                        <FiSearch />
+                        <span>Search</span>
+                        <kbd className="nav-search-kbd">⌘K</kbd>
+                    </button>
+
+                    {/* Cart */}
+                    <button 
+                        type="button" 
+                        className="nav-icon-btn" 
+                        onClick={() => navigate(user ? '/dashboard' : '/course')} 
+                        title={user ? "My Courses" : "Explore"}
+                    >
+                        <FiShoppingBag />
+                        {user && user.hasPurchasedCourse && (
+                            <span className="nav-badge">1</span>
+                        )}
+                    </button>
+
+                    {/* Notifications (Assuming NotificationBell renders a button with similar class) */}
+                    <NotificationBell />
+
+                    {/* Theme Customizer Trigger */}
+                    <ThemePicker />
+
+                    {/* Dark Mode Toggle */}
+                    <button type="button" className={`nav-theme-switch ${isDarkMode ? 'dark' : 'light'}`} onClick={toggleTheme} aria-label="Toggle Theme">
+                        <div className="switch-track">
+                            <FiSun className="switch-icon switch-icon-sun" />
+                            <FiMoon className="switch-icon switch-icon-moon" />
+                            <div className="switch-knob">
+                                {isDarkMode ? <FiMoon /> : <FiSun />}
                             </div>
                         </div>
-                    </div>
+                    </button>
 
-                    <div className="col-md-4">
-                        <div className="nav-auth">
-                            {/* Course Enrollment Bag/Cart Icon */}
-                            <div className="nav-cart-wrapper" onClick={() => navigate(user ? '/dashboard' : '/course')} title={user ? "My Enrolled Courses" : "Explore Courses"}>
-                                <FiShoppingBag className="nav-cart-icon" />
-                                {user && (
-                                    <span className="nav-cart-badge">
-                                        {user.hasPurchasedCourse ? '1' : '0'}
-                                    </span>
-                                )}
-                            </div>
-
-                            <button type="button" className={`nav-theme-switch ${isDarkMode ? 'dark' : 'light'}`} onClick={toggleTheme} aria-label="Toggle Theme">
-                                <div className="switch-track">
-                                    <FiSun className="switch-icon switch-icon-sun" />
-                                    <FiMoon className="switch-icon switch-icon-moon" />
-                                    <div className="switch-knob">
-                                        {isDarkMode ? <FiMoon /> : <FiSun />}
-                                    </div>
-                                </div>
+                    {/* User Auth Section */}
+                    {user ? (
+                        <div className="nav-user-area">
+                            <span className="nav-user-greeting">Hi, {user.name.split(' ')[0]}</span>
+                            {user.hasPurchasedCourse && <span className="nav-pro-badge">PRO</span>}
+                            <button type="button" className="Nav_Login" onClick={() => { logout(); navigate('/'); }} style={{ padding: '8px 16px', marginLeft: '4px' }}>
+                                <FiLogOut />
                             </button>
-                            {user ? (
-                                <div style={{ display: 'flex', alignItems: 'center', marginRight: '15px' }}>
-                                    <span className="nav-user-greeting" style={{ fontWeight: '600', marginRight: '8px' }}>
-                                        Hi, {user.name.split(' ')[0]}
-                                    </span>
-                                    {user.hasPurchasedCourse && (
-                                        <span className="nav-pro-badge">
-                                            PRO
-                                        </span>
-                                    )}
-                                    <button type="button" className="Nav_Login" onClick={() => { logout(); navigate('/'); }} style={{ marginLeft: user.hasPurchasedCourse ? '0' : '15px' }}>
-                                        <FiLogOut /> Logout
-                                    </button>
-                                </div>
-                            ) : (
-                                <>
-                                    <button type="button" className="Nav_Login" onClick={() => navigate('/login')}>
-                                        <FiLogIn /> Login
-                                    </button>
-                                    <button type="button" className="Sgin_up" onClick={() => navigate('/signup')}>Sign up</button>
-                                </>
-                            )}
                         </div>
-                    </div>
+                    ) : (
+                        <>
+                            <button type="button" className="Nav_Login" onClick={() => navigate('/login')}>
+                                <FiLogIn /> Login
+                            </button>
+                            <button type="button" className="Sgin_up" onClick={() => navigate('/signup')}>
+                                Sign up
+                            </button>
+                        </>
+                    )}
                 </div>
             </div>
-        </section>
+        </header>
     );
 }
 

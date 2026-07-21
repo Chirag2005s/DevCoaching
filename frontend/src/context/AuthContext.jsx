@@ -34,6 +34,14 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
+    const updateUserBatch = (batch) => {
+        if (user) {
+            const updatedUser = { ...user, enrolledBatch: batch };
+            setUser(updatedUser);
+            localStorage.setItem('user', JSON.stringify(updatedUser));
+        }
+    };
+
     const logout = () => {
         setUser(null);
         setToken(null);
@@ -42,7 +50,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, token, login, logout, updateUserPurchaseStatus }}>
+        <AuthContext.Provider value={{ user, token, login, logout, updateUserPurchaseStatus, updateUserBatch }}>
             {children}
         </AuthContext.Provider>
     );

@@ -413,6 +413,76 @@
   transform: translateY(0);
 }
 
+/* ── Input Area ───────────────────────────────────────────── */
+.chat-panel__input-area {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+[data-theme="dark"] .chat-panel__input-area {
+  background: color-mix(in srgb, var(--surface) 95%, black);
+}
+
+.chat-panel__input-area input {
+  flex: 1;
+  background: rgba(0,0,0,0.03);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 10px 16px;
+  font-size: 0.9rem;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+[data-theme="dark"] .chat-panel__input-area input {
+  background: rgba(255,255,255,0.03);
+}
+
+.chat-panel__input-area input:focus {
+  border-color: var(--primary);
+}
+
+.chat-panel__input-area button {
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.chat-panel__input-area button:disabled {
+  background: var(--border);
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.chat-panel__input-area button:not(:disabled):hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+/* Optional custom scrollbar for messages area */
+.chat-panel__messages::-webkit-scrollbar {
+  width: 5px;
+}
+.chat-panel__messages::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 5px;
+}
+
 /* ── Footer ── */
 
 .chat-panel__footer {

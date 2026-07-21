@@ -32,6 +32,7 @@ import ExamsPage from './pages/ExamsPage';
 import ContactPage from './pages/ContactPage';
 import AccessLogsPage from './pages/AccessLogsPage';
 import PlaceholderPage from './pages/PlaceholderPage';
+import PaymentsPage from './pages/PaymentsPage';
 import './App.css';
 
 function AppContent() {
@@ -164,6 +165,7 @@ function AppContent() {
             <Route path="/exams" element={<ExamsPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/profile" element={<AdminProfile />} />
+            <Route path="/payments" element={<PaymentsPage />} />
 
             {/* Redirect legacy auth paths to root if logged in */}
             <Route path="/login" element={<Navigate to="/" replace />} />
