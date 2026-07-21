@@ -37,7 +37,7 @@ function Exam() {
 
     // Fetch exams
     const fetchExams = () => {
-        axios.get('http://localhost:9000/api/exams')
+        axios.get(`${import.meta.env.VITE_API_URL}/api/exams`)
             .then((res) => {
                 setExams(res.data?.exams || []);
             })
@@ -191,7 +191,7 @@ function Exam() {
         const totalMarks = questions.length * 10;
         const newExam = { title, subject, duration: Number(duration), questions, totalMarks };
 
-        axios.post('http://localhost:9000/api/exams', newExam)
+        axios.post(`${import.meta.env.VITE_API_URL}/api/exams`, newExam)
             .then(() => {
                 setTitle('');
                 setSubject('');
@@ -215,7 +215,7 @@ function Exam() {
     // Delete Exam API Call
     const handleDeleteExam = (id) => {
         if (window.confirm("Are you sure you want to delete this mock exam?")) {
-            axios.delete(`http://localhost:9000/api/exams/${id}`)
+            axios.delete(`${import.meta.env.VITE_API_URL}/api/exams/${id}`)
                 .then(() => {
                     fetchExams();
                 })

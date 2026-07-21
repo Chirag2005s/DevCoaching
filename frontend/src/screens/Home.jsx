@@ -209,11 +209,11 @@ function Home() {
 
     useEffect(() => {
         axios
-            .get("http://localhost:9000/api/Course")
+            .get(`${import.meta.env.VITE_API_URL}/api/Course`)
             .then((res) => setCourse(res.data?.course || []));
 
         axios
-            .get("http://localhost:9000/api/Teacher")
+            .get(`${import.meta.env.VITE_API_URL}/api/Teacher`)
             .then((res) => {
                 const fetchedTeachers = res.data?.teachers || [];
                 const formatted = fetchedTeachers.map((t, index) => {

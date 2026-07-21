@@ -19,7 +19,7 @@ function Course() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get("http://localhost:9000/api/Course")
+        axios.get(`${import.meta.env.VITE_API_URL}/api/Course`)
             .then((res) => {
                 setSubject(res.data?.course || []);
             })

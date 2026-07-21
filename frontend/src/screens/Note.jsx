@@ -16,7 +16,7 @@ import 'react-pdf/dist/Page/TextLayer.css';
 // Set PDF.js worker
 pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
-const API_BASE = 'http://localhost:9000/api';
+const API_BASE = `${import.meta.env.VITE_API_URL}/api`;
 
 function Note() {
     const [notes, setNotes] = useState([]);
@@ -271,7 +271,7 @@ function Note() {
 
     // Download PDF
     const handleDownloadPdf = (note) => {
-        const url = `http://localhost:9000${note.pdfUrl}`;
+        const url = `${import.meta.env.VITE_API_URL}${note.pdfUrl}`;
         const a = document.createElement('a');
         a.href = url;
         a.download = `${note.title}.pdf`;
@@ -766,7 +766,7 @@ function Note() {
 
                         <div className="pdf-viewer-container">
                             <Document
-                                file={`http://localhost:9000${activeViewerNote.pdfUrl}`}
+                                file={`${import.meta.env.VITE_API_URL}${activeViewerNote.pdfUrl}`}
                                 onLoadSuccess={onPdfLoadSuccess}
                                 loading={
                                     <div className="pdf-loading">

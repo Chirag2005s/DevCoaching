@@ -34,7 +34,7 @@ function Instructors() {
     /* ── Fetch teachers ── */
     useEffect(() => {
         axios
-            .get('http://localhost:9000/api/Teacher')
+            .get(`${import.meta.env.VITE_API_URL}/api/Teacher`)
             .then((res) => {
                 const raw = res.data?.teachers || [];
                 const formatted = raw.map((t, i) => ({

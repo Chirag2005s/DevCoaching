@@ -48,10 +48,11 @@
   left: 0;
   width: 100%;
   z-index: 1000;
-  background: var(--surface);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border);
+  background: rgba(15, 23, 42, 0.65); /* Glass transparent background */
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   animation: navSlideDown 0.55s ease forwards;
   transition: border-color 0.35s ease, box-shadow 0.35s ease, background 0.3s ease;
 }
@@ -192,37 +193,40 @@
   align-items: center;
   gap: 8px;
   color: var(--text);
-  border: 1px solid var(--border);
-  padding: 10px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 10px 24px;
   border-radius: 30px;
-  font-weight: bold;
-  background: transparent;
-  transition: all 0.3s ease;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
 }
 
 .Nav_Login:hover {
-  color: var(--primary);
   border-color: var(--primary);
-  background: rgba(37, 99, 235, 0.08);
-  transform: translateY(-1px);
+  background: rgba(37, 99, 235, 0.15);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.2);
 }
 
 .Sgin_up {
-  padding: 10px 22px;
+  padding: 10px 24px;
   border: none;
-  border-radius: 10px;
-  font-weight: bold;
-  background-color: var(--primary);
+  border-radius: 30px;
+  font-weight: 600;
+  background: linear-gradient(135deg, var(--primary), #1d4ed8);
   color: white;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
 }
 
 .Sgin_up:hover {
-  background-color: var(--primary-hover);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3);
+  background: linear-gradient(135deg, #3b82f6, var(--primary));
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
 }
 
 @media (max-width: 767px) {
@@ -310,9 +314,11 @@
 
 /* Light Theme overrides for Navbar */
 [data-theme="light"] .Nav_Section {
-  background: rgba(255, 255, 255, 0.85) !important;
+  background: rgba(255, 255, 255, 0.65) !important;
+  backdrop-filter: blur(20px) saturate(160%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(160%) !important;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05) !important;
 }
 
 [data-theme="light"] .nav-brand {
@@ -334,14 +340,15 @@
 
 [data-theme="light"] .Nav_Login {
   color: #0f172a !important;
-  border-color: rgba(0, 0, 0, 0.12) !important;
-  background: rgba(0, 0, 0, 0.02) !important;
+  border-color: rgba(0, 0, 0, 0.15) !important;
+  background: rgba(255, 255, 255, 0.5) !important;
 }
 
 [data-theme="light"] .Nav_Login:hover {
   color: #2563eb !important;
-  border-color: rgba(37, 99, 235, 0.35) !important;
-  background: rgba(37, 99, 235, 0.08) !important;
+  border-color: #2563eb !important;
+  background: rgba(37, 99, 235, 0.1) !important;
+  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.15) !important;
 }
 
 [data-theme="light"] .nav-theme-switch {

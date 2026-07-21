@@ -1,10 +1,10 @@
 import { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
-import './Signup.css';
+import './Login.css';
+import { FiLogIn } from "react-icons/fi";
 
-function Signup() {
-    const [name, setName] = useState('');
+function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -16,12 +16,12 @@ function Signup() {
         setError('');
         
         try {
-            const response = await fetch('http://localhost:9000/api/auth/register', {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ name, email, password }),
+                body: JSON.stringify({ email, password }),
             });
 
             const data = await response.json();
@@ -34,7 +34,7 @@ function Signup() {
                     navigate('/course');
                 }
             } else {
-                setError(data.message || 'Failed to sign up');
+                setError(data.message || 'Failed to login');
             }
         } catch (err) {
             setError('Network error, please try again later');
@@ -42,33 +42,22 @@ function Signup() {
     };
 
     return (
-        <div className="signup-page-container">
-            <div className="signup-left">
-                <h1>Unlock Your<br/>Coding Potential</h1>
-                <p>Join Dev Coaching to master web development with world-class instructors, comprehensive notes, and live classes.</p>
+        <div className="login-page-container">
+            <div className="login-left">
+                <h1>Welcome Back<br/>To Your Path</h1>
+                <p>Log in to pick up right where you left off. Access your notes, live classes, and keep advancing your skills.</p>
             </div>
             
-            <div className="signup-right">
-                <div className="signup-form-wrapper">
-                    <div className="signup-header">
-                        <h2>Create Account</h2>
-                        <p>Sign up to get started</p>
+            <div className="login-right">
+                <div className="login-form-wrapper">
+                    <div className="login-header">
+                        <h2>Log In</h2>
+                        <p>Welcome back! Please enter your details.</p>
                     </div>
                     
-                    {error && <div className="signup-error">{error}</div>}
+                    {error && <div className="login-error">{error}</div>}
                     
                     <form onSubmit={handleSubmit}>
-                        <div className="input-group">
-                            <label htmlFor="name">Full Name</label>
-                            <input
-                                type="text"
-                                id="name"
-                                placeholder="John Doe"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                                required
-                            />
-                        </div>
                         <div className="input-group">
                             <label htmlFor="email">Email Address</label>
                             <input
@@ -85,20 +74,19 @@ function Signup() {
                             <input
                                 type="password"
                                 id="password"
-                                placeholder="Min. 6 characters"
+                                placeholder="Enter your password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
-                                minLength={6}
                             />
                         </div>
-                        <button type="submit" className="signup-btn">
-                            Sign Up
+                        <button type="submit" className="login-btn">
+                            <FiLogIn className="btn-icon" /> Log In
                         </button>
                     </form>
                     
-                    <div className="signup-footer">
-                        <p>Already have an account? <Link to="/login">Log In</Link></p>
+                    <div className="login-footer">
+                        <p>Don't have an account? <Link to="/signup">Sign Up</Link></p>
                     </div>
                 </div>
             </div>
@@ -106,4 +94,4 @@ function Signup() {
     );
 }
 
-export default Signup;
+export default Login;
