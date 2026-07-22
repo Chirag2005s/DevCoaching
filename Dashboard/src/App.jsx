@@ -18,6 +18,7 @@ import {
   History
 } from 'lucide-react';
 import { AuthProvider, useAuth } from './hooks/AuthContext';
+import Header from './components/Header';
 import LoginPage from './pages/auth/LoginPage';
 import SignupPage from './pages/auth/SignupPage';
 import AdminProfile from './pages/AdminProfile';
@@ -141,15 +142,7 @@ function AppContent() {
 
       {/* Main Content */}
       <main className="main-content">
-        <header className="topbar">
-          <div className="topbar-title">ERP Control Panel</div>
-          <NavLink to="/profile" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', color: 'var(--text-primary)', background: 'rgba(255,255,255,0.05)', padding: '6px 12px', borderRadius: '20px', border: '1px solid var(--border-color)', transition: 'background 0.2s' }}>
-            <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-secondary))', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '0.8rem', fontWeight: 'bold' }}>
-              {user?.name?.charAt(0)?.toUpperCase() || 'A'}
-            </div>
-            <div className="topbar-user" style={{ fontSize: '0.9rem', fontWeight: '500' }}>{user?.name || 'Super Admin'}</div>
-          </NavLink>
-        </header>
+        <Header />
 
         <div className="page-content">
           <Routes>

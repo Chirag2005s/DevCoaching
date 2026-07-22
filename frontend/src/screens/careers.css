@@ -51,6 +51,7 @@
   box-shadow: var(--career-card-shadow);
   transition: transform 0.2s, background-color 0.3s;
 }
+
 .theme-toggle-btn:hover {
   transform: scale(1.1);
 }
@@ -62,20 +63,24 @@
   position: relative;
   border-bottom: 1px solid var(--career-border);
 }
+
 .careers-hero h1 {
   font-size: 3.5rem;
   font-weight: 800;
   margin-bottom: 1rem;
 }
+
 .careers-hero h1 span {
   color: var(--career-accent);
 }
+
 .careers-hero p {
   font-size: 1.1rem;
   color: var(--career-text-muted);
   max-width: 600px;
   margin: 0 auto 2rem;
 }
+
 .hero-buttons {
   display: flex;
   gap: 15px;
@@ -84,8 +89,8 @@
 }
 
 .careers-hero-logo {
-  width: 55px;
-  height: 55px;
+  width: 100px;
+  height: 100px;
   object-fit: contain;
   margin-bottom: 16px;
   filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15));
@@ -109,19 +114,23 @@
   align-items: center;
   gap: 8px;
 }
+
 .career-btn-primary {
   background-color: var(--career-accent);
   color: #fff;
 }
+
 .career-btn-primary:hover {
   background-color: var(--career-accent-hover);
   transform: translateY(-2px);
 }
+
 .career-btn-outline {
   background-color: transparent;
   border: 1px solid var(--career-border);
   color: var(--career-text-main);
 }
+
 .career-btn-outline:hover {
   background-color: var(--career-surface);
   transform: translateY(-2px);
@@ -132,12 +141,14 @@
   padding: 80px 0;
   border-bottom: 1px solid var(--career-border);
 }
+
 .section-title {
   text-align: center;
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 1rem;
 }
+
 .section-subtitle {
   text-align: center;
   color: var(--career-text-muted);
@@ -156,10 +167,12 @@
   transition: transform 0.2s, box-shadow 0.2s;
   height: 100%;
 }
+
 .career-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
+
 .career-card-icon {
   width: 48px;
   height: 48px;
@@ -172,11 +185,13 @@
   font-size: 1.5rem;
   margin-bottom: 1rem;
 }
+
 .career-card h3 {
   font-size: 1.25rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
 }
+
 .career-card p {
   color: var(--career-text-muted);
   font-size: 0.95rem;
@@ -189,30 +204,36 @@
   padding: 80px 0;
   border-bottom: 1px solid var(--career-border);
 }
+
 .video-text-content {
   display: flex;
   flex-direction: column;
   justify-content: center;
   height: 100%;
 }
+
 .video-text-content h2 {
   font-size: 2.5rem;
   font-weight: 800;
   margin-bottom: 1rem;
 }
+
 .video-text-content h2 span {
   color: var(--career-accent);
 }
+
 .video-text-content p {
   font-size: 1.1rem;
   color: var(--career-text-muted);
   margin-bottom: 2rem;
 }
+
 .video-list {
   list-style: none;
   padding: 0;
   margin-bottom: 2rem;
 }
+
 .video-list li {
   display: flex;
   align-items: center;
@@ -221,17 +242,20 @@
   font-weight: 600;
   color: var(--career-text-main);
 }
+
 .video-list li svg {
   color: var(--career-accent);
   font-size: 1.2rem;
 }
+
 .career-video-container {
   position: relative;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
   border: 1px solid var(--career-border);
 }
+
 .career-video {
   width: 100%;
   height: auto;
@@ -246,6 +270,7 @@
   margin-bottom: 1rem;
   overflow: hidden;
 }
+
 .faq-question {
   width: 100%;
   padding: 20px;
@@ -260,6 +285,7 @@
   cursor: pointer;
   text-align: left;
 }
+
 .faq-answer {
   padding: 0 20px 20px;
   color: var(--career-text-muted);

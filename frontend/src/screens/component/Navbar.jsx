@@ -126,10 +126,10 @@ function Navbar({ onOpenSearch }) {
                     </button>
 
                     {/* Cart */}
-                    <button 
-                        type="button" 
-                        className="nav-icon-btn" 
-                        onClick={() => navigate(user ? '/dashboard' : '/course')} 
+                    <button
+                        type="button"
+                        className="nav-icon-btn"
+                        onClick={() => navigate(user ? '/dashboard' : '/course')}
                         title={user ? "My Courses" : "Explore"}
                     >
                         <FiShoppingBag />
@@ -145,7 +145,7 @@ function Navbar({ onOpenSearch }) {
                     <ThemePicker />
 
                     {/* Dark Mode Toggle */}
-                    <button type="button" className={`nav-theme-switch ${isDarkMode ? 'dark' : 'light'}`} onClick={toggleTheme} aria-label="Toggle Theme">
+                    {/* <button type="button" className={`nav-theme-switch ${isDarkMode ? 'dark' : 'light'}`} onClick={toggleTheme} aria-label="Toggle Theme">
                         <div className="switch-track">
                             <FiSun className="switch-icon switch-icon-sun" />
                             <FiMoon className="switch-icon switch-icon-moon" />
@@ -153,7 +153,7 @@ function Navbar({ onOpenSearch }) {
                                 {isDarkMode ? <FiMoon /> : <FiSun />}
                             </div>
                         </div>
-                    </button>
+                    </button> */}
 
                     {/* User Auth Section */}
                     {user ? (

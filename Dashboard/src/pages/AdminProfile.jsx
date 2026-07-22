@@ -97,6 +97,39 @@ export default function AdminProfile() {
           </div>
         </div>
 
+        {/* Security Settings Card (v4.0.0 Feature) */}
+        <div className="card" style={{ flex: '1', minWidth: '300px' }}>
+          <h3 style={{ marginBottom: '24px', borderBottom: '1px solid var(--border-color)', paddingBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Shield size={20} color="var(--success)" />
+            Security & Access
+          </h3>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            {/* RBAC */}
+            <div style={{ background: 'rgba(255, 255, 255, 0.03)', padding: '16px', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                <div style={{ fontWeight: '500' }}>Role-Based Access Control (RBAC)</div>
+                <div style={{ background: 'rgba(59, 130, 246, 0.15)', color: '#60a5fa', padding: '2px 8px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 'bold' }}>Super Admin</div>
+              </div>
+              <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>You have full access to all modules including user management, billing, and system settings.</p>
+            </div>
+
+            {/* 2FA Toggle */}
+            <div style={{ background: 'rgba(255, 255, 255, 0.03)', padding: '16px', borderRadius: '8px', border: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div>
+                <div style={{ fontWeight: '500', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  Two-Factor Authentication
+                  <span style={{ background: 'rgba(16, 185, 129, 0.1)', color: 'var(--success)', padding: '2px 6px', borderRadius: '12px', fontSize: '0.7rem', fontWeight: 'bold' }}>Enabled</span>
+                </div>
+                <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '4px' }}>Add an extra layer of security to your account.</p>
+              </div>
+              <button style={{ background: 'var(--sidebar-bg)', border: '1px solid var(--accent-primary)', color: 'var(--accent-primary)', padding: '6px 12px', borderRadius: '6px', fontSize: '0.85rem', fontWeight: '600', cursor: 'pointer' }}>
+                Configure
+              </button>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   );

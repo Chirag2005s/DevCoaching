@@ -1,18 +1,44 @@
 @keyframes navSlideDown {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes navProgress {
-  0% { transform: scaleX(0); opacity: 1; }
-  60% { transform: scaleX(1); opacity: 1; }
-  100% { transform: scaleX(1); opacity: 0; }
+  0% {
+    transform: scaleX(0);
+    opacity: 1;
+  }
+
+  60% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scaleX(1);
+    opacity: 0;
+  }
 }
 
 @keyframes navLinkPop {
-  0% { transform: scale(1); }
-  50% { transform: scale(0.95); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(0.95);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
 /* ── Main Navbar Section ── */
@@ -62,7 +88,7 @@
   padding: 2px 8px;
   border-radius: 4px;
   margin-left: 6px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 /* ── Progress Bar ── */
@@ -119,7 +145,7 @@
   height: 44px;
   object-fit: contain;
   transition: all 0.3s ease;
-  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
 }
 
 .nav-brand:hover .nav-brand__logo {
@@ -163,7 +189,7 @@
   left: 0;
   background: var(--surface);
   border-radius: 100px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), width 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s;
   pointer-events: none;
   z-index: 0;
@@ -171,7 +197,7 @@
 
 [data-theme="light"] .nav-indicator {
   background: #ffffff;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .nav-link {
@@ -204,7 +230,8 @@
 }
 
 /* Icon Buttons (Search, Cart, Theme, Notifications) */
-.nav-icon-btn, .nav-search-btn {
+.nav-icon-btn,
+.nav-search-btn {
   position: relative;
   display: flex;
   align-items: center;
@@ -220,12 +247,14 @@
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-[data-theme="light"] .nav-icon-btn, [data-theme="light"] .nav-search-btn {
+[data-theme="light"] .nav-icon-btn,
+[data-theme="light"] .nav-search-btn {
   background: rgba(0, 0, 0, 0.04);
   border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-.nav-icon-btn:hover, .nav-search-btn:hover {
+.nav-icon-btn:hover,
+.nav-search-btn:hover {
   background: var(--surface);
   color: var(--primary);
   border-color: color-mix(in srgb, var(--primary) 30%, transparent);
@@ -246,14 +275,14 @@
   font-family: inherit;
   font-size: 0.75rem;
   font-weight: 700;
-  background: rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.1);
   padding: 2px 6px;
   border-radius: 4px;
   color: var(--text-light);
 }
 
 [data-theme="light"] .nav-search-kbd {
-  background: rgba(0,0,0,0.08);
+  background: rgba(0, 0, 0, 0.08);
 }
 
 /* Badges */
@@ -273,7 +302,7 @@
   justify-content: center;
   padding: 0 4px;
   border: 2px solid var(--background);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 /* ── Login / Sign Up ── */
@@ -292,8 +321,8 @@
 }
 
 [data-theme="light"] .Nav_Login {
-  border-color: rgba(0,0,0,0.1);
-  background: rgba(0,0,0,0.02);
+  border-color: rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.02);
 }
 
 .Nav_Login:hover {
@@ -326,15 +355,15 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  background: rgba(255,255,255,0.03);
+  background: rgba(255, 255, 255, 0.03);
   padding: 4px 4px 4px 16px;
   border-radius: 100px;
-  border: 1px solid rgba(255,255,255,0.05);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 [data-theme="light"] .nav-user-area {
-  background: rgba(0,0,0,0.02);
-  border-color: rgba(0,0,0,0.05);
+  background: rgba(0, 0, 0, 0.02);
+  border-color: rgba(0, 0, 0, 0.05);
 }
 
 .nav-user-greeting {
@@ -370,7 +399,7 @@
 }
 
 [data-theme="light"] .nav-theme-switch {
-  background: rgba(0,0,0,0.05);
+  background: rgba(0, 0, 0, 0.05);
 }
 
 .switch-track {
@@ -413,9 +442,11 @@
   .nav-search-btn span {
     display: none;
   }
+
   .nav-search-kbd {
     display: none;
   }
+
   .nav-search-btn {
     width: 44px;
     padding: 0;
@@ -432,12 +463,15 @@
   .nav-container {
     padding: 10px 16px;
   }
+
   .nav-brand span {
     display: none;
   }
+
   .nav-user-greeting {
     display: none;
   }
+
   .nav-pro-badge {
     display: none;
   }
