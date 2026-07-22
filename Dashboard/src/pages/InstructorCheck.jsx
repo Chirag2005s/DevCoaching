@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import axios from 'axios';
+import { useAuth } from '../hooks/AuthContext';
 import { 
   Users, CheckCircle, XCircle, Clock, CalendarDays, Percent, 
   Search, Filter, Save, Download, FileText, CheckSquare, 
@@ -8,19 +10,9 @@ import { exportToPDF, exportToExcel } from '../utils/exportUtils';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import './InstructorCheck.css';
 
-// ─── Mock Data ─────────────────────────────────────────────────────────────
-const MOCK_STUDENTS = Array.from({ length: 45 }, (_, i) => ({
-  id: `STU-${1000 + i}`,
-  name: `Student ${i + 1}`,
-  batch: i % 2 === 0 ? 'BATCH-FE-2026' : 'BATCH-BE-2026',
-  rollNo: 100 + i,
-  status: '', // 'present', 'absent', 'late', 'leave', ''
-  checkIn: i % 3 === 0 ? '09:05 AM' : '--:--',
-  remarks: '',
-  lastAttendance: i % 4 === 0 ? 'Absent' : 'Present',
-  attendancePercentage: Math.floor(Math.random() * 40) + 60, // 60 to 100
-}));
+const API_BASE = 'http://localhost:9000/api';
 
+// ─── Mock Data for AI Analytics ────────────────────────────────────────────
 const MOCK_ANALYTICS = [
   { name: 'Mon', attendance: 85 },
   { name: 'Tue', attendance: 88 },
@@ -30,23 +22,101 @@ const MOCK_ANALYTICS = [
 ];
 
 export default function InstructorCheck() {
-  const [loading, setLoading] = useState(true);
+  const { user } = useAuth();
+  
+  const [loadingBatches, setLoadingBatches] = useState(true);
+  const [loadingStudents, setLoadingStudents] = useState(false);
+  
+  const [batches, setBatches] = useState([]);
+  const [selectedBatch, setSelectedBatch] = useState('');
+  
   const [students, setStudents] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedBatch, setSelectedBatch] = useState('All');
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+  
   const [isLocked, setIsLocked] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
-  // Initialize Data
+  // 1. Fetch Batches on Mount
   useEffect(() => {
-    // Simulate API fetch
-    const timer = setTimeout(() => {
-      setStudents(MOCK_STUDENTS);
-      setLoading(false);
-    }, 1200);
-    return () => clearTimeout(timer);
+    const fetchBatches = async () => {
+      try {
+        const res = await axios.get(`${API_BASE}/batches`);
+        if (res.data && res.data.batches) {
+          setBatches(res.data.batches);
+          if (res.data.batches.length > 0) {
+            setSelectedBatch(res.data.batches[0]._id);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch batches", error);
+      } finally {
+        setLoadingBatches(false);
+      }
+    };
+    fetchBatches();
   }, []);
+
+  // 2. Fetch Students and Existing Attendance when Batch or Date changes
+  useEffect(() => {
+    if (!selectedBatch) return;
+    
+    const fetchStudentsAndAttendance = async () => {
+      setLoadingStudents(true);
+      setIsLocked(false);
+      try {
+        // Fetch Students
+        const studentsRes = await axios.get(`${API_BASE}/attendance/batch/${selectedBatch}/students`);
+        let enrolledStudents = studentsRes.data.students || [];
+        
+        // Transform to our table format
+        let formattedStudents = enrolledStudents.map((s, i) => ({
+          id: s._id,
+          name: s.name,
+          batch: batches.find(b => b._id === selectedBatch)?.batchName || 'Unknown',
+          rollNo: s.enrollmentNumber || `R-${1000 + i}`,
+          status: '', 
+          checkIn: '--:--',
+          remarks: '',
+          attendancePercentage: Math.floor(Math.random() * 40) + 60, // AI mock
+        }));
+
+        // Fetch Existing Attendance for this date
+        const attRes = await axios.get(`${API_BASE}/attendance/batch/${selectedBatch}`);
+        if (attRes.data && attRes.data.attendance) {
+          // Find the record for the selected date
+          const selectedDateObj = new Date(selectedDate);
+          const existingRecord = attRes.data.attendance.find(a => {
+            const aDate = new Date(a.date);
+            return aDate.getFullYear() === selectedDateObj.getFullYear() &&
+                   aDate.getMonth() === selectedDateObj.getMonth() &&
+                   aDate.getDate() === selectedDateObj.getDate();
+          });
+
+          if (existingRecord) {
+            // Apply existing statuses
+            formattedStudents = formattedStudents.map(fs => {
+              const record = existingRecord.records.find(r => r.studentId._id === fs.id || r.studentId === fs.id);
+              if (record) {
+                return { ...fs, status: record.status.toLowerCase(), checkIn: '09:00 AM' }; // Mock checkIn
+              }
+              return fs;
+            });
+            // If it already exists for past dates, we might want to lock it (optional)
+            // setIsLocked(true);
+          }
+        }
+
+        setStudents(formattedStudents);
+      } catch (error) {
+        console.error("Error fetching students or attendance:", error);
+      } finally {
+        setLoadingStudents(false);
+      }
+    };
+
+    fetchStudentsAndAttendance();
+  }, [selectedBatch, selectedDate, batches]);
 
   // ─── Handlers ────────────────────────────────────────────────────────────
   const handleStatusChange = (id, status) => {
@@ -64,14 +134,50 @@ export default function InstructorCheck() {
     setStudents(prev => prev.map(s => s.status ? s : { ...s, status: 'present', checkIn: '09:00 AM' }));
   };
 
-  const handleSaveAttendance = () => {
+  const handleSaveAttendance = async () => {
+    if (!selectedBatch) return alert("Please select a batch first.");
+    
+    // Validate all have status
+    const unmarked = students.filter(s => !s.status);
+    if (unmarked.length > 0) {
+      if (!window.confirm(`${unmarked.length} students are unmarked. Save anyway?`)) {
+        return;
+      }
+    }
+
     setIsSaving(true);
-    // Simulate save
-    setTimeout(() => {
+    
+    // Prepare payload matching backend model: records: [{ studentId, status }]
+    const records = students
+      .filter(s => s.status)
+      .map(s => ({
+        studentId: s.id,
+        status: s.status.charAt(0).toUpperCase() + s.status.slice(1) // "Present", "Absent", "Late"
+      }));
+
+    try {
+      const payload = {
+        batchId: selectedBatch,
+        instructorId: user?._id || '64f1b2b3c9e77d0012345678', // Fallback if user ID is missing
+        date: selectedDate,
+        records: records,
+        notes: "Marked via v4.0.0 Dashboard"
+      };
+
+      const res = await axios.post(`${API_BASE}/attendance`, payload);
+      
+      if (res.data.success) {
+        setIsLocked(true);
+        alert('Attendance saved and locked successfully!');
+      } else {
+        alert('Failed to save attendance: ' + res.data.message);
+      }
+    } catch (error) {
+      console.error("Save error:", error);
+      alert('An error occurred while saving attendance.');
+    } finally {
       setIsSaving(false);
-      setIsLocked(true);
-      alert('Attendance saved and locked successfully! Notifications sent to absent students.');
-    }, 1500);
+    }
   };
 
   const handleExportPDF = () => {
@@ -95,10 +201,9 @@ export default function InstructorCheck() {
   const filteredStudents = useMemo(() => {
     return students.filter(s => {
       const matchSearch = s.name.toLowerCase().includes(searchQuery.toLowerCase()) || s.id.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchBatch = selectedBatch === 'All' || s.batch === selectedBatch;
-      return matchSearch && matchBatch;
+      return matchSearch;
     });
-  }, [students, searchQuery, selectedBatch]);
+  }, [students, searchQuery]);
 
   const stats = useMemo(() => {
     const total = filteredStudents.length;
@@ -116,21 +221,11 @@ export default function InstructorCheck() {
   }, [students]);
 
   // ─── Rendering ───────────────────────────────────────────────────────────
-  if (loading) {
+  if (loadingBatches) {
     return (
       <div className="attendance-dashboard">
         <div className="glass-panel" style={{ height: '100px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <div className="skeleton-text" style={{ width: '200px' }}></div>
-        </div>
-        <div className="glass-panel">
-          {[1, 2, 3, 4, 5].map(i => (
-            <div key={i} className="skeleton-row">
-              <div className="skeleton-avatar"></div>
-              <div className="skeleton-text" style={{ width: '150px' }}></div>
-              <div className="skeleton-text" style={{ width: '100px' }}></div>
-              <div className="skeleton-text" style={{ width: '200px' }}></div>
-            </div>
-          ))}
         </div>
       </div>
     );
@@ -191,9 +286,10 @@ export default function InstructorCheck() {
                 />
               </div>
               <select className="att-select" value={selectedBatch} onChange={e => setSelectedBatch(e.target.value)}>
-                <option value="All">All Batches</option>
-                <option value="BATCH-FE-2026">BATCH-FE-2026</option>
-                <option value="BATCH-BE-2026">BATCH-BE-2026</option>
+                {batches.length === 0 && <option value="">No Batches Found</option>}
+                {batches.map(b => (
+                  <option key={b._id} value={b._id}>{b.batchName}</option>
+                ))}
               </select>
               <input 
                 type="date" 
@@ -203,78 +299,90 @@ export default function InstructorCheck() {
               />
             </div>
             <div className="controls-right">
-              <button className="btn-att-outline" onClick={handleMarkAllPresent} disabled={isLocked}>
+              <button className="btn-att-outline" onClick={handleMarkAllPresent} disabled={isLocked || loadingStudents}>
                 <CheckSquare size={16} /> Mark All Present
               </button>
-              <button className="btn-att-primary" onClick={handleSaveAttendance} disabled={isLocked || isSaving}>
+              <button className="btn-att-primary" onClick={handleSaveAttendance} disabled={isLocked || isSaving || loadingStudents}>
                 <Save size={16} /> {isSaving ? 'Saving...' : 'Save & Lock'}
               </button>
             </div>
           </div>
 
           <div className="table-container">
-            <table className="att-table">
-              <thead>
-                <tr>
-                  <th>Student</th>
-                  <th>Roll No</th>
-                  <th>Status</th>
-                  <th>Check-In</th>
-                  <th>Remarks</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredStudents.length === 0 ? (
-                  <tr><td colSpan="5" style={{textAlign:'center', padding:'30px'}}>No students found matching criteria.</td></tr>
-                ) : (
-                  filteredStudents.map(student => (
-                    <tr key={student.id}>
-                      <td>
-                        <div className="student-cell">
-                          <div className="student-photo">{student.name.charAt(0)}</div>
-                          <div className="student-info">
-                            <h4>{student.name}</h4>
-                            <p>{student.id} • {student.batch}</p>
+            {loadingStudents ? (
+              <div style={{ padding: '20px' }}>
+                {[1, 2, 3].map(i => (
+                  <div key={i} className="skeleton-row">
+                    <div className="skeleton-avatar"></div>
+                    <div className="skeleton-text" style={{ width: '150px' }}></div>
+                    <div className="skeleton-text" style={{ width: '100px' }}></div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <table className="att-table">
+                <thead>
+                  <tr>
+                    <th>Student</th>
+                    <th>Roll No</th>
+                    <th>Status</th>
+                    <th>Check-In</th>
+                    <th>Remarks</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredStudents.length === 0 ? (
+                    <tr><td colSpan="5" style={{textAlign:'center', padding:'30px'}}>No students enrolled in this batch.</td></tr>
+                  ) : (
+                    filteredStudents.map(student => (
+                      <tr key={student.id}>
+                        <td>
+                          <div className="student-cell">
+                            <div className="student-photo">{student.name.charAt(0)}</div>
+                            <div className="student-info">
+                              <h4>{student.name}</h4>
+                              <p>{student.id} • {student.batch}</p>
+                            </div>
                           </div>
-                        </div>
-                      </td>
-                      <td>{student.rollNo}</td>
-                      <td>
-                        <div className="status-toggle-group">
-                          <button 
-                            className={`status-toggle-btn ${student.status === 'present' ? 'active present' : ''}`}
-                            onClick={() => handleStatusChange(student.id, 'present')}
-                          >P</button>
-                          <button 
-                            className={`status-toggle-btn ${student.status === 'absent' ? 'active absent' : ''}`}
-                            onClick={() => handleStatusChange(student.id, 'absent')}
-                          >A</button>
-                          <button 
-                            className={`status-toggle-btn ${student.status === 'late' ? 'active late' : ''}`}
-                            onClick={() => handleStatusChange(student.id, 'late')}
-                          >L</button>
-                          <button 
-                            className={`status-toggle-btn ${student.status === 'leave' ? 'active leave' : ''}`}
-                            onClick={() => handleStatusChange(student.id, 'leave')}
-                          >LV</button>
-                        </div>
-                      </td>
-                      <td style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>{student.checkIn}</td>
-                      <td>
-                        <input 
-                          type="text" 
-                          className="att-remarks-input" 
-                          placeholder="Add remark..." 
-                          value={student.remarks}
-                          onChange={e => handleRemarkChange(student.id, e.target.value)}
-                          disabled={isLocked}
-                        />
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
+                        </td>
+                        <td>{student.rollNo}</td>
+                        <td>
+                          <div className="status-toggle-group">
+                            <button 
+                              className={`status-toggle-btn ${student.status === 'present' ? 'active present' : ''}`}
+                              onClick={() => handleStatusChange(student.id, 'present')}
+                            >P</button>
+                            <button 
+                              className={`status-toggle-btn ${student.status === 'absent' ? 'active absent' : ''}`}
+                              onClick={() => handleStatusChange(student.id, 'absent')}
+                            >A</button>
+                            <button 
+                              className={`status-toggle-btn ${student.status === 'late' ? 'active late' : ''}`}
+                              onClick={() => handleStatusChange(student.id, 'late')}
+                            >L</button>
+                            <button 
+                              className={`status-toggle-btn ${student.status === 'leave' ? 'active leave' : ''}`}
+                              onClick={() => handleStatusChange(student.id, 'leave')}
+                            >LV</button>
+                          </div>
+                        </td>
+                        <td style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>{student.checkIn}</td>
+                        <td>
+                          <input 
+                            type="text" 
+                            className="att-remarks-input" 
+                            placeholder="Add remark..." 
+                            value={student.remarks}
+                            onChange={e => handleRemarkChange(student.id, e.target.value)}
+                            disabled={isLocked}
+                          />
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            )}
           </div>
         </div>
 
@@ -297,7 +405,7 @@ export default function InstructorCheck() {
                 <div className="ai-alert-icon warning"><Bell size={14} /></div>
                 <div className="ai-alert-content">
                   <h4>Unusual Pattern Detected</h4>
-                  <p>Batch BATCH-FE-2026 sees a 20% drop in attendance on Fridays. Consider engaging activities.</p>
+                  <p>This batch sees a 20% drop in attendance on Fridays. Consider engaging activities.</p>
                 </div>
               </div>
             </div>

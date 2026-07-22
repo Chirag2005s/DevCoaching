@@ -27,7 +27,7 @@ const batchRouter = require('./router/batch.router.js');
 const attendanceRouter = require('./router/attendance.router.js');
 const statsRouter = require('./router/stats.router.js');
 const accessLogRouter = require('./router/accessLog.router.js');
-
+const notificationRouter = require('./router/notification.router.js');
 // Auth router Import
 const authRouter = require('./router/auth.router.js');
 
@@ -62,6 +62,7 @@ app.use("/api", batchRouter);
 app.use("/api", attendanceRouter);
 app.use("/api", statsRouter);
 app.use("/api", accessLogRouter);
+app.use("/api", notificationRouter);
 app.use("/api/auth", authRouter);
 
 const PORT = process.env.PORT || 9000;
