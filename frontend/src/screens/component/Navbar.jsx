@@ -1,5 +1,5 @@
 import './Navbar.css';
-import { FiLogIn, FiLogOut, FiSun, FiMoon, FiShoppingBag, FiSearch } from "react-icons/fi";
+import { FiLogIn, FiLogOut, FiSun, FiMoon, FiShoppingBag, FiSearch, FiBook, FiCompass, FiVideo, FiUsers, FiLayers, FiGrid } from "react-icons/fi";
 import devLogo from '../logo/logo.png';
 import ThemePicker from './ThemePicker';
 import NotificationBell from './NotificationBell';
@@ -19,18 +19,18 @@ function Navbar({ onOpenSearch }) {
     const { isDarkMode, toggleTheme } = useContext(ThemeContext);
 
     const displayLinks = [
-        { to: '/course', label: 'Course' },
-        { to: '/learning-hub', label: 'Hub' },
-        { to: '/join-live', label: 'Live' },
-        { to: '/instructors', label: 'Mentors' },
+        { to: '/course', label: 'Course', icon: <FiBook /> },
+        { to: '/learning-hub', label: 'Hub', icon: <FiCompass /> },
+        { to: '/join-live', label: 'Live', icon: <FiVideo /> },
+        { to: '/instructors', label: 'Mentors', icon: <FiUsers /> },
     ];
 
     if (user) {
-        displayLinks.push({ to: '/batches', label: 'Batches' });
+        displayLinks.push({ to: '/batches', label: 'Batches', icon: <FiLayers /> });
     }
 
     if (user && user.hasPurchasedCourse) {
-        displayLinks.push({ to: '/dashboard', label: 'Dashboard' });
+        displayLinks.push({ to: '/dashboard', label: 'Dashboard', icon: <FiGrid /> });
     }
 
     const updateIndicator = () => {
@@ -110,7 +110,8 @@ function Navbar({ onOpenSearch }) {
                                     `nav-link${isActive ? ' nav-link--active' : ''}`
                                 }
                             >
-                                {link.label}
+                                <span className="nav-link-icon" style={{ marginLeft: 20 }}>{link.icon}</span>
+                                <span className="nav-link-text" style={{ marginLeft: 20 }}>{link.label}</span>
                             </NavLink>
                         ))}
                     </nav>

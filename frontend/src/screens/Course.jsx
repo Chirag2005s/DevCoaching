@@ -44,7 +44,7 @@ function Course() {
         <>
             <div className='Course_Body_Section'>
                 <section className='container'>
-                    <h1 style={{ color: 'white' }}>All Courses</h1>
+                    <h1 style={{ color: 'white', paddingTop: 30 }}>All Courses</h1>
                     <p style={{ fontSize: 20, color: '#727272ff' }}>
                         Choose from our expert-led developer courses
                     </p>

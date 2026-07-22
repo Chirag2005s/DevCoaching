@@ -93,10 +93,10 @@ function AppContent() {
             <FolderOpen className="nav-icon" />
             <span>Content</span>
           </NavLink>
-          <NavLink to="/attendance" className={({ isActive }) => (isActive ? 'nav-item active' : 'nav-item')}>
+          {/* <NavLink to="/attendance" className={({ isActive }) => (isActive ? 'nav-item active' : 'nav-item')}>
             <UserCheck className="nav-icon" />
             <span>Attendance (Legacy)</span>
-          </NavLink>
+          </NavLink> */}
           <NavLink to="/instructor-check" className={({ isActive }) => (isActive ? 'nav-item active' : 'nav-item')}>
             <ShieldCheck className="nav-icon" />
             <span>Instructor Check</span>

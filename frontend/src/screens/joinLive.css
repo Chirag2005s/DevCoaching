@@ -50,6 +50,7 @@
 }
 
 .live-status-pulse {
+  margin-top: 30px;
   display: inline-flex;
   align-items: center;
   gap: 8px;
