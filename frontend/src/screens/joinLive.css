@@ -1045,3 +1045,45 @@
     padding: 10px 16px 20px;
   }
 }
+
+/* ── Slot Action Row & Join Button ── */
+.slot-action-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.slot-link-status {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #94a3b8;
+}
+
+.slot-link-status.live {
+  color: #ef4444;
+  font-weight: 700;
+}
+
+.btn-slot-join {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #14daff 0%, #007aff 100%);
+  color: #050811;
+  font-size: 0.85rem;
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(20, 218, 255, 0.2);
+  transition: all 0.25s ease;
+}
+
+.btn-slot-join:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(20, 218, 255, 0.4);
+  color: #050811;
+}

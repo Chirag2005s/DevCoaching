@@ -28,6 +28,7 @@ const attendanceRouter = require('./router/attendance.router.js');
 const statsRouter = require('./router/stats.router.js');
 const accessLogRouter = require('./router/accessLog.router.js');
 const notificationRouter = require('./router/notification.router.js');
+const liveClassRouter = require('./router/liveClass.router.js');
 // Auth router Import
 const authRouter = require('./router/auth.router.js');
 
@@ -63,6 +64,7 @@ app.use("/api", attendanceRouter);
 app.use("/api", statsRouter);
 app.use("/api", accessLogRouter);
 app.use("/api", notificationRouter);
+app.use("/api", liveClassRouter);
 app.use("/api/auth", authRouter);
 
 const PORT = process.env.PORT || 9000;

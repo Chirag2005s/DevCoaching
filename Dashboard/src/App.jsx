@@ -15,7 +15,8 @@ import {
   Settings,
   Mail,
   User,
-  History
+  History,
+  MonitorPlay
 } from 'lucide-react';
 import { AuthProvider, useAuth } from './hooks/AuthContext';
 import Header from './components/Header';
@@ -23,6 +24,7 @@ import LoginPage from './pages/auth/LoginPage';
 import SignupPage from './pages/auth/SignupPage';
 import AdminProfile from './pages/AdminProfile';
 import DashboardOverview from './pages/DashboardOverview';
+import LiveClassesPage from './pages/LiveClassesPage';
 import AttendanceTracker from './pages/AttendanceTracker';
 import InstructorCheck from './pages/InstructorCheck';
 import StudentsPage from './pages/StudentsPage';
@@ -84,6 +86,10 @@ function AppContent() {
           <NavLink to="/batches" className={({ isActive }) => (isActive ? 'nav-item active' : 'nav-item')}>
             <Library className="nav-icon" />
             <span>Batches</span>
+          </NavLink>
+          <NavLink to="/live-classes" className={({ isActive }) => (isActive ? 'nav-item active' : 'nav-item')}>
+            <MonitorPlay className="nav-icon" />
+            <span>Live Classes</span>
           </NavLink>
           <NavLink to="/exams" className={({ isActive }) => (isActive ? 'nav-item active' : 'nav-item')}>
             <FileText className="nav-icon" />
@@ -155,6 +161,7 @@ function AppContent() {
             <Route path="/teachers" element={<TeachersPage />} />
             <Route path="/courses" element={<CoursesPage />} />
             <Route path="/batches" element={<BatchesPage />} />
+            <Route path="/live-classes" element={<LiveClassesPage />} />
             <Route path="/exams" element={<ExamsPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/profile" element={<AdminProfile />} />

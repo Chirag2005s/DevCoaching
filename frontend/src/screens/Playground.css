@@ -88,6 +88,28 @@
     padding-bottom: 8px;
 }
 
+.pg-lang-select {
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-size: 0.85rem;
+    font-weight: 600;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.pg-lang-select:hover {
+    border-color: var(--primary);
+}
+
+.pg-lang-select:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
 .pg-btn {
     display: flex;
     align-items: center;

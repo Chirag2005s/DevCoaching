@@ -48,15 +48,24 @@ function LearningHub() {
                 {activeTab === 'notes' && <Note isEmbedded={true} />}
                 
                 {activeTab === 'exams' && (
-                    user ? (
-                        <Exam isEmbedded={true} />
-                    ) : (
+                    !user ? (
                         <div className="hub-auth-required">
                             <FaLock className="lock-icon" />
                             <h2>Login Required</h2>
                             <p>You must be logged in to access the Mock Exams section.</p>
                             <button className="btn-primary-hub" onClick={() => navigate('/login')}>
                                 Login Now
+                            </button>
+                        </div>
+                    ) : (user.hasPurchasedCourse && user.enrolledBatches && user.enrolledBatches.length > 0) ? (
+                        <Exam isEmbedded={true} />
+                    ) : (
+                        <div className="hub-auth-required">
+                            <FaLock className="lock-icon" />
+                            <h2>Access Restricted</h2>
+                            <p>Mock Exams are exclusively available for students who have purchased a course and are assigned to a batch.</p>
+                            <button className="btn-primary-hub" onClick={() => navigate('/course')}>
+                                Explore Courses
                             </button>
                         </div>
                     )

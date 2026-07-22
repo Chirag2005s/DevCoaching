@@ -2,6 +2,7 @@ import './joinLive.css';
 import { useState, useEffect, useRef, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import {
     HiSignal,
     HiChevronDown,
@@ -169,17 +170,52 @@ function JoinLive() {
     const [searchQuery, setSearchQuery] = useState("");
     const [openFaq, setOpenFaq] = useState(null);
     const [playingVideo, setPlayingVideo] = useState(null);
+    const [weeklySchedule, setWeeklySchedule] = useState({});
+    const [activeLiveClass, setActiveLiveClass] = useState(null);
+    const [loading, setLoading] = useState(true);
     const modalVideoRef = useRef(null);
     const { user } = useContext(AuthContext);
     const navigate = useNavigate();
 
-    // Set default active day to today's weekday name
     useEffect(() => {
-        const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-        const today = days[new Date().getDay()];
-        if (WEEKLY_SCHEDULE[today]) {
-            setActiveDay(today);
-        }
+        const fetchClasses = async () => {
+            try {
+                const res = await axios.get('http://localhost:9000/api/live-classes');
+                if (res.data.success) {
+                    const classes = res.data.liveClasses;
+                    
+                    const schedule = {
+                        "Monday": [], "Tuesday": [], "Wednesday": [], 
+                        "Thursday": [], "Friday": [], "Saturday": [], "Sunday": []
+                    };
+                    
+                    let active = null;
+                    
+                    classes.forEach(cls => {
+                        if (schedule[cls.dayOfWeek]) {
+                            schedule[cls.dayOfWeek].push(cls);
+                        }
+                        if (cls.isActiveNow) {
+                            active = cls;
+                        }
+                    });
+                    
+                    setWeeklySchedule(schedule);
+                    setActiveLiveClass(active);
+
+                    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                    const today = days[new Date().getDay()];
+                    if (schedule[today] && schedule[today].length > 0) {
+                        setActiveDay(today);
+                    }
+                }
+            } catch (err) {
+                console.error(err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchClasses();
     }, []);
 
     // Filter past recordings based on track and search query
@@ -274,6 +310,7 @@ function JoinLive() {
                 </header>
 
                 {/* Current Active Live Class Section */}
+                {activeLiveClass && (
                 <section className="active-live-section mb-5">
                     <div className="active-class-card glass-panel">
                         <div className="active-class-card__glow" />
@@ -283,35 +320,36 @@ function JoinLive() {
                                     <span className="badge-live">LIVE NOW</span>
                                     <span className="active-time-meta">
                                         <HiOutlineClock className="icon-meta" />
-                                        {ACTIVE_LIVE_CLASS.timeStarted}
+                                        {activeLiveClass.time}
                                     </span>
                                 </div>
 
-                                <h2 className="active-class-title mt-3">{ACTIVE_LIVE_CLASS.title}</h2>
-                                <p className="active-class-desc">{ACTIVE_LIVE_CLASS.description}</p>
+                                <h2 className="active-class-title mt-3">{activeLiveClass.topic}</h2>
+                                <p className="active-class-desc">{activeLiveClass.description || "Join the live session to learn more."}</p>
 
                                 <div className="active-meta-grid">
                                     <div className="meta-box">
                                         <span className="meta-label">INSTRUCTOR</span>
                                         <span className="meta-val">
-                                            <FaUser className="me-1 text-info" /> {ACTIVE_LIVE_CLASS.mentor}
+                                            <FaUser className="me-1 text-info" /> {activeLiveClass.mentor}
                                         </span>
                                     </div>
                                     <div className="meta-box">
-                                        <span className="meta-label">DURATION</span>
+                                        <span className="meta-label">TRACK</span>
                                         <span className="meta-val">
-                                            <HiOutlineClock className="me-1 text-warning" /> {ACTIVE_LIVE_CLASS.duration}
+                                            <HiOutlineClock className="me-1 text-warning" /> {activeLiveClass.track}
                                         </span>
                                     </div>
                                 </div>
 
+                                {activeLiveClass.prerequisites && activeLiveClass.prerequisites.length > 0 && (
                                 <div className="prerequisites-box mt-4">
                                     <h5 className="prereq-title">
                                         <FaClipboardList className="me-2 text-info" />
                                         Session Preparation Checklist:
                                     </h5>
                                     <ul className="prereq-list">
-                                        {ACTIVE_LIVE_CLASS.prerequisites.map((pre, idx) => (
+                                        {activeLiveClass.prerequisites.map((pre, idx) => (
                                             <li key={idx}>
                                                 <FaCheckCircle className="check-icon" />
                                                 <span>{pre}</span>
@@ -319,6 +357,7 @@ function JoinLive() {
                                         ))}
                                     </ul>
                                 </div>
+                                )}
                             </div>
 
                             <div className="col-lg-4 text-center">
@@ -330,8 +369,7 @@ function JoinLive() {
                                     <p className="meet-subtext">Click the link below to enter the classroom. Ensure your mic is muted on arrival.</p>
 
                                     <a
-                                        // href={ACTIVE_LIVE_CLASS.meetingLink}
-                                        href="https://meet.google.com/egf-hfsx-est"
+                                        href={activeLiveClass.meetingLink || "#"}
                                         target="_blank"
                                         rel="noreferrer"
                                         className="btn-join-meet"
@@ -339,20 +377,12 @@ function JoinLive() {
                                         <FaGoogle className="google-logo" />
                                         <span>Enter Live Classroom</span>
                                     </a>
-
-                                    <div className="materials-download-row mt-3">
-                                        <a href={ACTIVE_LIVE_CLASS.materials.github} target="_blank" rel="noreferrer" className="btn-material-link">
-                                            <FaLaptopCode /> Code Repository
-                                        </a>
-                                        <a href={ACTIVE_LIVE_CLASS.materials.notes} className="btn-material-link">
-                                            <HiOutlineBookOpen /> Lecture Notes
-                                        </a>
-                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </section>
+                )}
 
                 {/* Weekly Live Class Schedule */}
                 <section className="weekly-schedule-section mb-5">
@@ -365,7 +395,7 @@ function JoinLive() {
                     <div className="schedule-panel glass-panel">
                         {/* Weekday Selector Tabs */}
                         <div className="weekday-tabs-row">
-                            {Object.keys(WEEKLY_SCHEDULE).map((day) => (
+                            {Object.keys(weeklySchedule).length > 0 ? Object.keys(weeklySchedule).map((day) => (
                                 <button
                                     key={day}
                                     className={`weekday-tab ${activeDay === day ? 'weekday-tab--active' : ''}`}
@@ -373,13 +403,15 @@ function JoinLive() {
                                 >
                                     {day}
                                 </button>
+                            )) : ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].map(day => (
+                                <button key={day} className={`weekday-tab ${activeDay === day ? 'weekday-tab--active' : ''}`} onClick={() => setActiveDay(day)}>{day}</button>
                             ))}
                         </div>
 
                         {/* Schedule Details Area */}
                         <div className="schedule-details-content py-4">
                             <div className="row g-4">
-                                {WEEKLY_SCHEDULE[activeDay]?.map((slot, index) => (
+                                {weeklySchedule[activeDay]?.map((slot, index) => (
                                     <div className="col-md-6" key={index}>
                                         <div className="schedule-slot-card">
                                             <div className="slot-badge-row">
@@ -402,6 +434,22 @@ function JoinLive() {
                                                     </div>
                                                 )}
                                             </div>
+
+                                            {slot.meetingLink && (
+                                                <div className="slot-action-row mt-3 pt-3">
+                                                    <span className={`slot-link-status ${slot.isActiveNow ? 'live' : ''}`}>
+                                                        {slot.isActiveNow ? '🔴 Live Session Active' : '📅 Scheduled Session'}
+                                                    </span>
+                                                    <a
+                                                        href={slot.meetingLink}
+                                                        target="_blank"
+                                                        rel="noreferrer"
+                                                        className="btn-slot-join"
+                                                    >
+                                                        <FaGoogle /> Join Class
+                                                    </a>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 ))}
